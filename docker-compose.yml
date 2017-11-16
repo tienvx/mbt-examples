@@ -1,0 +1,15 @@
+version: '3.1'
+services:
+    mysql:
+        image: mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: db
+    web:
+        build: .
+        ports:
+            - 80:80
+        volumes:
+            - '.:/app'
+        links:
+            - mysql
