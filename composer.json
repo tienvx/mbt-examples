@@ -50,6 +50,5 @@
             "id": "01BZ2B4RSB0Y27WD3Y1H9WTDCR",
             "allow-contrib": false
         }
-    },
-    "minimum-stability": "dev"
+    }
 }
