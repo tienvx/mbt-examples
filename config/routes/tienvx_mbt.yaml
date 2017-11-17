@@ -1,0 +1,4 @@
+# @todo Create a recipe for this file.
+tienvx_mbt_bundle:
+    resource: '@TienvxMbtBundle/Resources/config/routing.yml'
+    prefix: /mbt
