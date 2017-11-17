@@ -265,5 +265,8 @@
     },
     "symfony/expression-language": {
         "version": "v3.3.12"
+    },
+    "symfony/process": {
+        "version": "v3.3.13"
     }
 }

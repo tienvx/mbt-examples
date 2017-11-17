@@ -1,5 +1,9 @@
 easy_admin:
     entities:
         # List the entity class name you want to manage
-        - Tienvx\Bundle\MbtBundle\Entity\Bug
-        - Tienvx\Bundle\MbtBundle\Entity\Task
+        Task:
+            class: Tienvx\Bundle\MbtBundle\Entity\Task
+            list:
+                actions: ['start']
+        Bug:
+            class: Tienvx\Bundle\MbtBundle\Entity\Bug

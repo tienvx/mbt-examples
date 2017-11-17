@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "77927f9f81858731205cdcdb3d8148d0",
+    "content-hash": "041d5a791fe027674e32134b560ab209",
     "packages": [
         {
             "name": "clue/graph",
@@ -2977,6 +2977,55 @@
             "time": "2017-10-11T12:05:26+00:00"
         },
         {
+            "name": "symfony/process",
+            "version": "v3.3.13",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/process.git",
+                "reference": "a56a3989fb762d7b19a0cf8e7693ee99a6ffb78d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/process/zipball/a56a3989fb762d7b19a0cf8e7693ee99a6ffb78d",
+                "reference": "a56a3989fb762d7b19a0cf8e7693ee99a6ffb78d",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.5.9|>=7.0.8"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.3-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\Process\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony Process Component",
+            "homepage": "https://symfony.com",
+            "time": "2017-11-13T15:31:11+00:00"
+        },
+        {
             "name": "symfony/property-access",
             "version": "v3.3.13",
             "source": {
@@ -3816,16 +3865,17 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/tienvx/mbt-bundle.git",
-                "reference": "62d3aba37f438ebee09b3de29522449894658578"
+                "reference": "8fd5d0d882ec4801778d6a5bd148cb85b27d8814"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tienvx/mbt-bundle/zipball/62d3aba37f438ebee09b3de29522449894658578",
-                "reference": "62d3aba37f438ebee09b3de29522449894658578",
+                "url": "https://api.github.com/repos/tienvx/mbt-bundle/zipball/8fd5d0d882ec4801778d6a5bd148cb85b27d8814",
+                "reference": "8fd5d0d882ec4801778d6a5bd148cb85b27d8814",
                 "shasum": ""
             },
             "require": {
                 "doctrine/doctrine-bundle": "^1.8",
+                "doctrine/orm": "^2.5",
                 "graphp/algorithms": "^0.8.1",
                 "php": "^7.1.0",
                 "symfony/console": "^3.3",
@@ -3872,7 +3922,7 @@
                 }
             ],
             "description": "Provide tools to test a system using Model Based Testing technique.",
-            "time": "2017-11-17T04:26:52+00:00"
+            "time": "2017-11-17T06:03:26+00:00"
         },
         {
             "name": "twig/extensions",
