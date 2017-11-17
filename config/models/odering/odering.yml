@@ -1,0 +1,80 @@
+tienvx_mbt:
+  models:
+    #http://adam.goucher.ca
+    Odering:
+        subject: App\Subject\Ordering
+        tags: ["GO1 hack", "model base testing","Odering"]
+        places:
+            - Home
+            - Product
+            - Cart
+            - Checkout
+            - Admin_Page
+            - List_Orders
+            - Item_Order
+            - Edit_Order
+
+        initial_place: Home
+        transitions:
+            addCartfromHomePage:
+                from: Home
+                to: Home
+                label: "You add a product to your cart"
+                guard: "subject.HomeHasProduct()"
+                data:
+                    product: "subject.getListProducts()"
+            viewProduction:
+                from: Home
+                to: Product
+                label: " You choose a product to open it"
+                guard: "subject.HomeHasProduct()"
+                data:
+                    product: "subject.getProduct()"
+            addCartfromProductPage:
+                from: Product
+                to: Product
+                guard: "subject.HomeHasProduct()"
+                data:
+                    product: "subject.getProduct()"
+            viewCartfromHomePage:
+                from: Home
+                to: Cart
+                label: " You click on view cart."
+                data:
+                    cart: "subject.getMyCart"
+            viewCartfromProductPage:
+                from: Product
+                to: Cart
+                label: " You click on view cart."
+                data:
+                    cart: "subject.getMyCart"
+            checkoutCartfromHome:
+                from: Home
+                to: Checkout
+                label: " You click on checkout."
+                data:
+                    cart: "subject.checkoutMyCart"
+            checkoutCartfromCart:
+                from: Cart
+                to: Checkout
+                label: " You click on checkout."
+                data:
+                    cart: "subject.checkoutMyCart"
+            viewListOrders:
+                from: Admin_Page
+                to: List_Orders
+                data:
+                    list_orders: "subject.getListOrder"
+            viewOrder:
+                from: List_Orders
+                to: Item_Order
+                data:
+                    order: "subject.getOrder"
+            editOrder:
+                from: Item_Order
+                to: Edit_Order
+                data:
+                    order: "subject.editOrder"
+            deleteOrder:
+                from: Item_Order
+                to: List_Orders
