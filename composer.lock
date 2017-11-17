@@ -3816,12 +3816,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/tienvx/mbt-bundle.git",
-                "reference": "a2c50659b139bcfc63c5c0ba11b178f6f41ae511"
+                "reference": "62d3aba37f438ebee09b3de29522449894658578"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tienvx/mbt-bundle/zipball/a2c50659b139bcfc63c5c0ba11b178f6f41ae511",
-                "reference": "a2c50659b139bcfc63c5c0ba11b178f6f41ae511",
+                "url": "https://api.github.com/repos/tienvx/mbt-bundle/zipball/62d3aba37f438ebee09b3de29522449894658578",
+                "reference": "62d3aba37f438ebee09b3de29522449894658578",
                 "shasum": ""
             },
             "require": {
@@ -3872,7 +3872,7 @@
                 }
             ],
             "description": "Provide tools to test a system using Model Based Testing technique.",
-            "time": "2017-11-17T03:58:48+00:00"
+            "time": "2017-11-17T04:26:52+00:00"
         },
         {
             "name": "twig/extensions",
