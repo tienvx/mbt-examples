@@ -70,4 +70,8 @@ RUN echo "zend_extension=/usr/lib/php7/modules/xdebug.so" > /etc/php7/conf.d/xde
 RUN apk del php7-pear php7-dev autoconf build-base
 
 EXPOSE 80
-CMD ["php", "-S", "0.0.0.0:80", "-t", "/app/public"]
+
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod a+x /entrypoint.sh
+
+CMD ["/entrypoint.sh"]
