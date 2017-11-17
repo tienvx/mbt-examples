@@ -1,0 +1,13 @@
+# MBT Examples
+
+Contains examples how to use mbt-bundle
+
+### Installing
+
+
+```
+git clone git@github.com:tienvx/mbt-examples.git
+cd mbt-examples
+composer install
+docker-compose up
+```
