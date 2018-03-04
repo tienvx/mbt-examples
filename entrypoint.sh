@@ -15,4 +15,4 @@ php install/cli_install.php install \
     --email youremail@example.com \
     --http_server http://localhost/opencart/
 
-php-fpm
+apache2-foreground
