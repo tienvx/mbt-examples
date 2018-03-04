@@ -13,6 +13,6 @@ php install/cli_install.php install \
     --username admin \
     --password admin \
     --email youremail@example.com \
-    --http_server http://localhost/opencart/
+    --http_server http://localhost/
 
-apache2-foreground
+php -S 0.0.0.0:80 -t /app
