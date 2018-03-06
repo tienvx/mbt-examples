@@ -23,6 +23,8 @@ RUN curl -sSL -o opencart.tar.gz https://github.com/opencart/opencart/archive/3.
     curl -sSL -o /wait-for-it.sh https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh && \
     chmod +x /wait-for-it.sh
 
+EXPOSE 80
+
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod a+x /entrypoint.sh
 
