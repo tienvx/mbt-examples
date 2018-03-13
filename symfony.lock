@@ -56,6 +56,9 @@
     "doctrine/orm": {
         "version": "v2.6.0"
     },
+    "facebook/webdriver": {
+        "version": "dev-master"
+    },
     "graphp/algorithms": {
         "version": "v0.8.1"
     },
