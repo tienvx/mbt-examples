@@ -21,3 +21,9 @@ services:
             - '.:/app'
         links:
             - web:example.com
+    selenium:
+        image: selenium/standalone-firefox:3.11.0-antimony
+        volumes:
+          - /dev/shm:/dev/shm
+        ports:
+            - 4444:4444

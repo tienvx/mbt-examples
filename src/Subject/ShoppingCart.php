@@ -13,6 +13,11 @@ class ShoppingCart extends Subject
     protected $webDriver;
 
     /**
+     * @var string $url
+     */
+    protected $url;
+
+    /**
      * @var array
      */
     protected $cart;
@@ -94,14 +99,15 @@ class ShoppingCart extends Subject
     public function __construct()
     {
         $capabilities = array(\WebDriverCapabilityType::BROWSER_NAME => 'firefox');
-        $this->webDriver = RemoteWebDriver::create('http://localhost:4444/wd/hub', $capabilities);
+        $this->webDriver = RemoteWebDriver::create('http://selenium:4444/wd/hub', $capabilities);
+        $this->url = 'http://example.com';
         $this->cart = [];
         $this->category = null;
         $this->product = null;
         parent::__construct();
     }
 
-    public function tearDown()
+    public function __destruct()
     {
         $this->webDriver->quit();
     }
@@ -114,6 +120,7 @@ class ShoppingCart extends Subject
         $category = $data['category'];
         $this->category = $category;
         $this->product = null;
+        $this->goToCategory($category);
     }
 
     /**
@@ -124,6 +131,7 @@ class ShoppingCart extends Subject
         $category = $data['category'];
         $this->category = $category;
         $this->product = null;
+        $this->goToCategory($category);
     }
 
     /**
@@ -134,6 +142,7 @@ class ShoppingCart extends Subject
         $category = $data['category'];
         $this->category = $category;
         $this->product = null;
+        $this->goToCategory($category);
     }
 
     /**
@@ -144,6 +153,7 @@ class ShoppingCart extends Subject
         $category = $data['category'];
         $this->category = $category;
         $this->product = null;
+        $this->goToCategory($category);
     }
 
     /**
@@ -164,6 +174,7 @@ class ShoppingCart extends Subject
         $product = $data['product'];
         $this->product = $product;
         $this->category = null;
+        $this->goToProduct($product);
     }
 
     /**
@@ -174,6 +185,7 @@ class ShoppingCart extends Subject
         $product = $data['product'];
         $this->product = $product;
         $this->category = null;
+        $this->goToProduct($product);
     }
 
     public function categoryHasProduct($data)
@@ -190,72 +202,84 @@ class ShoppingCart extends Subject
     {
         $this->category = null;
         $this->product = null;
+        $this->goToCart();
     }
 
     public function viewCartFromCategory()
     {
         $this->category = null;
         $this->product = null;
+        $this->goToCart();
     }
 
     public function viewCartFromProduct()
     {
         $this->category = null;
         $this->product = null;
+        $this->goToCart();
     }
 
     public function viewCartFromCheckout()
     {
         $this->category = null;
         $this->product = null;
+        $this->goToCart();
     }
 
     public function checkoutFromHome()
     {
         $this->category = null;
         $this->product = null;
+        $this->goToCheckout();
     }
 
     public function checkoutFromCategory()
     {
         $this->category = null;
         $this->product = null;
+        $this->goToCheckout();
     }
 
     public function checkoutFromProduct()
     {
         $this->category = null;
         $this->product = null;
+        $this->goToCheckout();
     }
 
     public function checkoutFromCart()
     {
         $this->category = null;
         $this->product = null;
+        $this->goToCheckout();
     }
 
     public function backToHomeFromCategory()
     {
         $this->category = null;
         $this->product = null;
+        $this->goToHome();
     }
 
     public function backToHomeFromProduct()
     {
         $this->category = null;
         $this->product = null;
+        $this->goToHome();
     }
 
     public function backToHomeFromCart()
     {
         $this->category = null;
         $this->product = null;
+        $this->goToHome();
     }
 
     public function backToHomeFromCheckout()
     {
         $this->category = null;
         $this->product = null;
+        $this->goToHome();
     }
 
     public function cartHasProduct($data)
@@ -389,5 +413,30 @@ class ShoppingCart extends Subject
         }
         $product = $products[array_rand($products)];
         return $product;
+    }
+
+    private function goToCategory($id)
+    {
+        $this->webDriver->get($this->url . "/index.php?route=product/category&path=$id");
+    }
+
+    private function goToProduct($id)
+    {
+        $this->webDriver->get($this->url . "/index.php?route=product/product&product_id=$id");
+    }
+
+    private function goToCart()
+    {
+        $this->webDriver->get($this->url . '/index.php?route=checkout/cart');
+    }
+
+    private function goToCheckout()
+    {
+        $this->webDriver->get($this->url . '/index.php?route=checkout/checkout');
+    }
+
+    private function goToHome()
+    {
+        $this->webDriver->get($this->url . '/index.php?route=common/home');
     }
 }
