@@ -19,5 +19,11 @@ services:
             - 80:80
         volumes:
             - '.:/app'
+    selenium:
+        image: selenium/standalone-chrome:3.11.0-californium
+        volumes:
+          - /dev/shm:/dev/shm
+        ports:
+            - 4444:4444
         links:
             - web:example.com
