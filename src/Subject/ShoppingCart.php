@@ -6,6 +6,7 @@ use App\Helper\ElementHelper;
 use RemoteWebDriver;
 use WebDriverBy;
 use DesiredCapabilities;
+use WebDriverExpectedCondition;
 use Tienvx\Bundle\MbtBundle\Subject\Subject;
 
 class ShoppingCart extends Subject
@@ -127,7 +128,7 @@ class ShoppingCart extends Subject
 
     public function __construct()
     {
-        $this->webDriver = RemoteWebDriver::create('http://selenium:4444/wd/hub', DesiredCapabilities::firefox());
+        $this->webDriver = RemoteWebDriver::create('http://selenium:4444/wd/hub', DesiredCapabilities::chrome());
         $this->url = 'http://example.com';
         $this->cart = [];
         $this->category = null;
@@ -345,7 +346,7 @@ class ShoppingCart extends Subject
         else {
             $this->cart[$product]++;
         }
-        $this->webDriver->findElement(WebDriverBy::cssSelector("button[onclick=\"cart.add($product);\"]"))->click();
+        $this->webDriver->findElement(WebDriverBy::cssSelector("button[onclick*=\"cart.add('$product'\"]"))->click();
     }
 
     public function addFromProduct()
@@ -366,7 +367,7 @@ class ShoppingCart extends Subject
     {
         $product = $data['product'];
         unset($this->cart[$product]);
-        $this->webDriver->findElement(WebDriverBy::cssSelector("button[onclick=\"cart.remove($product);\"]"))->click();
+        $this->webDriver->findElement(WebDriverBy::cssSelector("button[onclick=\"cart.remove('$product');\"]"))->click();
     }
 
     /**
@@ -457,6 +458,11 @@ class ShoppingCart extends Subject
     private function goToProduct($id)
     {
         $this->webDriver->get($this->url . "/index.php?route=product/product&product_id=$id");
+        $this->webDriver->wait()->until(
+            WebDriverExpectedCondition::presenceOfElementLocated(
+                WebDriverBy::cssSelector('#product-product')
+            )
+        );
     }
 
     private function goToCart()

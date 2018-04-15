@@ -20,7 +20,7 @@ services:
         volumes:
             - '.:/app'
     selenium:
-        image: selenium/standalone-firefox:3.11.0-californium
+        image: selenium/standalone-chrome:3.11.0-californium
         volumes:
           - /dev/shm:/dev/shm
         ports:
