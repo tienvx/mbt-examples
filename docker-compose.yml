@@ -19,11 +19,11 @@ services:
             - 80:80
         volumes:
             - '.:/app'
-        links:
-            - web:example.com
     selenium:
-        image: selenium/standalone-firefox:3.11.0-antimony
+        image: selenium/standalone-firefox:3.11.0-californium
         volumes:
           - /dev/shm:/dev/shm
         ports:
             - 4444:4444
+        links:
+            - web:example.com

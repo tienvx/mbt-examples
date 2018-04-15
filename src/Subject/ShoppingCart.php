@@ -5,6 +5,7 @@ namespace App\Subject;
 use App\Helper\ElementHelper;
 use RemoteWebDriver;
 use WebDriverBy;
+use DesiredCapabilities;
 use Tienvx\Bundle\MbtBundle\Subject\Subject;
 
 class ShoppingCart extends Subject
@@ -126,8 +127,7 @@ class ShoppingCart extends Subject
 
     public function __construct()
     {
-        $capabilities = array(\WebDriverCapabilityType::BROWSER_NAME => 'firefox');
-        $this->webDriver = RemoteWebDriver::create('http://selenium:4444/wd/hub', $capabilities);
+        $this->webDriver = RemoteWebDriver::create('http://selenium:4444/wd/hub', DesiredCapabilities::firefox());
         $this->url = 'http://example.com';
         $this->cart = [];
         $this->category = null;
