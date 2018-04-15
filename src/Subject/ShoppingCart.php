@@ -2,11 +2,15 @@
 
 namespace App\Subject;
 
+use App\Helper\ElementHelper;
 use RemoteWebDriver;
+use WebDriverBy;
 use Tienvx\Bundle\MbtBundle\Subject\Subject;
 
 class ShoppingCart extends Subject
 {
+    use ElementHelper;
+
     /**
      * @var RemoteWebDriver
      */
@@ -35,65 +39,89 @@ class ShoppingCart extends Subject
     /**
      * @var array
      */
-    protected $products = [
-        '28', // 'HTC Touch HD',
-        '40', // 'iPhone',
-        '29', // 'Palm Treo Pro',
-        '41', // 'iMac',
-        '42', // 'Apple Cinema 30',
-        '33', // 'Samsung SyncMaster 941BW',
-        '30', // 'Canon EOS 5D',
-        '31', // 'Nikon D300',
+    protected $featuredProducts = [
         '43', // 'MacBook',
+        '40', // 'iPhone',
+        '42', // 'Apple Cinema 30',
+        '30', // 'Canon EOS 5D',
     ];
 
     /**
      * @var array
      */
     protected $categories = [
-        '24', // 'Phones & PDAs',
-        '17', // 'Software',
+        '20', // 'Desktops',
         '20_27', // 'Mac',
+        '18', // 'Laptops & Notebooks',
+        '25', // 'Components',
         '25_28', // 'Monitors',
+        '57', // 'Tablets',
+        '17', // 'Software',
+        '24', // 'Phones & PDAs',
         '33', // 'Cameras',
-        '20', // 'Desktops'
+        '34', // 'MP3 Players',
     ];
 
     /**
      * @var array
      */
     protected $productsInCategory = [
+        '20' => [
+            '42', // 'Apple Cinema 30',
+            '30', // 'Canon EOS 5D',
+            '47', // 'HP LP3065',
+            '28', // 'HTC Touch HD',
+            '40', // 'iPhone',
+            '48', // 'iPod Classic',
+            '43', // 'MacBook',
+            '42', // 'Apple Cinema 30',
+            '44', // 'MacBook Air',
+            '29', // 'Palm Treo Pro',
+            '35', // 'Product 8',
+            '33', // 'Samsung SyncMaster 941BW',
+            '46', // 'Sony VAIO',
+        ],
+        '20_27' => [
+            '41', // 'iMac',
+        ],
+        '18' => [
+            '47', // 'HP LP3065',
+            '43', // 'MacBook',
+            '44', // 'MacBook Air',
+            '45', // 'MacBook Pro',
+            '46', // 'Sony VAIO',
+        ],
+        '25' => [],
+        '25_28' => [
+            '42', // 'Apple Cinema 30',
+            '33', // 'Samsung SyncMaster 941BW'
+        ],
+        '57' => [
+            '49', // 'Samsung Galaxy Tab 10.1',
+        ],
+        '17' => [],
         '24' => [
             '28', // 'HTC Touch HD',
             '40', // 'iPhone',
             '29', // 'Palm Treo Pro',
         ],
-        '17' => [],
-        '20_27' => [
-            '41', // 'iMac',
-        ],
-        '25_28' => [
-            '42', // 'Apple Cinema 30',
-            '33', // 'Samsung SyncMaster 941BW'
-        ],
         '33' => [
             '30', // 'Canon EOS 5D',
             '31', // 'Nikon D300'
         ],
-        '20' => [
-            '43', // 'MacBook'
-        ]
+        '34' => [
+            '48', // 'iPod Classic',
+            '36', // 'iPod Nano',
+            '34', // 'iPod Shuffle',
+            '32', // 'iPod Touch',
+        ],
     ];
 
     /**
      * @var array
      */
-    protected $stock = [
-        '29', // 'Palm Treo Pro',
-        '42', // 'Apple Cinema 30',
-        '30', // 'Canon EOS 5D',
-        '31', // 'Nikon D300',
-        '43', // 'MacBook',
+    protected $outOfStock = [
+        '49', // 'Samsung Galaxy Tab 10.1',
     ];
 
     public function __construct()
@@ -288,7 +316,7 @@ class ShoppingCart extends Subject
             return false;
         }
         $product = $data['product'];
-        return !empty($this->cart[$product]);
+        return $this->hasElement($this->webDriver, WebDriverBy::cssSelector("#checkout-cart button[onclick=\"cart.remove('$product');\"]"));
     }
 
     /**
@@ -317,6 +345,7 @@ class ShoppingCart extends Subject
         else {
             $this->cart[$product]++;
         }
+        $this->webDriver->findElement(WebDriverBy::cssSelector("button[onclick=\"cart.add($product);\"]"))->click();
     }
 
     public function addFromProduct()
@@ -327,6 +356,7 @@ class ShoppingCart extends Subject
         else {
             $this->cart[$this->product]++;
         }
+        $this->webDriver->findElement(WebDriverBy::xpath("//button[text()='Add to Cart']"))->click();
     }
 
     /**
@@ -336,6 +366,7 @@ class ShoppingCart extends Subject
     {
         $product = $data['product'];
         unset($this->cart[$product]);
+        $this->webDriver->findElement(WebDriverBy::cssSelector("button[onclick=\"cart.remove($product);\"]"))->click();
     }
 
     /**
@@ -345,7 +376,10 @@ class ShoppingCart extends Subject
     public function update($data)
     {
         $product = $data['product'];
-        $this->cart[$product] = rand(1, 99);
+        $quantity = rand(1, 99);
+        $this->cart[$product] = $quantity;
+        $this->webDriver->findElement(WebDriverBy::cssSelector("input[name=\"quantity[$product]\"]"))->sendKeys($quantity);
+        $this->webDriver->findElement(WebDriverBy::cssSelector("input[name=\"quantity[$product]\"]+.input-group-btn>button[data-original-title=\"Update\"]"))->click();
     }
 
     public function home()
@@ -368,19 +402,19 @@ class ShoppingCart extends Subject
     {
         if ($this->callSUT) {
             foreach ($this->cart as $product => $quantity) {
-                if (!in_array($product, $this->stock)) {
+                if (in_array($product, $this->outOfStock)) {
                     throw new \Exception('You added an out-of-stock product into cart! Can not checkout');
                 }
             }
         }
     }
 
-    public function getRandomProduct()
+    public function getRandomProductFromHome()
     {
-        if (empty($this->products)) {
+        if (empty($this->featuredProducts)) {
             return null;
         }
-        $product = $this->products[array_rand($this->products)];
+        $product = $this->featuredProducts[array_rand($this->featuredProducts)];
         return $product;
     }
 
