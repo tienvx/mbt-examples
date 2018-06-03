@@ -7,7 +7,7 @@ use RemoteWebDriver;
 use WebDriverBy;
 use DesiredCapabilities;
 use WebDriverExpectedCondition;
-use Tienvx\Bundle\MbtBundle\Subject\Subject;
+use Tienvx\Bundle\MbtBundle\Model\Subject;
 
 class ShoppingCart extends Subject
 {

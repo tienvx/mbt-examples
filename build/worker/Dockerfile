@@ -1,0 +1,17 @@
+FROM php:7.2-cli-alpine3.7
+MAINTAINER tienvx <tien.xuan.vo@gmail.com>
+
+RUN apk add --no-cache bash rabbitmq-c rabbitmq-c-dev $PHPIZE_DEPS && \
+    pecl install amqp && \
+    docker-php-ext-enable amqp && \
+    apk del $PHPIZE_DEPS
+
+RUN curl -sSL -o /wait-for-it.sh https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh && \
+    chmod +x /wait-for-it.sh
+
+WORKDIR /worker
+
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod a+x /entrypoint.sh
+
+CMD ["/entrypoint.sh"]

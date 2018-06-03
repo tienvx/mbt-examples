@@ -1,29 +1,41 @@
 version: '2'
 services:
-    mysql:
-        image: mysql:5.7
+    db:
+        image: mariadb:10
         environment:
-            MYSQL_ROOT_PASSWORD: root
-            MYSQL_DATABASE: db
-    web:
-        build: build/web
-        ports:
-            - 81:80
-        links:
-            - mysql
-        depends_on:
-            - mysql
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: db
     app:
         build: build/app
         ports:
+            - 81:80
+        links:
+            - db
+        depends_on:
+            - db
+    api:
+        build: build/api
+        ports:
             - 80:80
         volumes:
-            - '.:/app'
+            - '.:/api'
+    worker:
+        build: build/worker
+        volumes:
+            - '.:/worker'
+        links:
+            - queue
+        depends_on:
+            - queue
     selenium:
-        image: selenium/standalone-chrome:3.11.0-californium
+        image: selenium/standalone-chrome:3.12
         volumes:
           - /dev/shm:/dev/shm
         ports:
             - 4444:4444
         links:
-            - web:example.com
+            - app:example.com
+    queue:
+        image: rabbitmq:3.7-management
+        ports:
+            - 15672:15672
