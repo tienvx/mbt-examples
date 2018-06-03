@@ -19,14 +19,20 @@ services:
             - 80:80
         volumes:
             - '.:/api'
+        links:
+            - db
+        depends_on:
+            - db
     worker:
         build: build/worker
         volumes:
             - '.:/worker'
         links:
             - queue
+            - db
         depends_on:
             - queue
+            - db
     selenium:
         image: selenium/standalone-chrome:3.12
         volumes:

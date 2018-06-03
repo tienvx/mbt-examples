@@ -2,21 +2,13 @@
 
 namespace App\Helper;
 
-use RemoteWebDriver;
-use WebDriverBy;
-use NoSuchElementException;
-use StaleElementReferenceException;
+use Facebook\WebDriver\Remote\RemoteWebDriver;
+use Facebook\WebDriver\WebDriverBy;
 
 trait ElementHelper
 {
     public function hasElement(RemoteWebDriver $driver, WebDriverBy $by)
     {
-        try {
-          return $driver->findElement($by)->isDisplayed();
-        } catch (NoSuchElementException $e) {
-          return false;
-        } catch (StaleElementReferenceException $e) {
-          return false;
-        }
+        return $driver->findElement($by)->isDisplayed();
     }
 }

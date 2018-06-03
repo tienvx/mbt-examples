@@ -5,6 +5,12 @@ RUN apk add --no-cache bash
 
 WORKDIR /api
 
+RUN curl -sSL -o /wait-for-it.sh https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh && \
+    chmod +x /wait-for-it.sh
+
 EXPOSE 80
 
-CMD ["php", "-S", "0.0.0.0:80", "-t", "/api/public"]
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod a+x /entrypoint.sh
+
+CMD ["/entrypoint.sh"]

@@ -11,6 +11,7 @@ Contains examples for mbt-bundle project
 To install use the [docker-compose](https://docs.docker.com/compose/) tool.
 
 ```bash
+$ cp .env.dist .env
 $ docker-compose up --scale worker=4
 ```
 

@@ -11,6 +11,7 @@
         "symfony/lts": "^4@dev",
         "symfony/yaml": "^4.1",
         "symfony/twig-bundle": "^4.1",
+        "symfony/asset": "^4.1",
         "tienvx/mbt-bundle": "1.0.x-dev",
         "api-platform/core": "^2.2"
     },
