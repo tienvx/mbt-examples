@@ -3,6 +3,7 @@ MAINTAINER tienvx <tien.xuan.vo@gmail.com>
 
 RUN apk add --no-cache bash rabbitmq-c rabbitmq-c-dev $PHPIZE_DEPS && \
     pecl install amqp && \
+    docker-php-ext-install mysqli pdo_mysql && \
     docker-php-ext-enable amqp && \
     apk del $PHPIZE_DEPS
 

@@ -1,7 +1,8 @@
 FROM php:7.2-cli-alpine3.7
 MAINTAINER tienvx <tien.xuan.vo@gmail.com>
 
-RUN apk add --no-cache bash
+RUN apk add --no-cache bash && \
+    docker-php-ext-install mysqli pdo_mysql
 
 WORKDIR /api
 
