@@ -443,6 +443,10 @@ class ShoppingCart extends Subject
         $this->webDriver->findElement(WebDriverBy::cssSelector("button[onclick*=\"cart.add('$product'\"]"))->click();
     }
 
+    /**
+     * @throws NoSuchElementException
+     * @throws TimeOutException
+     */
     public function addFromProduct()
     {
         if (!isset($this->cart[$this->product])) {
@@ -451,6 +455,11 @@ class ShoppingCart extends Subject
         else {
             $this->cart[$this->product]++;
         }
+        $this->webDriver->wait()->until(
+            WebDriverExpectedCondition::presenceOfElementLocated(
+                WebDriverBy::xpath("//button[text()='Add to Cart']")
+            )
+        );
         $this->webDriver->findElement(WebDriverBy::xpath("//button[text()='Add to Cart']"))->click();
     }
 
