@@ -249,6 +249,7 @@ class ShoppingCart extends Subject
         $product = $this->data['product'];
         $this->product = $product;
         $this->category = null;
+        $this->goToProduct($product);
     }
 
     /**
