@@ -134,7 +134,7 @@ class ShoppingCart extends Subject
      */
     public function __construct(bool $generatingSteps = false)
     {
-        $this->webDriver = RemoteWebDriver::create('http://selenium:4444/wd/hub', DesiredCapabilities::chrome());
+        $this->webDriver = RemoteWebDriver::create('http://selenium-hub:4444/wd/hub', DesiredCapabilities::chrome());
         $this->url = 'http://example.com';
         $this->cart = [];
         $this->category = null;

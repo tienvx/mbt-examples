@@ -33,14 +33,19 @@ services:
         depends_on:
             - queue
             - db
-    selenium:
-        image: selenium/standalone-chrome:3.12
-        volumes:
-          - /dev/shm:/dev/shm
+    selenium-hub:
+        image: selenium/hub
         ports:
             - 4444:4444
+    selenium-node:
+        image: selenium/node-chrome
         links:
+            - selenium-hub:hub
             - app:example.com
+        environment:
+            HUB_HOST: hub
+        volumes:
+            - /dev/shm:/dev/shm
     queue:
         image: rabbitmq:3.7-management
         ports:

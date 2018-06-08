@@ -12,7 +12,7 @@ To install use the [docker-compose](https://docs.docker.com/compose/) tool.
 
 ```bash
 $ cp .env.dist .env
-$ docker-compose up --scale worker=4
+$ docker-compose up --scale worker=4 --scale selenium-node=4
 ```
 
 ## License
