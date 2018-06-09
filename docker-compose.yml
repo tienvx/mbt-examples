@@ -1,4 +1,4 @@
-version: '2'
+version: '3'
 services:
     db:
         image: mariadb:10
@@ -23,6 +23,8 @@ services:
             - db
         depends_on:
             - db
+        environment:
+            PHP_IDE_CONFIG: "serverName=mbt-api"
     worker:
         build: build/worker
         volumes:
@@ -33,6 +35,8 @@ services:
         depends_on:
             - queue
             - db
+        environment:
+            PHP_IDE_CONFIG: "serverName=mbt-worker"
     selenium-hub:
         image: selenium/hub
         ports:
@@ -50,3 +54,10 @@ services:
         image: rabbitmq:3.7-management
         ports:
             - 15672:15672
+
+networks:
+    default:
+        driver: bridge
+        ipam:
+            config:
+                - subnet: 10.0.0.0/16
