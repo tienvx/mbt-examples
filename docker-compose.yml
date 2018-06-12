@@ -44,12 +44,12 @@ services:
     selenium-node:
         image: selenium/node-chrome
         links:
-            - selenium-hub:hub
             - app:example.com
         environment:
-            HUB_HOST: hub
-        volumes:
-            - /dev/shm:/dev/shm
+            HUB_HOST: selenium-hub
+            HUB_PORT: 4444
+        depends_on:
+            - selenium-hub
     queue:
         image: rabbitmq:3.7-management
         ports:
