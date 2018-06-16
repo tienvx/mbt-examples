@@ -6,11 +6,19 @@ Contains examples for mbt-bundle project
 - Test real application (OpenCart)
 - Scalable with workers
 
+## Dependencies
+
+- git
+- [composer](https://getcomposer.org/download/)
+- docker
+- [docker-compose](https://docs.docker.com/compose/)
 
 ## Install
-To install use the [docker-compose](https://docs.docker.com/compose/) tool.
 
 ```bash
+$ git clone git@github.com:tienvx/mbt-examples.git
+$ cd mbt-examples
+$ composer install
 $ cp .env.dist .env
 $ docker-compose up --scale worker=4 --scale selenium-node=4
 ```

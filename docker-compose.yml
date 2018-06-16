@@ -6,7 +6,9 @@ services:
           MYSQL_ROOT_PASSWORD: root
           MYSQL_DATABASE: db
     app:
-        build: build/app
+        build:
+            context: ./build
+            dockerfile: docker/app/Dockerfile
         ports:
             - 81:80
         links:
@@ -14,11 +16,21 @@ services:
         depends_on:
             - db
     api:
-        build: build/api
+        build:
+            context: ./build
+            dockerfile: docker/api/Dockerfile
         ports:
             - 80:80
         volumes:
-            - '.:/api'
+            - './bin:/api/bin'
+            - './config:/api/config'
+            - './public:/api/public'
+            - './src:/api/src'
+            - './templates:/api/templates'
+            - './translations:/api/translations'
+            - './vendor:/api/vendor'
+            - './.env:/api/.env'
+            - './composer.json:/api/composer.json'
         links:
             - db
         depends_on:
@@ -26,9 +38,19 @@ services:
         environment:
             PHP_IDE_CONFIG: "serverName=mbt-api"
     worker:
-        build: build/worker
+        build:
+            context: ./build
+            dockerfile: docker/worker/Dockerfile
         volumes:
-            - '.:/worker'
+            - './bin:/worker/bin'
+            - './config:/worker/config'
+            - './public:/worker/public'
+            - './src:/worker/src'
+            - './templates:/worker/templates'
+            - './translations:/worker/translations'
+            - './vendor:/worker/vendor'
+            - './.env:/worker/.env'
+            - './composer.json:/worker/composer.json'
         links:
             - queue
             - db
