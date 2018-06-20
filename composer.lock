@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "api-platform/core",
-            "version": "v2.2.7",
+            "version": "v2.2.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/api-platform/core.git",
-                "reference": "9a64d157ecf218094ac2a809e01fe3b44a5b7073"
+                "reference": "e8e4ce20336978c07a86116c658615caf442e880"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/api-platform/core/zipball/9a64d157ecf218094ac2a809e01fe3b44a5b7073",
-                "reference": "9a64d157ecf218094ac2a809e01fe3b44a5b7073",
+                "url": "https://api.github.com/repos/api-platform/core/zipball/e8e4ce20336978c07a86116c658615caf442e880",
+                "reference": "e8e4ce20336978c07a86116c658615caf442e880",
                 "shasum": ""
             },
             "require": {
@@ -121,7 +121,7 @@
                 "rest",
                 "swagger"
             ],
-            "time": "2018-06-07T05:42:29+00:00"
+            "time": "2018-06-18T07:29:19+00:00"
         },
         {
             "name": "clue/graph",
@@ -3411,12 +3411,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/tienvx/mbt-bundle.git",
-                "reference": "b2d7e01b62ddf76ec166227d5268dc19978a0a73"
+                "reference": "b57adddc8e9b74506deaba8cf4d1089ed28148f5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tienvx/mbt-bundle/zipball/b2d7e01b62ddf76ec166227d5268dc19978a0a73",
-                "reference": "b2d7e01b62ddf76ec166227d5268dc19978a0a73",
+                "url": "https://api.github.com/repos/tienvx/mbt-bundle/zipball/b57adddc8e9b74506deaba8cf4d1089ed28148f5",
+                "reference": "b57adddc8e9b74506deaba8cf4d1089ed28148f5",
                 "shasum": ""
             },
             "require": {
@@ -3428,6 +3428,7 @@
                 "symfony/expression-language": "^4.1",
                 "symfony/framework-bundle": "^4.1",
                 "symfony/messenger": "^4.1",
+                "symfony/process": "^4.1",
                 "symfony/validator": "^4.1",
                 "symfony/workflow": "^4.1"
             },
@@ -3441,12 +3442,16 @@
                 "doctrine/doctrine-fixtures-bundle": "^3.0",
                 "php-coveralls/php-coveralls": "^2.1",
                 "phpunit/phpunit": "^7.2",
+                "pnz/messenger-filesystem-transport": "^0.1.2",
                 "symfony/asset": "^4.1",
                 "symfony/browser-kit": "^4.1",
                 "symfony/swiftmailer-bundle": "^3.2",
                 "symfony/templating": "^4.1",
                 "symfony/twig-bundle": "^4.1",
                 "symfony/yaml": "^4.1"
+            },
+            "suggest": {
+                "ext-amqp": "Needed to support amqp transport"
             },
             "type": "symfony-bundle",
             "extra": {
@@ -3482,7 +3487,7 @@
                 "model based testing",
                 "testing"
             ],
-            "time": "2018-06-15T05:25:52+00:00"
+            "time": "2018-06-20T06:20:43+00:00"
         },
         {
             "name": "twig/twig",
