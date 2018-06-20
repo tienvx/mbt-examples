@@ -5,6 +5,10 @@ services:
         environment:
           MYSQL_ROOT_PASSWORD: root
           MYSQL_DATABASE: db
+    adminer:
+        image: adminer
+        ports:
+            - 8080:8080
     app:
         build:
             context: ./build
