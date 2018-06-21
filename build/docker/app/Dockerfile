@@ -1,4 +1,4 @@
-FROM php:cli-alpine3.7
+FROM php:7.2-cli-alpine3.7
 MAINTAINER tienvx <tien.xuan.vo@gmail.com>
 
 RUN apk add --no-cache \

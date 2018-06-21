@@ -3,11 +3,14 @@
 namespace App\Subject;
 
 use App\Helper\ElementHelper;
-use RemoteWebDriver;
-use WebDriverBy;
-use DesiredCapabilities;
-use WebDriverExpectedCondition;
-use Tienvx\Bundle\MbtBundle\Subject\Subject;
+use Exception;
+use Facebook\WebDriver\Exception\NoSuchElementException;
+use Facebook\WebDriver\Exception\TimeOutException;
+use Facebook\WebDriver\Remote\DesiredCapabilities;
+use Facebook\WebDriver\Remote\RemoteWebDriver;
+use Facebook\WebDriver\WebDriverBy;
+use Facebook\WebDriver\WebDriverExpectedCondition;
+use Tienvx\Bundle\MbtBundle\Model\Subject;
 
 class ShoppingCart extends Subject
 {
@@ -126,105 +129,187 @@ class ShoppingCart extends Subject
         '49', // 'Samsung Galaxy Tab 10.1',
     ];
 
-    public function __construct()
+    /**
+     * @param $generatingSteps boolean
+     */
+    public function __construct(bool $generatingSteps = false)
     {
-        $this->webDriver = RemoteWebDriver::create('http://selenium:4444/wd/hub', DesiredCapabilities::chrome());
         $this->url = 'http://example.com';
         $this->cart = [];
         $this->category = null;
         $this->product = null;
-        parent::__construct();
+        $this->dataProviders = [
+            'viewAnyCategoryFromHome' => function () {
+                return ['category' => $this->getRandomCategory()];
+            },
+            'viewOtherCategory' => function () {
+                return ['category' => $this->getRandomCategory()];
+            },
+            'viewAnyCategoryFromProduct' => function () {
+                return ['category' => $this->getRandomCategory()];
+            },
+            'viewAnyCategoryFromCart' => function () {
+                return ['category' => $this->getRandomCategory()];
+            },
+            'viewProductFromHome' => function () {
+                return ['product' => $this->getRandomProductFromHome()];
+            },
+            'viewProductFromCart' => function () {
+                return ['product' => $this->getRandomProductFromCart()];
+            },
+            'viewProductFromCategory' => function () {
+                return ['product' => $this->getRandomProductFromCategory()];
+            },
+            'update' => function () {
+                return ['product' => $this->getRandomProductFromCart()];
+            },
+            'remove' => function () {
+                return ['product' => $this->getRandomProductFromCart()];
+            },
+            'addFromHome' => function () {
+                return ['product' => $this->getRandomProductFromHome()];
+            },
+            'addFromCategory' => function () {
+                return ['product' => $this->getRandomProductFromCategory()];
+            },
+        ];
+        parent::__construct($generatingSteps);
     }
 
-    public function __destruct()
+    public function setUp()
     {
+        $this->webDriver = RemoteWebDriver::create('http://selenium-hub:4444/wd/hub', DesiredCapabilities::chrome());
+    }
+
+    public function tearDown()
+    {
+        $this->webDriver->close();
         $this->webDriver->quit();
     }
 
     /**
-     * @param $data array
+     * @throws Exception
      */
-    public function viewAnyCategoryFromHome($data)
+    public function viewAnyCategoryFromHome()
     {
-        $category = $data['category'];
+        if (empty($this->data['category'])) {
+            throw new Exception('Can not view category from home: category is not selected');
+        }
+        $category = $this->data['category'];
         $this->category = $category;
         $this->product = null;
         $this->goToCategory($category);
     }
 
     /**
-     * @param $data array
+     * @throws Exception
      */
-    public function viewOtherCategory($data)
+    public function viewOtherCategory()
     {
-        $category = $data['category'];
+        if (empty($this->data['category'])) {
+            throw new Exception('Can not view category from other category: category is not selected');
+        }
+        $category = $this->data['category'];
         $this->category = $category;
         $this->product = null;
         $this->goToCategory($category);
     }
 
     /**
-     * @param $data array
+     * @throws Exception
      */
-    public function viewAnyCategoryFromProduct($data)
+    public function viewAnyCategoryFromProduct()
     {
-        $category = $data['category'];
+        if (empty($this->data['category'])) {
+            throw new Exception('Can not view category from product: category is not selected');
+        }
+        $category = $this->data['category'];
         $this->category = $category;
         $this->product = null;
         $this->goToCategory($category);
     }
 
     /**
-     * @param $data array
+     * @throws Exception
      */
-    public function viewAnyCategoryFromCart($data)
+    public function viewAnyCategoryFromCart()
     {
-        $category = $data['category'];
+        if (empty($this->data['category'])) {
+            throw new Exception('Can not view category from cart: category is not selected');
+        }
+        $category = $this->data['category'];
         $this->category = $category;
         $this->product = null;
         $this->goToCategory($category);
     }
 
     /**
-     * @param $data array
+     * @throws Exception
      */
-    public function viewProductFromHome($data)
+    public function viewProductFromHome()
     {
-        $product = $data['product'];
+        if (empty($this->data['product'])) {
+            throw new Exception('Can not view product from home: product is not selected');
+        }
+        $product = $this->data['product'];
         $this->product = $product;
         $this->category = null;
+        $this->goToProduct($product);
     }
 
     /**
-     * @param $data array
+     * @throws Exception
      */
-    public function viewProductFromCart($data)
+    public function viewProductFromCart()
     {
-        $product = $data['product'];
+        if (empty($this->data['product'])) {
+            throw new Exception('Can not view product from cart: product is not selected');
+        }
+        $product = $this->data['product'];
         $this->product = $product;
         $this->category = null;
         $this->goToProduct($product);
     }
 
     /**
-     * @param $data array
+     * @throws Exception
      */
-    public function viewProductFromCategory($data)
+    public function viewProductFromCategory()
     {
-        $product = $data['product'];
+        if (empty($this->data['product'])) {
+            throw new Exception('Can not view product from category: product is not selected');
+        }
+        $product = $this->data['product'];
         $this->product = $product;
         $this->category = null;
         $this->goToProduct($product);
     }
 
-    public function categoryHasProduct($data)
+    /**
+     * @throws Exception
+     */
+    public function categoryHasSelectedProduct()
     {
-        if (!isset($data['product'])) {
+        if (empty($this->productsInCategory[$this->category])) {
             return false;
         }
-        $product = $data['product'];
-        return !empty($this->productsInCategory[$this->category]) &&
-            in_array($product, $this->productsInCategory[$this->category]);
+        else {
+            if (empty($this->data['product'])) {
+                throw new Exception('Can not check if category has selected product or not: product is not selected');
+            }
+            $product = $this->data['product'];
+            return in_array($product, $this->productsInCategory[$this->category]);
+        }
+    }
+
+    public function productHasBeenSelected()
+    {
+        return !empty($this->data['product']);
+    }
+
+    public function categoryHasBeenSelected()
+    {
+        return !empty($this->data['category']);
     }
 
     public function viewCartFromHome()
@@ -311,21 +396,32 @@ class ShoppingCart extends Subject
         $this->goToHome();
     }
 
-    public function cartHasProduct($data)
+    /**
+     * @throws Exception
+     */
+    public function cartHasSelectedProduct()
     {
-        if (!isset($data['product'])) {
+        if (empty($this->cart)) {
             return false;
         }
-        $product = $data['product'];
-        return $this->hasElement($this->webDriver, WebDriverBy::cssSelector("#checkout-cart button[onclick=\"cart.remove('$product');\"]"));
+        else {
+            if (empty($this->data['product'])) {
+                throw new Exception('Can not check if cart has selected product or not: product is not selected');
+            }
+            $product = $this->data['product'];
+            return $this->hasElement($this->webDriver, WebDriverBy::cssSelector("#checkout-cart button[onclick=\"cart.remove('$product');\"]"));
+        }
     }
 
     /**
-     * @param $data array
+     * @throws Exception
      */
-    public function addFromHome($data)
+    public function addFromHome()
     {
-        $product = $data['product'];
+        if (empty($this->data['product'])) {
+            throw new Exception('Can not add product from home: product is not selected');
+        }
+        $product = $this->data['product'];
         if (!isset($this->cart[$product])) {
             $this->cart[$product] = 1;
         }
@@ -335,11 +431,14 @@ class ShoppingCart extends Subject
     }
 
     /**
-     * @param $data array
+     * @throws Exception
      */
-    public function addFromCategory($data)
+    public function addFromCategory()
     {
-        $product = $data['product'];
+        if (empty($this->data['product'])) {
+            throw new Exception('Can not add product from category: product is not selected');
+        }
+        $product = $this->data['product'];
         if (!isset($this->cart[$product])) {
             $this->cart[$product] = 1;
         }
@@ -349,6 +448,10 @@ class ShoppingCart extends Subject
         $this->webDriver->findElement(WebDriverBy::cssSelector("button[onclick*=\"cart.add('$product'\"]"))->click();
     }
 
+    /**
+     * @throws NoSuchElementException
+     * @throws TimeOutException
+     */
     public function addFromProduct()
     {
         if (!isset($this->cart[$this->product])) {
@@ -357,26 +460,36 @@ class ShoppingCart extends Subject
         else {
             $this->cart[$this->product]++;
         }
+        $this->webDriver->wait()->until(
+            WebDriverExpectedCondition::presenceOfElementLocated(
+                WebDriverBy::xpath("//button[text()='Add to Cart']")
+            )
+        );
         $this->webDriver->findElement(WebDriverBy::xpath("//button[text()='Add to Cart']"))->click();
     }
 
     /**
-     * @param $data array
+     * @throws Exception
      */
-    public function remove($data)
+    public function remove()
     {
-        $product = $data['product'];
+        if (empty($this->data['product'])) {
+            throw new Exception('Can not remove product from cart: product is not selected');
+        }
+        $product = $this->data['product'];
         unset($this->cart[$product]);
         $this->webDriver->findElement(WebDriverBy::cssSelector("button[onclick=\"cart.remove('$product');\"]"))->click();
     }
 
     /**
-     * @param $data array
-     * @throws \Exception
+     * @throws Exception
      */
-    public function update($data)
+    public function update()
     {
-        $product = $data['product'];
+        if (empty($this->data['product'])) {
+            throw new Exception('Can not update product in cart: product is not selected');
+        }
+        $product = $this->data['product'];
         $quantity = rand(1, 99);
         $this->cart[$product] = $quantity;
         $this->webDriver->findElement(WebDriverBy::cssSelector("input[name=\"quantity[$product]\"]"))->sendKeys($quantity);
@@ -399,12 +512,15 @@ class ShoppingCart extends Subject
     {
     }
 
+    /**
+     * @throws Exception
+     */
     public function checkout()
     {
-        if ($this->callSUT) {
+        if (!$this->generatingSteps) {
             foreach ($this->cart as $product => $quantity) {
                 if (in_array($product, $this->outOfStock)) {
-                    throw new \Exception('You added an out-of-stock product into cart! Can not checkout');
+                    throw new Exception('You added an out-of-stock product into cart! Can not checkout');
                 }
             }
         }
@@ -455,6 +571,11 @@ class ShoppingCart extends Subject
         $this->webDriver->get($this->url . "/index.php?route=product/category&path=$id");
     }
 
+    /**
+     * @param $id
+     * @throws NoSuchElementException
+     * @throws TimeOutException
+     */
     private function goToProduct($id)
     {
         $this->webDriver->get($this->url . "/index.php?route=product/product&product_id=$id");

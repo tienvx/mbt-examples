@@ -1,29 +1,89 @@
-version: '2'
+version: '3'
 services:
-    mysql:
-        image: mysql:5.7
+    db:
+        image: mariadb:10
         environment:
-            MYSQL_ROOT_PASSWORD: root
-            MYSQL_DATABASE: db
-    web:
-        build: build/web
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: db
+    adminer:
+        image: adminer
+        ports:
+            - 8080:8080
+    app:
+        build:
+            context: ./build
+            dockerfile: docker/app/Dockerfile
         ports:
             - 81:80
         links:
-            - mysql
+            - db
         depends_on:
-            - mysql
-    app:
-        build: build/app
+            - db
+    api:
+        build:
+            context: ./build
+            dockerfile: docker/api/Dockerfile
         ports:
             - 80:80
         volumes:
-            - '.:/app'
-    selenium:
-        image: selenium/standalone-chrome:3.11.0-californium
+            - './bin:/api/bin'
+            - './config:/api/config'
+            - './public:/api/public'
+            - './src:/api/src'
+            - './templates:/api/templates'
+            - './translations:/api/translations'
+            - './vendor:/api/vendor'
+            - './.env:/api/.env'
+            - './composer.json:/api/composer.json'
+        links:
+            - db
+        depends_on:
+            - db
+        environment:
+            PHP_IDE_CONFIG: "serverName=mbt-api"
+    worker:
+        build:
+            context: ./build
+            dockerfile: docker/worker/Dockerfile
         volumes:
-          - /dev/shm:/dev/shm
+            - './bin:/worker/bin'
+            - './config:/worker/config'
+            - './public:/worker/public'
+            - './src:/worker/src'
+            - './templates:/worker/templates'
+            - './translations:/worker/translations'
+            - './vendor:/worker/vendor'
+            - './.env:/worker/.env'
+            - './composer.json:/worker/composer.json'
+        links:
+            - queue
+            - db
+        depends_on:
+            - queue
+            - db
+        environment:
+            PHP_IDE_CONFIG: "serverName=mbt-worker"
+    selenium-hub:
+        image: selenium/hub
         ports:
             - 4444:4444
+    selenium-node:
+        image: selenium/node-chrome
         links:
-            - web:example.com
+            - app:example.com
+        environment:
+            HUB_HOST: selenium-hub
+            HUB_PORT: 4444
+        depends_on:
+            - selenium-hub
+    queue:
+        image: rabbitmq:3.7-management
+        ports:
+            - 15672:15672
+
+networks:
+    default:
+        driver: bridge
+        ipam:
+            config:
+                - subnet: 10.0.0.0/16
