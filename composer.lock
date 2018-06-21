@@ -3411,12 +3411,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/tienvx/mbt-bundle.git",
-                "reference": "b57adddc8e9b74506deaba8cf4d1089ed28148f5"
+                "reference": "38e6acfcef5ac2796500386599bf7cacb2678d10"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tienvx/mbt-bundle/zipball/b57adddc8e9b74506deaba8cf4d1089ed28148f5",
-                "reference": "b57adddc8e9b74506deaba8cf4d1089ed28148f5",
+                "url": "https://api.github.com/repos/tienvx/mbt-bundle/zipball/38e6acfcef5ac2796500386599bf7cacb2678d10",
+                "reference": "38e6acfcef5ac2796500386599bf7cacb2678d10",
                 "shasum": ""
             },
             "require": {
@@ -3487,7 +3487,7 @@
                 "model based testing",
                 "testing"
             ],
-            "time": "2018-06-20T06:20:43+00:00"
+            "time": "2018-06-21T14:26:08+00:00"
         },
         {
             "name": "twig/twig",
