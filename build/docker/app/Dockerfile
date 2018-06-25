@@ -25,7 +25,7 @@ RUN curl -sSL -o opencart.tar.gz https://github.com/opencart/opencart/archive/3.
 
 EXPOSE 80
 
-COPY entrypoint.sh /entrypoint.sh
+COPY docker/app/entrypoint.sh /entrypoint.sh
 RUN chmod a+x /entrypoint.sh
 
 CMD ["/entrypoint.sh"]
