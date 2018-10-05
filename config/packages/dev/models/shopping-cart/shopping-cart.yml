@@ -4,7 +4,7 @@ framework:
         shopping_cart:
             type: "state_machine"
             supports:
-                - Tienvx\Bundle\MbtBundle\Model\Subject
+                - Tienvx\Bundle\MbtBundle\Subject\Subject
             metadata:
                 model: true
                 subject: App\Subject\ShoppingCart
