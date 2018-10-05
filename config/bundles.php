@@ -7,4 +7,5 @@ return [
     Doctrine\Bundle\DoctrineBundle\DoctrineBundle::class => ['all' => true],
     Tienvx\Bundle\MbtBundle\TienvxMbtBundle::class => ['all' => true],
     Symfony\Bundle\TwigBundle\TwigBundle::class => ['all' => true],
+    Tienvx\Bundle\MbtApiBundle\TienvxMbtApiBundle::class => ['all' => true],
 ];

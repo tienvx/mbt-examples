@@ -10,10 +10,7 @@
         "symfony/framework-bundle": "^4.1",
         "symfony/lts": "^4@dev",
         "symfony/yaml": "^4.1",
-        "symfony/twig-bundle": "^4.1",
-        "symfony/asset": "^4.1",
-        "tienvx/mbt-bundle": "1.0.x-dev",
-        "api-platform/core": "^2.2"
+        "tienvx/mbt-api-bundle": "1.0.x-dev"
     },
     "require-dev": {
         "symfony/dotenv": "^4.1"
@@ -61,5 +58,7 @@
             "id": "01C6Z3M7D6C3RBJ0AG149ZAPS1",
             "allow-contrib": false
         }
-    }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }

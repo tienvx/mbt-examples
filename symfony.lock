@@ -44,6 +44,9 @@
     "doctrine/doctrine-cache-bundle": {
         "version": "1.3.3"
     },
+    "doctrine/event-manager": {
+        "version": "v1.0.0"
+    },
     "doctrine/inflector": {
         "version": "v1.3.0"
     },
@@ -55,6 +58,12 @@
     },
     "doctrine/orm": {
         "version": "v2.6.1"
+    },
+    "doctrine/persistence": {
+        "version": "v1.0.1"
+    },
+    "doctrine/reflection": {
+        "version": "v1.0.0"
     },
     "facebook/webdriver": {
         "version": "1.6.0"
@@ -185,6 +194,9 @@
     "symfony/serializer": {
         "version": "v4.1.0"
     },
+    "symfony/templating": {
+        "version": "v4.1.6"
+    },
     "symfony/translation": {
         "version": "3.3",
         "recipe": {
@@ -220,6 +232,9 @@
     },
     "symfony/yaml": {
         "version": "v4.1.0"
+    },
+    "tienvx/mbt-api-bundle": {
+        "version": "1.0.x-dev"
     },
     "tienvx/mbt-bundle": {
         "version": "1.0.x-dev"
