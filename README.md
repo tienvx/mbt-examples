@@ -21,6 +21,8 @@ $ cd mbt-examples
 $ composer install
 $ cp .env.dist .env
 $ docker-compose up --scale worker=4 --scale selenium-node=4
+$ # Or for debugging
+$ bash start.sh
 ```
 
 ## License

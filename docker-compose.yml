@@ -41,6 +41,8 @@ services:
             - db
         environment:
             PHP_IDE_CONFIG: "serverName=mbt-api"
+        extra_hosts:
+            - "dockerhost:${HOST_IP}"
     worker:
         build:
             context: ./build
@@ -63,6 +65,8 @@ services:
             - db
         environment:
             PHP_IDE_CONFIG: "serverName=mbt-worker"
+        extra_hosts:
+            - "dockerhost:${HOST_IP}"
     selenium-hub:
         image: selenium/hub
         ports:
