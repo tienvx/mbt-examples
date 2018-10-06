@@ -13,7 +13,8 @@
         "tienvx/mbt-api-bundle": "1.0.x-dev"
     },
     "require-dev": {
-        "symfony/dotenv": "^4.1"
+        "symfony/dotenv": "^4.1",
+        "symfony/web-server-bundle": "^4.1"
     },
     "config": {
         "preferred-install": {
