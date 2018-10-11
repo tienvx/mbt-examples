@@ -26,7 +26,7 @@ security:
             anonymous: true
 
         api:
-            pattern:   ^/api
+            pattern:   ^/api/
             stateless: true
             user_checker: Tienvx\Bundle\MbtApiBundle\Security\UserChecker
             guard:
@@ -36,4 +36,4 @@ security:
     access_control:
     - { path: ^/api/login,    roles: IS_AUTHENTICATED_ANONYMOUSLY }
     - { path: ^/api/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-    - { path: ^/api,          roles: IS_AUTHENTICATED_FULLY }
+    - { path: ^/api/,         roles: IS_AUTHENTICATED_FULLY }
