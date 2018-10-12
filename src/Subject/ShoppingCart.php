@@ -10,6 +10,7 @@ use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverExpectedCondition;
+use Tienvx\Bundle\MbtBundle\Annotation\DataProvider;
 use Tienvx\Bundle\MbtBundle\Subject\Subject;
 
 class ShoppingCart extends Subject
@@ -24,7 +25,7 @@ class ShoppingCart extends Subject
     /**
      * @var string $url
      */
-    protected $url;
+    protected $url = 'http://example.com';
 
     /**
      * @var array
@@ -129,51 +130,11 @@ class ShoppingCart extends Subject
         '49', // 'Samsung Galaxy Tab 10.1',
     ];
 
-    /**
-     * @param $generatingSteps boolean
-     */
-    public function __construct(bool $generatingSteps = false)
+    public function __construct()
     {
-        $this->url = 'http://example.com';
         $this->cart = [];
         $this->category = null;
         $this->product = null;
-        $this->dataProviders = [
-            'viewAnyCategoryFromHome' => function () {
-                return ['category' => $this->getRandomCategory()];
-            },
-            'viewOtherCategory' => function () {
-                return ['category' => $this->getRandomCategory()];
-            },
-            'viewAnyCategoryFromProduct' => function () {
-                return ['category' => $this->getRandomCategory()];
-            },
-            'viewAnyCategoryFromCart' => function () {
-                return ['category' => $this->getRandomCategory()];
-            },
-            'viewProductFromHome' => function () {
-                return ['product' => $this->getRandomProductFromHome()];
-            },
-            'viewProductFromCart' => function () {
-                return ['product' => $this->getRandomProductFromCart()];
-            },
-            'viewProductFromCategory' => function () {
-                return ['product' => $this->getRandomProductFromCategory()];
-            },
-            'update' => function () {
-                return ['product' => $this->getRandomProductFromCart()];
-            },
-            'remove' => function () {
-                return ['product' => $this->getRandomProductFromCart()];
-            },
-            'addFromHome' => function () {
-                return ['product' => $this->getRandomProductFromHome()];
-            },
-            'addFromCategory' => function () {
-                return ['product' => $this->getRandomProductFromCategory()];
-            },
-        ];
-        parent::__construct($generatingSteps);
     }
 
     public function setUp()
@@ -189,6 +150,7 @@ class ShoppingCart extends Subject
 
     /**
      * @throws Exception
+     * @DataProvider(method="getRandomCategory")
      */
     public function viewAnyCategoryFromHome()
     {
@@ -203,6 +165,7 @@ class ShoppingCart extends Subject
 
     /**
      * @throws Exception
+     * @DataProvider(method="getRandomCategory")
      */
     public function viewOtherCategory()
     {
@@ -217,6 +180,7 @@ class ShoppingCart extends Subject
 
     /**
      * @throws Exception
+     * @DataProvider(method="getRandomCategory")
      */
     public function viewAnyCategoryFromProduct()
     {
@@ -231,6 +195,7 @@ class ShoppingCart extends Subject
 
     /**
      * @throws Exception
+     * @DataProvider(method="getRandomCategory")
      */
     public function viewAnyCategoryFromCart()
     {
@@ -245,6 +210,7 @@ class ShoppingCart extends Subject
 
     /**
      * @throws Exception
+     * @DataProvider(method="getRandomProductFromHome")
      */
     public function viewProductFromHome()
     {
@@ -259,6 +225,7 @@ class ShoppingCart extends Subject
 
     /**
      * @throws Exception
+     * @DataProvider(method="getRandomProductFromCart")
      */
     public function viewProductFromCart()
     {
@@ -273,6 +240,7 @@ class ShoppingCart extends Subject
 
     /**
      * @throws Exception
+     * @DataProvider(method="getRandomProductFromCategory")
      */
     public function viewProductFromCategory()
     {
@@ -292,8 +260,7 @@ class ShoppingCart extends Subject
     {
         if (empty($this->productsInCategory[$this->category])) {
             return false;
-        }
-        else {
+        } else {
             if (empty($this->data['product'])) {
                 throw new Exception('Can not check if category has selected product or not: product is not selected');
             }
@@ -403,8 +370,7 @@ class ShoppingCart extends Subject
     {
         if (empty($this->cart)) {
             return false;
-        }
-        else {
+        } else {
             if (empty($this->data['product'])) {
                 throw new Exception('Can not check if cart has selected product or not: product is not selected');
             }
@@ -415,6 +381,7 @@ class ShoppingCart extends Subject
 
     /**
      * @throws Exception
+     * @DataProvider(method="getRandomProductFromHome")
      */
     public function addFromHome()
     {
@@ -424,14 +391,14 @@ class ShoppingCart extends Subject
         $product = $this->data['product'];
         if (!isset($this->cart[$product])) {
             $this->cart[$product] = 1;
-        }
-        else {
+        } else {
             $this->cart[$product]++;
         }
     }
 
     /**
      * @throws Exception
+     * @DataProvider(method="getRandomProductFromCategory")
      */
     public function addFromCategory()
     {
@@ -441,8 +408,7 @@ class ShoppingCart extends Subject
         $product = $this->data['product'];
         if (!isset($this->cart[$product])) {
             $this->cart[$product] = 1;
-        }
-        else {
+        } else {
             $this->cart[$product]++;
         }
         $this->webDriver->findElement(WebDriverBy::cssSelector("button[onclick*=\"cart.add('$product'\"]"))->click();
@@ -470,6 +436,7 @@ class ShoppingCart extends Subject
 
     /**
      * @throws Exception
+     * @DataProvider(method="getRandomProductFromCart")
      */
     public function remove()
     {
@@ -483,6 +450,7 @@ class ShoppingCart extends Subject
 
     /**
      * @throws Exception
+     * @DataProvider(method="getRandomProductFromCart")
      */
     public function update()
     {
@@ -517,7 +485,7 @@ class ShoppingCart extends Subject
      */
     public function checkout()
     {
-        if (!$this->generatingSteps) {
+        if (!$this->testing) {
             foreach ($this->cart as $product => $quantity) {
                 if (in_array($product, $this->outOfStock)) {
                     throw new Exception('You added an out-of-stock product into cart! Can not checkout');
@@ -532,7 +500,7 @@ class ShoppingCart extends Subject
             return null;
         }
         $product = $this->featuredProducts[array_rand($this->featuredProducts)];
-        return $product;
+        return ['product' => $product];
     }
 
     public function getRandomCategory()
@@ -541,7 +509,7 @@ class ShoppingCart extends Subject
             return null;
         }
         $category = $this->categories[array_rand($this->categories)];
-        return $category;
+        return ['category' => $category];
     }
 
     public function getRandomProductFromCart()
@@ -550,7 +518,7 @@ class ShoppingCart extends Subject
             return null;
         }
         $product = array_rand($this->cart);
-        return $product;
+        return ['product' => $product];
     }
 
     public function getRandomProductFromCategory()
@@ -563,7 +531,7 @@ class ShoppingCart extends Subject
             return null;
         }
         $product = $products[array_rand($products)];
-        return $product;
+        return ['product' => $product];
     }
 
     private function goToCategory($id)
