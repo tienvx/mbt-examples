@@ -4284,12 +4284,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/tienvx/mbt-api-bundle.git",
-                "reference": "e97775ce25b38402df92ecb8a546cfaef20f8f46"
+                "reference": "c24f3fa04b398cb1e7aa339e08058d39d28de1b2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tienvx/mbt-api-bundle/zipball/e97775ce25b38402df92ecb8a546cfaef20f8f46",
-                "reference": "e97775ce25b38402df92ecb8a546cfaef20f8f46",
+                "url": "https://api.github.com/repos/tienvx/mbt-api-bundle/zipball/c24f3fa04b398cb1e7aa339e08058d39d28de1b2",
+                "reference": "c24f3fa04b398cb1e7aa339e08058d39d28de1b2",
                 "shasum": ""
             },
             "require": {
@@ -4342,7 +4342,7 @@
                 "api",
                 "model based testing"
             ],
-            "time": "2018-10-11T12:57:16+00:00"
+            "time": "2018-10-19T09:57:36+00:00"
         },
         {
             "name": "tienvx/mbt-bundle",
