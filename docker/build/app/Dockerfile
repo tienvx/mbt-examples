@@ -13,19 +13,17 @@ RUN apk add --no-cache \
     docker-php-ext-enable mcrypt && \
     apk del $PHPIZE_DEPS
 
-WORKDIR /app
+WORKDIR /usr/local/src/app
 
 RUN curl -sSL -o opencart.tar.gz https://github.com/opencart/opencart/archive/3.0.2.0.tar.gz && \
     tar xzf opencart.tar.gz --strip 2 --wildcards '*/upload/' && \
     mv config-dist.php config.php && \
     mv admin/config-dist.php admin/config.php && \
-    rm opencart.tar.gz && \
-    curl -sSL -o /wait-for-it.sh https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh && \
-    chmod +x /wait-for-it.sh
+    rm opencart.tar.gz
+
+ENV DOCKERIZE_VERSION v0.6.1
+RUN wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
+    && tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
+    && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
 
 EXPOSE 80
-
-COPY docker/app/entrypoint.sh /entrypoint.sh
-RUN chmod a+x /entrypoint.sh
-
-CMD ["/entrypoint.sh"]

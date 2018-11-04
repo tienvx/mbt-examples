@@ -1,6 +1,6 @@
 #!/bin/sh
 
-/wait-for-it.sh -t 0 db:3306
+dockerize -wait tcp://db:3306
 
 echo 'Installing OpenCart...'
 php install/cli_install.php install \
