@@ -24,4 +24,5 @@ RUN composer require tienvx/mbt-bundle:1.0.x-dev \
     symfony/yaml \
     symfony/expression-language \
     symfony/security-bundle \
-    symfony/monolog-bundle
+    symfony/monolog-bundle \
+    symfony/serializer
