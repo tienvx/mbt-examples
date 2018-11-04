@@ -28,33 +28,38 @@ services:
             - 80:80
         volumes:
             - './docker/run/api/entrypoint.sh:/usr/local/bin/entrypoint.sh'
-            - './packages/dev/models:/usr/local/src/app/packages/dev/models'
-            - './packages/messenger.yaml:/usr/local/src/app/packages/messenger.yaml'
-            - './packages/doctrine.yaml:/usr/local/src/app/packages/doctrine.yaml'
-            - './packages/tienvx_mbt.yaml:/usr/local/src/app/packages/tienvx_mbt.yaml'
-            - './.env:/usr/local/src/app/.env'
+            - './config/packages/dev/models:/usr/local/src/app/config/packages/dev/models'
+            - './config/packages/messenger.yaml:/usr/local/src/app/config/packages/messenger.yaml'
+            - './config/packages/doctrine.yaml:/usr/local/src/app/config/packages/doctrine.yaml'
+            - './config/packages/tienvx_mbt.yaml:/usr/local/src/app/config/packages/tienvx_mbt.yaml'
             - './src/Subject:/usr/local/src/app/src/Subject'
+            - './src/Helper:/usr/local/src/app/src/Helper'
             - './config/jwt:/usr/local/src/app/config/jwt'
-            - './packages/api_platform.yaml:/usr/local/src/app/packages/api_platform.yaml'
-            - './packages/lexik_jwt_authentication.yaml:/usr/local/src/app/packages/lexik_jwt_authentication.yaml'
-            - './packages/nelmio_cors.yaml:/usr/local/src/app/packages/nelmio_cors.yaml'
-            - './packages/security.yaml:/usr/local/src/app/packages/security.yaml'
-            - './packages/routes/tienvx_mbt_api.yaml:/usr/local/src/app/packages/routes/tienvx_mbt_api.yaml'
+            - './config/packages/api_platform.yaml:/usr/local/src/app/config/packages/api_platform.yaml'
+            - './config/packages/lexik_jwt_authentication.yaml:/usr/local/src/app/config/packages/lexik_jwt_authentication.yaml'
+            - './config/packages/nelmio_cors.yaml:/usr/local/src/app/config/packages/nelmio_cors.yaml'
+            - './config/packages/security.yaml:/usr/local/src/app/config/packages/security.yaml'
+            - './config/packages/routes/tienvx_mbt_api.yaml:/usr/local/src/app/config/packages/routes/tienvx_mbt_api.yaml'
         links:
             - db
         depends_on:
             - db
         command: ["sh", "/usr/local/bin/entrypoint.sh"]
+        environment:
+            DATABASE_URL: 'mysql://root:root@db:3306/db'
+            MESSENGER_TRANSPORT_DSN: 'amqp://guest:guest@queue:5672/%2f/messages'
+            # We must escape the $ symbol with another $.
+            CORS_ALLOW_ORIGIN: 'https?://localhost(:[0-9]+)?$$'
     worker:
         image: 'tienvx/mbt-e2e-worker'
         volumes:
             - './docker/run/worker/entrypoint.sh:/usr/local/bin/entrypoint.sh'
-            - './packages/dev/models:/usr/local/src/app/packages/dev/models'
-            - './packages/messenger.yaml:/usr/local/src/app/packages/messenger.yaml'
-            - './packages/doctrine.yaml:/usr/local/src/app/packages/doctrine.yaml'
-            - './packages/tienvx_mbt.yaml:/usr/local/src/app/packages/tienvx_mbt.yaml'
-            - './.env:/usr/local/src/app/.env'
+            - './config/packages/dev/models:/usr/local/src/app/config/packages/dev/models'
+            - './config/packages/messenger.yaml:/usr/local/src/app/config/packages/messenger.yaml'
+            - './config/packages/doctrine.yaml:/usr/local/src/app/config/packages/doctrine.yaml'
+            - './config/packages/tienvx_mbt.yaml:/usr/local/src/app/config/packages/tienvx_mbt.yaml'
             - './src/Subject:/usr/local/src/app/src/Subject'
+            - './src/Helper:/usr/local/src/app/src/Helper'
         links:
             - queue
             - db
@@ -63,3 +68,6 @@ services:
             - queue
             - db
         command: ["sh", "/usr/local/bin/entrypoint.sh"]
+        environment:
+            DATABASE_URL: 'mysql://root:root@db:3306/db'
+            MESSENGER_TRANSPORT_DSN: 'amqp://guest:guest@queue:5672/%2f/messages'
