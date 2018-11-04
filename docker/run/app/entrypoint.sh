@@ -15,4 +15,4 @@ php install/cli_install.php install \
     --email youremail@example.com \
     --http_server http://example.com/
 
-php -S 0.0.0.0:80 -t /app
+php -S 0.0.0.0:80 -t /usr/local/src/app

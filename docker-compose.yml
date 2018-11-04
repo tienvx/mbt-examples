@@ -58,6 +58,7 @@ services:
         links:
             - queue
             - db
+            - app:example.com
         depends_on:
             - queue
             - db
