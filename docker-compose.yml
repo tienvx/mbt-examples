@@ -17,8 +17,6 @@ services:
             - 81:80
         volumes:
             - './docker/run/app/entrypoint.sh:/usr/local/bin/entrypoint.sh'
-        links:
-            - db
         depends_on:
             - db
         command: ["bash", "/usr/local/bin/entrypoint.sh"]
@@ -40,8 +38,6 @@ services:
             - './config/packages/nelmio_cors.yaml:/usr/local/src/app/config/packages/nelmio_cors.yaml'
             - './config/packages/security.yaml:/usr/local/src/app/config/packages/security.yaml'
             - './config/packages/routes/tienvx_mbt_api.yaml:/usr/local/src/app/config/packages/routes/tienvx_mbt_api.yaml'
-        links:
-            - db
         depends_on:
             - db
         command: ["sh", "/usr/local/bin/entrypoint.sh"]
@@ -59,8 +55,6 @@ services:
             - './src/Subject:/usr/local/src/app/src/Subject'
             - './src/Helper:/usr/local/src/app/src/Helper'
         links:
-            - queue
-            - db
             - app:example.com
         depends_on:
             - queue
