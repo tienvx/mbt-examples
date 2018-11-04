@@ -48,8 +48,6 @@ services:
         environment:
             DATABASE_URL: 'mysql://root:root@db:3306/db'
             MESSENGER_TRANSPORT_DSN: 'amqp://guest:guest@queue:5672/%2f/messages'
-            # We must escape the $ symbol with another $.
-            CORS_ALLOW_ORIGIN: 'https?://localhost(:[0-9]+)?$$'
     worker:
         image: 'tienvx/mbt-e2e-worker'
         volumes:
