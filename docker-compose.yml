@@ -30,8 +30,10 @@ services:
             - './docker/run/api/entrypoint.sh:/usr/local/bin/entrypoint.sh'
             - './packages/dev/models:/usr/local/src/app/packages/dev/models'
             - './packages/messenger.yaml:/usr/local/src/app/packages/messenger.yaml'
+            - './packages/doctrine.yaml:/usr/local/src/app/packages/doctrine.yaml'
             - './packages/tienvx_mbt.yaml:/usr/local/src/app/packages/tienvx_mbt.yaml'
             - './.env:/usr/local/src/app/.env'
+            - './src/Subject:/usr/local/src/app/src/Subject'
             - './config/jwt:/usr/local/src/app/config/jwt'
             - './packages/api_platform.yaml:/usr/local/src/app/packages/api_platform.yaml'
             - './packages/lexik_jwt_authentication.yaml:/usr/local/src/app/packages/lexik_jwt_authentication.yaml'
@@ -42,18 +44,21 @@ services:
             - db
         depends_on:
             - db
-        command: ["bash", "/usr/local/bin/entrypoint.sh"]
+        command: ["sh", "/usr/local/bin/entrypoint.sh"]
     worker:
         image: 'tienvx/mbt-e2e-worker'
         volumes:
+            - './docker/run/worker/entrypoint.sh:/usr/local/bin/entrypoint.sh'
             - './packages/dev/models:/usr/local/src/app/packages/dev/models'
             - './packages/messenger.yaml:/usr/local/src/app/packages/messenger.yaml'
+            - './packages/doctrine.yaml:/usr/local/src/app/packages/doctrine.yaml'
             - './packages/tienvx_mbt.yaml:/usr/local/src/app/packages/tienvx_mbt.yaml'
             - './.env:/usr/local/src/app/.env'
+            - './src/Subject:/usr/local/src/app/src/Subject'
         links:
             - queue
             - db
         depends_on:
             - queue
             - db
-        command: ["dockerize", "-wait", "tcp://db:3306", "-wait", "tcp://queue:5672", "php", "bin/console", "messenger:consume-messages", "amqp"]
+        command: ["sh", "/usr/local/bin/entrypoint.sh"]
