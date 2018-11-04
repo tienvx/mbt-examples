@@ -3,84 +3,63 @@ services:
     db:
         image: mariadb:10
         environment:
-          MYSQL_ROOT_PASSWORD: root
-          MYSQL_DATABASE: db
-    adminer:
-        image: adminer
-        ports:
-            - 8080:8080
-    app:
-        build:
-            context: ./build
-            dockerfile: docker/app/Dockerfile
-        ports:
-            - 81:80
-        links:
-            - db
-        depends_on:
-            - db
-    api:
-        build:
-            context: ./build
-            dockerfile: docker/api/Dockerfile
-        ports:
-            - 80:80
-        volumes:
-            - './bin:/api/bin'
-            - './config:/api/config'
-            - './public:/api/public'
-            - './src:/api/src'
-            - './templates:/api/templates'
-            - './translations:/api/translations'
-            - './vendor:/api/vendor'
-            - './.env:/api/.env'
-            - './composer.json:/api/composer.json'
-        links:
-            - db
-        depends_on:
-            - db
-        environment:
-            PHP_IDE_CONFIG: "serverName=mbt-api"
-        extra_hosts:
-            - "dockerhost:${HOST_IP}"
-    worker:
-        build:
-            context: ./build
-            dockerfile: docker/worker/Dockerfile
-        volumes:
-            - './bin:/worker/bin'
-            - './config:/worker/config'
-            - './public:/worker/public'
-            - './src:/worker/src'
-            - './templates:/worker/templates'
-            - './translations:/worker/translations'
-            - './vendor:/worker/vendor'
-            - './.env:/worker/.env'
-            - './composer.json:/worker/composer.json'
-        links:
-            - queue
-            - db
-        depends_on:
-            - queue
-            - db
-        environment:
-            PHP_IDE_CONFIG: "serverName=mbt-worker"
-        extra_hosts:
-            - "dockerhost:${HOST_IP}"
-    selenium-hub:
-        image: selenium/hub
-        ports:
-            - 4444:4444
-    selenium-node:
-        image: selenium/node-chrome
-        links:
-            - app:example.com
-        environment:
-            HUB_HOST: selenium-hub
-            HUB_PORT: 4444
-        depends_on:
-            - selenium-hub
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: db
     queue:
         image: rabbitmq:3.7-management
         ports:
             - 15672:15672
+    app:
+        build:
+            context: ./docker/build/app
+            dockerfile: Dockerfile
+        ports:
+            - 81:80
+        volumes:
+            - './docker/run/app/entrypoint.sh:/usr/local/bin/entrypoint.sh'
+        depends_on:
+            - db
+        command: ["bash", "/usr/local/bin/entrypoint.sh"]
+    api:
+        image: 'tienvx/mbt-api'
+        ports:
+            - 80:80
+        volumes:
+            - './docker/run/api/entrypoint.sh:/usr/local/bin/entrypoint.sh'
+            - './config/packages/dev/models:/usr/local/src/app/config/packages/dev/models'
+            - './config/packages/messenger.yaml:/usr/local/src/app/config/packages/messenger.yaml'
+            - './config/packages/doctrine.yaml:/usr/local/src/app/config/packages/doctrine.yaml'
+            - './config/packages/tienvx_mbt.yaml:/usr/local/src/app/config/packages/tienvx_mbt.yaml'
+            - './src/Subject:/usr/local/src/app/src/Subject'
+            - './src/Helper:/usr/local/src/app/src/Helper'
+            - './config/jwt:/usr/local/src/app/config/jwt'
+            - './config/packages/api_platform.yaml:/usr/local/src/app/config/packages/api_platform.yaml'
+            - './config/packages/lexik_jwt_authentication.yaml:/usr/local/src/app/config/packages/lexik_jwt_authentication.yaml'
+            - './config/packages/nelmio_cors.yaml:/usr/local/src/app/config/packages/nelmio_cors.yaml'
+            - './config/packages/security.yaml:/usr/local/src/app/config/packages/security.yaml'
+            - './config/packages/routes/tienvx_mbt_api.yaml:/usr/local/src/app/config/packages/routes/tienvx_mbt_api.yaml'
+        depends_on:
+            - db
+        command: ["sh", "/usr/local/bin/entrypoint.sh"]
+        environment:
+            DATABASE_URL: 'mysql://root:root@db:3306/db'
+            MESSENGER_TRANSPORT_DSN: 'amqp://guest:guest@queue:5672/%2f/messages'
+    worker:
+        image: 'tienvx/mbt-e2e-worker'
+        volumes:
+            - './docker/run/worker/entrypoint.sh:/usr/local/bin/entrypoint.sh'
+            - './config/packages/dev/models:/usr/local/src/app/config/packages/dev/models'
+            - './config/packages/messenger.yaml:/usr/local/src/app/config/packages/messenger.yaml'
+            - './config/packages/doctrine.yaml:/usr/local/src/app/config/packages/doctrine.yaml'
+            - './config/packages/tienvx_mbt.yaml:/usr/local/src/app/config/packages/tienvx_mbt.yaml'
+            - './src/Subject:/usr/local/src/app/src/Subject'
+            - './src/Helper:/usr/local/src/app/src/Helper'
+        links:
+            - app:example.com
+        depends_on:
+            - queue
+            - db
+        command: ["sh", "/usr/local/bin/entrypoint.sh"]
+        environment:
+            DATABASE_URL: 'mysql://root:root@db:3306/db'
+            MESSENGER_TRANSPORT_DSN: 'amqp://guest:guest@queue:5672/%2f/messages'
