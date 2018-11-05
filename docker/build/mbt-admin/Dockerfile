@@ -9,7 +9,8 @@ RUN git clone https://github.com/tienvx/mbt-admin.git app
 
 WORKDIR /usr/local/src/app
 
-RUN npm install && \
+RUN yarn install && \
+    yarn global add serve && \
     npm run-script build
 
 RUN apk del git
