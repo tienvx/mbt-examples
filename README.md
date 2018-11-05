@@ -26,9 +26,18 @@ $ # If you are required to input password, run these commands, otherwise skip th
 $ openssl rsa -in config/jwt/private.pem -out config/jwt/private2.pem
 $ mv config/jwt/private.pem config/jwt/private.pem-back
 $ mv config/jwt/private2.pem config/jwt/private.pem
-$ # Set up environment variables
-$ cp .env.dist .env
+$ # Start
 $ docker-compose up --scale worker=4
+```
+
+## Usage
+
+- [api](http://localhost/api)
+- [app](http://localhost:81)
+- [admin](http://localhost:82)
+- register user
+```
+curl -X POST http://localhost/api/register -d username=test -d password=test -d email=test@example.com
 ```
 
 ## License
