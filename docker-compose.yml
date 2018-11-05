@@ -37,8 +37,9 @@ services:
             - './config/packages/lexik_jwt_authentication.yaml:/usr/local/src/app/config/packages/lexik_jwt_authentication.yaml'
             - './config/packages/nelmio_cors.yaml:/usr/local/src/app/config/packages/nelmio_cors.yaml'
             - './config/packages/security.yaml:/usr/local/src/app/config/packages/security.yaml'
-            - './config/packages/routes/tienvx_mbt_api.yaml:/usr/local/src/app/config/packages/routes/tienvx_mbt_api.yaml'
+            - './config/routes/tienvx_mbt_api.yaml:/usr/local/src/app/config/routes/tienvx_mbt_api.yaml'
         depends_on:
+            - queue
             - db
         command: ["sh", "/usr/local/bin/entrypoint.sh"]
         environment:
@@ -63,3 +64,12 @@ services:
         environment:
             DATABASE_URL: 'mysql://root:root@db:3306/db'
             MESSENGER_TRANSPORT_DSN: 'amqp://guest:guest@queue:5672/%2f/messages'
+    admin:
+        image: 'tienvx/mbt-admin'
+        ports:
+            - 82:3000
+        depends_on:
+            - api
+        environment:
+            API_URL: 'http://api/api'
+        command: ["npm", "run-script", "start"]
