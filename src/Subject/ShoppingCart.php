@@ -6,10 +6,8 @@ use App\Helper\ElementHelper;
 use Exception;
 use Facebook\WebDriver\Exception\NoSuchElementException;
 use Facebook\WebDriver\Exception\TimeOutException;
-use Facebook\WebDriver\Remote\DesiredCapabilities;
-use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Facebook\WebDriver\WebDriverBy;
-use Facebook\WebDriver\WebDriverExpectedCondition;
+use Symfony\Component\Panther\Client;
 use Tienvx\Bundle\MbtBundle\Annotation\DataProvider;
 use Tienvx\Bundle\MbtBundle\Subject\Subject;
 
@@ -18,9 +16,9 @@ class ShoppingCart extends Subject
     use ElementHelper;
 
     /**
-     * @var RemoteWebDriver
+     * @var Client
      */
-    protected $webDriver;
+    protected $client;
 
     /**
      * @var string $url
@@ -139,13 +137,11 @@ class ShoppingCart extends Subject
 
     public function setUp()
     {
-        $this->webDriver = RemoteWebDriver::create('http://selenium-hub:4444/wd/hub', DesiredCapabilities::chrome());
+        $this->client = Client::createChromeClient();
     }
 
     public function tearDown()
     {
-        $this->webDriver->close();
-        $this->webDriver->quit();
     }
 
     /**
@@ -375,7 +371,7 @@ class ShoppingCart extends Subject
                 throw new Exception('Can not check if cart has selected product or not: product is not selected');
             }
             $product = $this->data['product'];
-            return $this->hasElement($this->webDriver, WebDriverBy::cssSelector("#checkout-cart button[onclick=\"cart.remove('$product');\"]"));
+            return $this->hasElement($this->client, WebDriverBy::cssSelector("#checkout-cart button[onclick=\"cart.remove('$product');\"]"));
         }
     }
 
@@ -411,7 +407,7 @@ class ShoppingCart extends Subject
         } else {
             $this->cart[$product]++;
         }
-        $this->webDriver->findElement(WebDriverBy::cssSelector("button[onclick*=\"cart.add('$product'\"]"))->click();
+        $this->client->findElement(WebDriverBy::cssSelector("button[onclick*=\"cart.add('$product'\"]"))->click();
     }
 
     /**
@@ -426,12 +422,8 @@ class ShoppingCart extends Subject
         else {
             $this->cart[$this->product]++;
         }
-        $this->webDriver->wait()->until(
-            WebDriverExpectedCondition::presenceOfElementLocated(
-                WebDriverBy::xpath("//button[text()='Add to Cart']")
-            )
-        );
-        $this->webDriver->findElement(WebDriverBy::xpath("//button[text()='Add to Cart']"))->click();
+        $this->waitFor($this->client, WebDriverBy::xpath("//button[text()='Add to Cart']"));
+        $this->client->findElement(WebDriverBy::xpath("//button[text()='Add to Cart']"))->click();
     }
 
     /**
@@ -445,7 +437,7 @@ class ShoppingCart extends Subject
         }
         $product = $this->data['product'];
         unset($this->cart[$product]);
-        $this->webDriver->findElement(WebDriverBy::cssSelector("button[onclick=\"cart.remove('$product');\"]"))->click();
+        $this->client->findElement(WebDriverBy::cssSelector("button[onclick=\"cart.remove('$product');\"]"))->click();
     }
 
     /**
@@ -460,8 +452,8 @@ class ShoppingCart extends Subject
         $product = $this->data['product'];
         $quantity = rand(1, 99);
         $this->cart[$product] = $quantity;
-        $this->webDriver->findElement(WebDriverBy::cssSelector("input[name=\"quantity[$product]\"]"))->sendKeys($quantity);
-        $this->webDriver->findElement(WebDriverBy::cssSelector("input[name=\"quantity[$product]\"]+.input-group-btn>button[data-original-title=\"Update\"]"))->click();
+        $this->client->findElement(WebDriverBy::cssSelector("input[name=\"quantity[$product]\"]"))->sendKeys($quantity);
+        $this->client->findElement(WebDriverBy::cssSelector("input[name=\"quantity[$product]\"]+.input-group-btn>button[data-original-title=\"Update\"]"))->click();
     }
 
     public function home()
@@ -536,7 +528,7 @@ class ShoppingCart extends Subject
 
     private function goToCategory($id)
     {
-        $this->webDriver->get($this->url . "/index.php?route=product/category&path=$id");
+        $this->client->get($this->url . "/index.php?route=product/category&path=$id");
     }
 
     /**
@@ -546,26 +538,22 @@ class ShoppingCart extends Subject
      */
     private function goToProduct($id)
     {
-        $this->webDriver->get($this->url . "/index.php?route=product/product&product_id=$id");
-        $this->webDriver->wait()->until(
-            WebDriverExpectedCondition::presenceOfElementLocated(
-                WebDriverBy::cssSelector('#product-product')
-            )
-        );
+        $this->client->get($this->url . "/index.php?route=product/product&product_id=$id");
+        $this->client->waitFor('#product-product');
     }
 
     private function goToCart()
     {
-        $this->webDriver->get($this->url . '/index.php?route=checkout/cart');
+        $this->client->get($this->url . '/index.php?route=checkout/cart');
     }
 
     private function goToCheckout()
     {
-        $this->webDriver->get($this->url . '/index.php?route=checkout/checkout');
+        $this->client->get($this->url . '/index.php?route=checkout/checkout');
     }
 
     private function goToHome()
     {
-        $this->webDriver->get($this->url . '/index.php?route=common/home');
+        $this->client->get($this->url . '/index.php?route=common/home');
     }
 }

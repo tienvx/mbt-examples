@@ -40,5 +40,15 @@ $ docker-compose up --scale worker=4
 curl -X POST http://localhost/api/register -d username=test -d password=test -d email=test@example.com
 ```
 
+## Development
+
+```bash
+$ composer global require symfony/panther
+$ composer global require tienvx/mbt-bundle:1.0.x-dev
+$ # Include path from ~/.composer/symfony/panther
+$ # Include path from ~/.composer/tienvx/mbt-bundle
+$ # Include path from ~/.composer/facebook/webdriver
+```
+
 ## License
 mbt-examples is available under the [MIT license](LICENSE).
