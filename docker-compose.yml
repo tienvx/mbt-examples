@@ -67,9 +67,8 @@ services:
     admin:
         image: 'tienvx/mbt-admin'
         ports:
-            - 82:3000
+            - 82:5000
         depends_on:
             - api
         environment:
             API_URL: 'http://api/api'
-        command: ["npm", "run-script", "start"]
