@@ -14,4 +14,4 @@ RUN npm install && \
 
 RUN apk del git
 
-CMD ["npm", "run-script", "start"]
+CMD ["serve", "-s", "build"]
