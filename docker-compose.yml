@@ -64,3 +64,12 @@ services:
         environment:
             DATABASE_URL: 'mysql://root:root@db:3306/db'
             MESSENGER_TRANSPORT_DSN: 'amqp://guest:guest@queue:5672/%2f/messages'
+    admin:
+        image: 'tienvx/mbt-admin'
+        ports:
+            - 82:3000
+        depends_on:
+            - api
+        environment:
+            API_URL: 'http://api/api'
+        command: ["npm", "run-script", "start"]
