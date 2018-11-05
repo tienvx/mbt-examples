@@ -72,4 +72,3 @@ services:
             - api
         environment:
             API_URL: 'http://api/api'
-        command: ["npm", "run-script", "start"]
