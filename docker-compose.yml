@@ -37,8 +37,9 @@ services:
             - './config/packages/lexik_jwt_authentication.yaml:/usr/local/src/app/config/packages/lexik_jwt_authentication.yaml'
             - './config/packages/nelmio_cors.yaml:/usr/local/src/app/config/packages/nelmio_cors.yaml'
             - './config/packages/security.yaml:/usr/local/src/app/config/packages/security.yaml'
-            - './config/packages/routes/tienvx_mbt_api.yaml:/usr/local/src/app/config/packages/routes/tienvx_mbt_api.yaml'
+            - './config/routes/tienvx_mbt_api.yaml:/usr/local/src/app/config/routes/tienvx_mbt_api.yaml'
         depends_on:
+            - queue
             - db
         command: ["sh", "/usr/local/bin/entrypoint.sh"]
         environment:
