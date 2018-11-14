@@ -16,4 +16,7 @@ php install/cli_install.php install \
     --email youremail@example.com \
     --http_server http://example.com/
 
+sed -i "s/'http:\/\/example.com\/'/\$_SERVER['SERVER_NAME']/g" config.php
+sed -i "s/'http:\/\/example.com\/admin\/'/\$_SERVER['SERVER_NAME'] . 'admin\/'/g" admin/config.php
+
 /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
