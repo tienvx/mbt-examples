@@ -20,6 +20,8 @@ RUN curl -sSL -o opencart.tar.gz https://github.com/opencart/opencart/archive/3.
     mv admin/config-dist.php admin/config.php && \
     rm opencart.tar.gz
 
+RUN chown -R www-data:www-data /var/www/public
+
 ENV DOCKERIZE_VERSION v0.6.1
 RUN wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
     && tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
