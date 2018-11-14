@@ -1,6 +1,7 @@
 #!/bin/sh
 
 dockerize -wait tcp://db:3306
+dockerize -wait http://api:80
 
 echo 'Installing OpenCart...'
 php install/cli_install.php install \

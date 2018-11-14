@@ -19,6 +19,7 @@ services:
             - './docker/run/app/entrypoint.sh:/usr/local/bin/entrypoint.sh'
         depends_on:
             - db
+            - api
         command: ["bash", "/usr/local/bin/entrypoint.sh"]
     api:
         image: 'tienvx/mbt-api'
