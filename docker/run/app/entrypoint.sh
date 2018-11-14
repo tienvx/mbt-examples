@@ -19,4 +19,6 @@ php install/cli_install.php install \
 sed -i "s/'http:\/\/example.com\/'/\$_SERVER['SERVER_NAME']/g" config.php
 sed -i "s/'http:\/\/example.com\/admin\/'/\$_SERVER['SERVER_NAME'] . 'admin\/'/g" admin/config.php
 
+curl --silent --output /dev/null -X POST http://api/api/register -d username=test -d password=test
+
 /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
