@@ -7,6 +7,7 @@ use Exception;
 use Facebook\WebDriver\Exception\NoSuchElementException;
 use Facebook\WebDriver\Exception\TimeOutException;
 use Facebook\WebDriver\WebDriverBy;
+use Facebook\WebDriver\WebDriverExpectedCondition;
 use Symfony\Component\Panther\Client;
 use Tienvx\Bundle\MbtBundle\Annotation\DataProvider;
 use Tienvx\Bundle\MbtBundle\Subject\Subject;
@@ -407,7 +408,12 @@ class ShoppingCart extends Subject
         } else {
             $this->cart[$product]++;
         }
-        $this->client->findElement(WebDriverBy::cssSelector("button[onclick*=\"cart.add('$product'\"]"))->click();
+        $by = WebDriverBy::cssSelector("button[onclick*=\"cart.add('$product'\"]");
+        $this->client->wait()->until(
+            WebDriverExpectedCondition::elementToBeClickable($by)
+        );
+        $element = $this->client->findElement($by);
+        $element->click();
     }
 
     /**
@@ -422,8 +428,12 @@ class ShoppingCart extends Subject
         else {
             $this->cart[$this->product]++;
         }
-        $this->waitFor($this->client, WebDriverBy::xpath("//button[text()='Add to Cart']"));
-        $this->client->findElement(WebDriverBy::xpath("//button[text()='Add to Cart']"))->click();
+        $by = WebDriverBy::id('button-cart');
+        $this->client->wait()->until(
+            WebDriverExpectedCondition::elementToBeClickable($by)
+        );
+        $element = $this->client->findElement($by);
+        $element->click();
     }
 
     /**
