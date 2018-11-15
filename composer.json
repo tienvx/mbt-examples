@@ -1,0 +1,13 @@
+{
+    "name": "tien/mbt-examples",
+    "require": {
+        "tienvx/mbt-bundle": "1.0.x-dev",
+        "symfony/panther": "^0.2.0"
+    },
+    "authors": [
+        {
+            "name": "tien.xuan.vo",
+            "email": "tien.xuan.vo@gmail.com"
+        }
+    ]
+}

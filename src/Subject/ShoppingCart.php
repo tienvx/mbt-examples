@@ -394,8 +394,10 @@ class ShoppingCart extends Subject
             throw new Exception('Can not add product from home: product is not selected');
         }
         $product = $this->data['product'];
-        if (in_array($product, $this->needOptions)) {
-            throw new Exception('You need to specify options for this product! Can not add product');
+        if (!$this->testing) {
+            if (in_array($product, $this->needOptions)) {
+                throw new Exception('You need to specify options for this product! Can not add product');
+            }
         }
         if (!isset($this->cart[$product])) {
             $this->cart[$product] = 1;
@@ -414,8 +416,10 @@ class ShoppingCart extends Subject
             throw new Exception('Can not add product from category: product is not selected');
         }
         $product = $this->data['product'];
-        if (in_array($product, $this->needOptions)) {
-            throw new Exception('You need to specify options for this product! Can not add product');
+        if (!$this->testing) {
+            if (in_array($product, $this->needOptions)) {
+                throw new Exception('You need to specify options for this product! Can not add product');
+            }
         }
         if (!isset($this->cart[$product])) {
             $this->cart[$product] = 1;
@@ -437,8 +441,10 @@ class ShoppingCart extends Subject
      */
     public function addFromProduct()
     {
-        if (in_array($this->product, $this->needOptions)) {
-            throw new Exception('You need to specify options for this product! Can not add product');
+        if (!$this->testing) {
+            if (in_array($this->product, $this->needOptions)) {
+                throw new Exception('You need to specify options for this product! Can not add product');
+            }
         }
         if (!isset($this->cart[$this->product])) {
             $this->cart[$this->product] = 1;
