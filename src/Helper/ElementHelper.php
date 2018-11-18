@@ -11,6 +11,11 @@ use Symfony\Component\Panther\Client;
 
 trait ElementHelper
 {
+    /**
+     * @param Client $client
+     * @param WebDriverBy $by
+     * @return bool
+     */
     public function hasElement(Client $client, WebDriverBy $by)
     {
         try {
@@ -20,19 +25,5 @@ trait ElementHelper
         } catch (StaleElementReferenceException $e) {
             return false;
         }
-    }
-
-
-    /**
-     * @throws NoSuchElementException
-     * @throws TimeOutException
-     */
-    public function waitFor(Client $client, WebDriverBy $by)
-    {
-        $client->wait()->until(
-            WebDriverExpectedCondition::visibilityOfElementLocated(
-                $by
-            )
-        );
     }
 }

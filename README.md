@@ -35,19 +35,12 @@ $ docker-compose up --scale worker=4
 - [api](http://localhost/api)
 - [app](http://localhost:81)
 - [admin](http://localhost:82)
-- register user
-```
-curl -X POST http://localhost/api/register -d username=test -d password=test -d email=test@example.com
-```
 
 ## Development
 
 ```bash
-$ composer global require symfony/panther
-$ composer global require tienvx/mbt-bundle:1.0.x-dev
-$ # Include path from ~/.composer/symfony/panther
-$ # Include path from ~/.composer/tienvx/mbt-bundle
-$ # Include path from ~/.composer/facebook/webdriver
+$ composer install
+$ # Edit your models and subjects
 ```
 
 ## License

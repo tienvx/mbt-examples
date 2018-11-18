@@ -7,6 +7,7 @@ use Exception;
 use Facebook\WebDriver\Exception\NoSuchElementException;
 use Facebook\WebDriver\Exception\TimeOutException;
 use Facebook\WebDriver\WebDriverBy;
+use Facebook\WebDriver\WebDriverExpectedCondition;
 use Symfony\Component\Panther\Client;
 use Tienvx\Bundle\MbtBundle\Annotation\DataProvider;
 use Tienvx\Bundle\MbtBundle\Subject\Subject;
@@ -78,7 +79,6 @@ class ShoppingCart extends Subject
             '40', // 'iPhone',
             '48', // 'iPod Classic',
             '43', // 'MacBook',
-            '42', // 'Apple Cinema 30',
             '44', // 'MacBook Air',
             '29', // 'Palm Treo Pro',
             '35', // 'Product 8',
@@ -126,6 +126,15 @@ class ShoppingCart extends Subject
      */
     protected $outOfStock = [
         '49', // 'Samsung Galaxy Tab 10.1',
+    ];
+
+    /**
+     * @var array
+     */
+    protected $needOptions = [
+        '42', // 'Apple Cinema 30',
+        '30', // 'Canon EOS 5D',
+        '35', // 'Product 8',
     ];
 
     public function __construct()
@@ -385,6 +394,11 @@ class ShoppingCart extends Subject
             throw new Exception('Can not add product from home: product is not selected');
         }
         $product = $this->data['product'];
+        if (!$this->testing) {
+            if (in_array($product, $this->needOptions)) {
+                throw new Exception('You need to specify options for this product! Can not add product');
+            }
+        }
         if (!isset($this->cart[$product])) {
             $this->cart[$product] = 1;
         } else {
@@ -402,28 +416,48 @@ class ShoppingCart extends Subject
             throw new Exception('Can not add product from category: product is not selected');
         }
         $product = $this->data['product'];
+        if (!$this->testing) {
+            if (in_array($product, $this->needOptions)) {
+                throw new Exception('You need to specify options for this product! Can not add product');
+            }
+        }
         if (!isset($this->cart[$product])) {
             $this->cart[$product] = 1;
         } else {
             $this->cart[$product]++;
         }
-        $this->client->findElement(WebDriverBy::cssSelector("button[onclick*=\"cart.add('$product'\"]"))->click();
+        $by = WebDriverBy::cssSelector("button[onclick*=\"cart.add('$product'\"]");
+        $this->client->wait()->until(
+            WebDriverExpectedCondition::elementToBeClickable($by)
+        );
+        $element = $this->client->findElement($by);
+        $element->click();
     }
 
     /**
+     * @throws Exception
      * @throws NoSuchElementException
      * @throws TimeOutException
      */
     public function addFromProduct()
     {
+        if (!$this->testing) {
+            if (in_array($this->product, $this->needOptions)) {
+                throw new Exception('You need to specify options for this product! Can not add product');
+            }
+        }
         if (!isset($this->cart[$this->product])) {
             $this->cart[$this->product] = 1;
         }
         else {
             $this->cart[$this->product]++;
         }
-        $this->waitFor($this->client, WebDriverBy::xpath("//button[text()='Add to Cart']"));
-        $this->client->findElement(WebDriverBy::xpath("//button[text()='Add to Cart']"))->click();
+        $by = WebDriverBy::id('button-cart');
+        $this->client->wait()->until(
+            WebDriverExpectedCondition::elementToBeClickable($by)
+        );
+        $element = $this->client->findElement($by);
+        $element->click();
     }
 
     /**

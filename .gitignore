@@ -1,2 +1,4 @@
 /.idea/
 /config/jwt/*.pem
+
+/vendor/

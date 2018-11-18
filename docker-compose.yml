@@ -11,14 +11,15 @@ services:
             - 15672:15672
     app:
         build:
-            context: ./docker/build/app
-            dockerfile: Dockerfile
+            context: .
+            dockerfile: docker/build/app/Dockerfile
         ports:
             - 81:80
         volumes:
             - './docker/run/app/entrypoint.sh:/usr/local/bin/entrypoint.sh'
         depends_on:
             - db
+            - api
         command: ["bash", "/usr/local/bin/entrypoint.sh"]
     api:
         image: 'tienvx/mbt-api'
@@ -26,18 +27,8 @@ services:
             - 80:80
         volumes:
             - './docker/run/api/entrypoint.sh:/usr/local/bin/entrypoint.sh'
-            - './config/packages/dev/models:/usr/local/src/app/config/packages/dev/models'
-            - './config/packages/messenger.yaml:/usr/local/src/app/config/packages/messenger.yaml'
-            - './config/packages/doctrine.yaml:/usr/local/src/app/config/packages/doctrine.yaml'
-            - './config/packages/tienvx_mbt.yaml:/usr/local/src/app/config/packages/tienvx_mbt.yaml'
             - './src/Subject:/usr/local/src/app/src/Subject'
             - './src/Helper:/usr/local/src/app/src/Helper'
-            - './config/jwt:/usr/local/src/app/config/jwt'
-            - './config/packages/api_platform.yaml:/usr/local/src/app/config/packages/api_platform.yaml'
-            - './config/packages/lexik_jwt_authentication.yaml:/usr/local/src/app/config/packages/lexik_jwt_authentication.yaml'
-            - './config/packages/nelmio_cors.yaml:/usr/local/src/app/config/packages/nelmio_cors.yaml'
-            - './config/packages/security.yaml:/usr/local/src/app/config/packages/security.yaml'
-            - './config/routes/tienvx_mbt_api.yaml:/usr/local/src/app/config/routes/tienvx_mbt_api.yaml'
         depends_on:
             - queue
             - db
@@ -49,10 +40,6 @@ services:
         image: 'tienvx/mbt-e2e-worker'
         volumes:
             - './docker/run/worker/entrypoint.sh:/usr/local/bin/entrypoint.sh'
-            - './config/packages/dev/models:/usr/local/src/app/config/packages/dev/models'
-            - './config/packages/messenger.yaml:/usr/local/src/app/config/packages/messenger.yaml'
-            - './config/packages/doctrine.yaml:/usr/local/src/app/config/packages/doctrine.yaml'
-            - './config/packages/tienvx_mbt.yaml:/usr/local/src/app/config/packages/tienvx_mbt.yaml'
             - './src/Subject:/usr/local/src/app/src/Subject'
             - './src/Helper:/usr/local/src/app/src/Helper'
         links:

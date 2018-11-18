@@ -1,6 +1,7 @@
 #!/bin/sh
 
 dockerize -wait tcp://db:3306
+dockerize -wait http://api:80
 
 echo 'Installing OpenCart...'
 php install/cli_install.php install \
@@ -15,4 +16,9 @@ php install/cli_install.php install \
     --email youremail@example.com \
     --http_server http://example.com/
 
-php -S 0.0.0.0:80 -t /usr/local/src/app
+sed -i "s/'http:\/\/example.com\/'/\$_SERVER['SERVER_NAME']/g" config.php
+sed -i "s/'http:\/\/example.com\/admin\/'/\$_SERVER['SERVER_NAME'] . 'admin\/'/g" admin/config.php
+
+curl --silent --output /dev/null -X POST http://api/api/register -d username=test -d password=test
+
+/usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
