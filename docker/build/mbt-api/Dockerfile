@@ -31,8 +31,8 @@ RUN composer require \
     symfony/yaml \
     symfony/expression-language \
     symfony/security-bundle \
-    symfony/monolog-bundle \
-    symfony/serializer
+    symfony/monolog-bundle && \
+    composer clearcache
 
 COPY docker/resources/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY docker/build/mbt-api/nginx.conf /etc/nginx/conf.d/default.conf
