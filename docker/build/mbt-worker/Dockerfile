@@ -19,6 +19,7 @@ RUN curl --insecure https://getcomposer.org/composer.phar -o /usr/bin/composer &
 
 WORKDIR /usr/local/src
 
+RUN composer config -g repo.packagist composer https://packagist.phpcomposer.com
 RUN composer create-project symfony/skeleton app
 
 WORKDIR /usr/local/src/app
@@ -28,8 +29,8 @@ RUN composer require \
     symfony/yaml \
     symfony/expression-language \
     symfony/security-bundle \
-    symfony/monolog-bundle \
-    symfony/serializer
+    symfony/monolog-bundle && \
+    composer clearcache
 
 COPY config/packages/dev/models /usr/local/src/app/config/packages/dev/models
 COPY config/packages/messenger.yaml /usr/local/src/app/config/packages/messenger.yaml

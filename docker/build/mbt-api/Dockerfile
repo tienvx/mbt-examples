@@ -21,6 +21,7 @@ RUN curl --insecure https://getcomposer.org/composer.phar -o /usr/bin/composer &
 
 WORKDIR /usr/local/src
 
+RUN composer config -g repo.packagist composer https://packagist.phpcomposer.com
 RUN composer create-project symfony/skeleton app
 
 WORKDIR /usr/local/src/app
@@ -31,8 +32,8 @@ RUN composer require \
     symfony/yaml \
     symfony/expression-language \
     symfony/security-bundle \
-    symfony/monolog-bundle \
-    symfony/serializer
+    symfony/monolog-bundle && \
+    composer clearcache
 
 COPY docker/resources/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY docker/build/mbt-api/nginx.conf /etc/nginx/conf.d/default.conf
