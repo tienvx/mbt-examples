@@ -19,6 +19,7 @@ RUN curl --insecure https://getcomposer.org/composer.phar -o /usr/bin/composer &
 
 WORKDIR /usr/local/src
 
+RUN composer config -g repo.packagist composer https://packagist.phpcomposer.com
 RUN composer create-project symfony/skeleton app
 
 WORKDIR /usr/local/src/app
