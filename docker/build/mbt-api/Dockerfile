@@ -8,12 +8,21 @@ RUN wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSI
 
 RUN curl --insecure https://getcomposer.org/composer.phar -o /usr/bin/composer && chmod +x /usr/bin/composer
 
+ENV PLANTUML_VERSION 1.2018.13
+RUN curl -L https://sourceforge.net/projects/plantuml/files/plantuml.${PLANTUML_VERSION}.jar/download -o /usr/local/bin/plantuml.jar
+
+ENV JAVA_BINARY java
+ENV PLANTUML_BINARY /usr/local/bin/plantuml.jar
+
 RUN apk add --no-cache \
     rabbitmq-c \
     rabbitmq-c-dev \
     $PHPIZE_DEPS \
     nginx \
-    supervisor && \
+    supervisor \
+    openjdk8-jre \
+    ttf-dejavu \
+    graphviz && \
     pecl install amqp && \
     docker-php-ext-install pdo pdo_mysql && \
     docker-php-ext-enable amqp && \
@@ -40,6 +49,7 @@ COPY config/packages/dev/models /usr/local/src/app/config/packages/dev/models
 COPY config/packages/messenger.yaml /usr/local/src/app/config/packages/messenger.yaml
 COPY config/packages/doctrine.yaml /usr/local/src/app/config/packages/doctrine.yaml
 COPY config/packages/tienvx_mbt.yaml /usr/local/src/app/config/packages/tienvx_mbt.yaml
+COPY config/packages/tienvx_mbt_api.yaml /usr/local/src/app/config/packages/tienvx_mbt_api.yaml
 COPY config/jwt /usr/local/src/app/config/jwt
 COPY config/packages/api_platform.yaml /usr/local/src/app/config/packages/api_platform.yaml
 COPY config/packages/lexik_jwt_authentication.yaml /usr/local/src/app/config/packages/lexik_jwt_authentication.yaml

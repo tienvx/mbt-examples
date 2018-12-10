@@ -25,6 +25,10 @@ security:
             stateless: true
             anonymous: true
 
+        model_image:
+            pattern:  ^/api/models/.*/image
+            security: false
+
         api:
             pattern:   ^/api/
             stateless: true
