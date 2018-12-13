@@ -13,6 +13,7 @@ RUN curl -L https://sourceforge.net/projects/plantuml/files/plantuml.${PLANTUML_
 
 ENV JAVA_BINARY java
 ENV PLANTUML_BINARY /usr/local/bin/plantuml.jar
+ENV CONSOLE_BINARY /usr/local/src/app/bin/console
 
 RUN apk add --no-cache \
     rabbitmq-c \
