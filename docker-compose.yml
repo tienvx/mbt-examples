@@ -15,31 +15,27 @@ services:
             dockerfile: docker/build/app/Dockerfile
         ports:
             - 81:80
-        volumes:
-            - './docker/run/app/entrypoint.sh:/usr/local/bin/entrypoint.sh'
         depends_on:
             - db
             - api
-        command: ["bash", "/usr/local/bin/entrypoint.sh"]
     api:
         image: 'tienvx/mbt-api'
         ports:
             - 80:80
         volumes:
-            - './docker/run/api/entrypoint.sh:/usr/local/bin/entrypoint.sh'
+            - './config/packages/dev/models:/usr/local/src/app/config/packages/dev/models'
             - './src/Subject:/usr/local/src/app/src/Subject'
             - './src/Helper:/usr/local/src/app/src/Helper'
         depends_on:
             - queue
             - db
-        command: ["sh", "/usr/local/bin/entrypoint.sh"]
         environment:
             DATABASE_URL: 'mysql://root:root@db:3306/db'
             MESSENGER_TRANSPORT_DSN: 'amqp://guest:guest@queue:5672/%2f/messages'
     worker:
         image: 'tienvx/mbt-e2e-worker'
         volumes:
-            - './docker/run/worker/entrypoint.sh:/usr/local/bin/entrypoint.sh'
+            - './config/packages/dev/models:/usr/local/src/app/config/packages/dev/models'
             - './src/Subject:/usr/local/src/app/src/Subject'
             - './src/Helper:/usr/local/src/app/src/Helper'
         links:
@@ -47,7 +43,6 @@ services:
         depends_on:
             - queue
             - db
-        command: ["sh", "/usr/local/bin/entrypoint.sh"]
         environment:
             DATABASE_URL: 'mysql://root:root@db:3306/db'
             MESSENGER_TRANSPORT_DSN: 'amqp://guest:guest@queue:5672/%2f/messages'
