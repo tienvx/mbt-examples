@@ -1,5 +1,7 @@
 {
     "name": "tien/mbt-examples",
+    "license": "MIT",
+    "description": "An example how to use MBT Bundle",
     "require": {
         "tienvx/mbt-bundle": "1.0.x-dev",
         "symfony/panther": "^0.2.0"
