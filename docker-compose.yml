@@ -10,9 +10,7 @@ services:
         ports:
             - 15672:15672
     app:
-        build:
-            context: .
-            dockerfile: docker/build/app/Dockerfile
+        image: 'tienvx/mbt-example-app'
         ports:
             - 81:80
         depends_on:
@@ -23,6 +21,7 @@ services:
         ports:
             - 80:80
         volumes:
+            - './config/jwt:/usr/local/src/app/config/jwt'
             - './config/packages/dev/models:/usr/local/src/app/config/packages/dev/models'
             - './src/Subject:/usr/local/src/app/src/Subject'
             - './src/Helper:/usr/local/src/app/src/Helper'
