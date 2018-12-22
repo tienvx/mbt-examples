@@ -15,7 +15,6 @@ services:
             - 81:80
         depends_on:
             - db
-            - api
     api:
         image: 'tienvx/mbt-api'
         ports:
@@ -31,6 +30,8 @@ services:
         environment:
             DATABASE_URL: 'mysql://root:root@db:3306/db'
             MESSENGER_TRANSPORT_DSN: 'amqp://guest:guest@queue:5672/%2f/messages'
+            USER_PASSWORD: '$$2y$$13$$gWuD7B7irvHWJo7kMx9w8eJpLEuSZiR5iMgK1p2foCeYPsjsAk0k.'
+            ADMIN_PASSWORD: '$$2y$$13$$3rT10fXyh9o12mVSaPnbmu92HX3anslUtXabjXu6zdYojpopeFVba'
     worker:
         image: 'tienvx/mbt-e2e-worker'
         volumes:
