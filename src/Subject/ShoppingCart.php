@@ -560,6 +560,16 @@ class ShoppingCart extends Subject
         return ['product' => $product];
     }
 
+    public function hasCoupon()
+    {
+        return true;
+    }
+
+    public function hasGiftCertificate()
+    {
+        return true;
+    }
+
     private function goToCategory($id)
     {
         $this->client->get($this->url . "/index.php?route=product/category&path=$id");

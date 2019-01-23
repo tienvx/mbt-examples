@@ -151,6 +151,26 @@ framework:
                     metadata:
                         weight: 5
                         label: "From cart page, choose a random product and remove it"
+                useCoupon:
+                    from: cart
+                    to: cart
+                    guard: "subject.hasCoupon()"
+                    metadata:
+                        weight: 5
+                        label: "From cart page, apply coupon code if any"
+                estimateShippingAndTaxes:
+                    from: cart
+                    to: cart
+                    metadata:
+                        weight: 5
+                        label: "From cart page, enter destination to get a shipping estimate"
+                useGiftCertificate:
+                    from: cart
+                    to: cart
+                    guard: "subject.hasGiftCertificate()"
+                    metadata:
+                        weight: 5
+                        label: "From cart page, choose a random product and remove it"
                 addFromHome:
                     from: home
                     to: home
