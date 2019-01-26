@@ -22,7 +22,6 @@ services:
         volumes:
             - './config/jwt:/usr/local/src/app/config/jwt'
             - './config/packages/dev/models:/usr/local/src/app/config/packages/dev/models'
-            - './config/packages/dev/tienvx_mbt.yaml:/usr/local/src/app/config/packages/dev/tienvx_mbt.yaml'
             - './src/Subject:/usr/local/src/app/src/Subject'
             - './src/Helper:/usr/local/src/app/src/Helper'
         depends_on:
@@ -37,7 +36,6 @@ services:
         image: 'tienvx/mbt-e2e-worker'
         volumes:
             - './config/packages/dev/models:/usr/local/src/app/config/packages/dev/models'
-            - './config/packages/dev/tienvx_mbt.yaml:/usr/local/src/app/config/packages/dev/tienvx_mbt.yaml'
             - './src/Subject:/usr/local/src/app/src/Subject'
             - './src/Helper:/usr/local/src/app/src/Helper'
         links:
