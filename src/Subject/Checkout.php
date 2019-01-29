@@ -11,9 +11,9 @@ use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverExpectedCondition;
 use Facebook\WebDriver\WebDriverSelect;
 use Symfony\Component\Panther\Client;
-use Tienvx\Bundle\MbtBundle\Subject\Subject;
+use Tienvx\Bundle\MbtBundle\Subject\AbstractSubject;
 
-class Checkout extends Subject
+class Checkout extends AbstractSubject
 {
     use ElementHelper;
 
@@ -46,6 +46,11 @@ class Checkout extends Subject
      * @var bool
      */
     protected $registerAccount = false;
+
+    public static function support(): string
+    {
+        return 'checkout';
+    }
 
     public function setUp()
     {

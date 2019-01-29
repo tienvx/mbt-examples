@@ -49,7 +49,7 @@ services:
     admin:
         image: 'tienvx/mbt-admin'
         ports:
-            - 82:5000
+            - 82:80
         depends_on:
             - api
         environment:
