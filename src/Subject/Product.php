@@ -12,9 +12,9 @@ use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverExpectedCondition;
 use Facebook\WebDriver\WebDriverSelect;
 use Symfony\Component\Panther\Client;
-use Tienvx\Bundle\MbtBundle\Subject\Subject;
+use Tienvx\Bundle\MbtBundle\Subject\AbstractSubject;
 
-class Product extends Subject
+class Product extends AbstractSubject
 {
     use ElementHelper;
 
@@ -32,6 +32,11 @@ class Product extends Subject
      * @var string $url
      */
     protected $url = 'http://example.com';
+
+    public static function support(): string
+    {
+        return 'product';
+    }
 
     /**
      * @throws NoSuchElementException
