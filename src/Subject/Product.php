@@ -12,6 +12,7 @@ use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverExpectedCondition;
 use Facebook\WebDriver\WebDriverSelect;
 use Symfony\Component\Panther\Client;
+use Tienvx\Bundle\MbtBundle\Annotation\DataProvider;
 use Tienvx\Bundle\MbtBundle\Subject\AbstractSubject;
 
 class Product extends AbstractSubject
