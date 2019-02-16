@@ -24,6 +24,7 @@ services:
             - './config/packages/dev/models:/usr/local/src/app/config/packages/dev/models'
             - './src/Subject:/usr/local/src/app/src/Subject'
             - './src/Helper:/usr/local/src/app/src/Helper'
+            - './screenshots:/usr/local/src/app/var/screenshots'
         depends_on:
             - queue
             - db
@@ -38,6 +39,7 @@ services:
             - './config/packages/dev/models:/usr/local/src/app/config/packages/dev/models'
             - './src/Subject:/usr/local/src/app/src/Subject'
             - './src/Helper:/usr/local/src/app/src/Helper'
+            - './screenshots:/usr/local/src/app/var/screenshots'
         links:
             - app:example.com
         depends_on:

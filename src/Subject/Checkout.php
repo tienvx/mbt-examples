@@ -59,6 +59,7 @@ class Checkout extends AbstractSubject
 
     public function tearDown()
     {
+        $this->client->quit();
     }
 
     public function loggedIn()
@@ -306,5 +307,13 @@ class Checkout extends AbstractSubject
     private function goToCheckout()
     {
         $this->client->get($this->url . '/index.php?route=checkout/checkout');
+    }
+
+    public function captureScreenshot($bugId, $index)
+    {
+        if (!is_dir($this->screenshotsDir . "/{$bugId}")) {
+            mkdir($this->screenshotsDir . "/{$bugId}", 0777, true);
+        }
+        $this->client->takeScreenshot($this->screenshotsDir . "/{$bugId}/{$index}.png");
     }
 }
