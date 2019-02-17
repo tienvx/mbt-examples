@@ -156,6 +156,7 @@ class ShoppingCart extends AbstractSubject
 
     public function tearDown()
     {
+        $this->client->quit();
     }
 
     /**
@@ -604,5 +605,13 @@ class ShoppingCart extends AbstractSubject
     private function goToHome()
     {
         $this->client->get($this->url . '/index.php?route=common/home');
+    }
+
+    public function captureScreenshot($bugId, $index)
+    {
+        if (!is_dir($this->screenshotsDir . "/{$bugId}")) {
+            mkdir($this->screenshotsDir . "/{$bugId}", 0777, true);
+        }
+        $this->client->takeScreenshot($this->screenshotsDir . "/{$bugId}/{$index}.png");
     }
 }

@@ -3,8 +3,8 @@
     "license": "MIT",
     "description": "An example how to use MBT Bundle",
     "require": {
-        "tienvx/mbt-bundle": "^1.0",
-        "tienvx/mbt-api-bundle": "^1.0",
+        "tienvx/mbt-bundle": "^1.1",
+        "tienvx/mbt-api-bundle": "^1.1",
         "symfony/panther": "^0.2.0"
     },
     "authors": [
