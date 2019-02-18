@@ -182,6 +182,7 @@ class Product extends AbstractSubject
     {
         $by = WebDriverBy::xpath("//button[@data-original-title='Add to Wish List']");
         $this->waitAndClick($by);
+        $this->closeAlerts();
     }
 
     /**
@@ -192,6 +193,7 @@ class Product extends AbstractSubject
     {
         $by = WebDriverBy::xpath("//button[@data-original-title='Compare this Product']");
         $this->waitAndClick($by);
+        $this->closeAlerts();
     }
 
     /**
@@ -288,5 +290,19 @@ class Product extends AbstractSubject
         $element = $this->client->findElement($by);
         $element->click();
         return $element;
+    }
+
+    /**
+     * @throws NoSuchElementException
+     * @throws TimeOutException
+     */
+    public function closeAlerts()
+    {
+        $this->client->waitFor('.alert');
+        /** @var WebDriverElement[] $elements */
+        $elements = $this->client->findElements(WebDriverBy::cssSelector('.alert > .close'));
+        foreach ($elements as $element) {
+            $element->click();
+        }
     }
 }
