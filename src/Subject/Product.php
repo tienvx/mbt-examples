@@ -9,6 +9,7 @@ use Facebook\WebDriver\Exception\TimeOutException;
 use Facebook\WebDriver\Exception\UnexpectedTagNameException;
 use Facebook\WebDriver\Remote\LocalFileDetector;
 use Facebook\WebDriver\WebDriverBy;
+use Facebook\WebDriver\WebDriverElement;
 use Facebook\WebDriver\WebDriverExpectedCondition;
 use Facebook\WebDriver\WebDriverSelect;
 use Symfony\Component\Panther\Client;
@@ -163,34 +164,66 @@ class Product extends AbstractSubject
 
     public function selectDateTime() {}
 
+    /**
+     * @throws NoSuchElementException
+     * @throws TimeOutException
+     */
     public function addToCart()
     {
-        $this->client->findElement(WebDriverBy::id('button-cart'))->click();
+        $by = WebDriverBy::id('button-cart');
+        $this->waitAndClick($by);
     }
 
+    /**
+     * @throws NoSuchElementException
+     * @throws TimeOutException
+     */
     public function addToWishList()
     {
-        $this->client->findElement(WebDriverBy::xpath("//button[@data-original-title='Add to Wish List']"))->click();
+        $by = WebDriverBy::xpath("//button[@data-original-title='Add to Wish List']");
+        $this->waitAndClick($by);
     }
 
+    /**
+     * @throws NoSuchElementException
+     * @throws TimeOutException
+     */
     public function compareThisProduct()
     {
-        $this->client->findElement(WebDriverBy::xpath("//button[@data-original-title='Compare this Product']"))->click();
+        $by = WebDriverBy::xpath("//button[@data-original-title='Compare this Product']");
+        $this->waitAndClick($by);
     }
 
+    /**
+     * @throws NoSuchElementException
+     * @throws TimeOutException
+     */
     public function writeAReview()
     {
-        $this->client->findElement(WebDriverBy::linkText('Write a review'))->click();
+        $by = WebDriverBy::linkText('Write a review');
+        $this->waitAndClick($by);
     }
 
+    /**
+     * @throws NoSuchElementException
+     * @throws TimeOutException
+     */
     public function fillName()
     {
-        $this->client->findElement(WebDriverBy::id('input-name'))->sendKeys('My Name');
+        $by = WebDriverBy::id('input-name');
+        $element = $this->waitAndClick($by);
+        $element->sendKeys('My Name');
     }
 
+    /**
+     * @throws NoSuchElementException
+     * @throws TimeOutException
+     */
     public function fillReview()
     {
-        $this->client->findElement(WebDriverBy::id('input-review'))->sendKeys('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et rutrum sem, at lacinia orci. Suspendisse eget posuere odio, a venenatis libero. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Sed mauris dui, congue et tellus at, pharetra bibendum diam. Donec diam justo, aliquam quis massa vel, cursus commodo odio. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. In tempus mi sit amet semper imperdiet. Maecenas mollis nisi nulla, at viverra sapien auctor vel. Phasellus tincidunt, dolor et eleifend pretium, nulla magna malesuada nisi, id hendrerit mi orci eget sapien. Proin venenatis aliquet elit eu eleifend. In leo massa, convallis a felis eget, malesuada sagittis ipsum.');
+        $by = WebDriverBy::id('input-review');
+        $element = $this->waitAndClick($by);
+        $element->sendKeys('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et rutrum sem, at lacinia orci. Suspendisse eget posuere odio, a venenatis libero. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Sed mauris dui, congue et tellus at, pharetra bibendum diam. Donec diam justo, aliquam quis massa vel, cursus commodo odio. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. In tempus mi sit amet semper imperdiet. Maecenas mollis nisi nulla, at viverra sapien auctor vel. Phasellus tincidunt, dolor et eleifend pretium, nulla magna malesuada nisi, id hendrerit mi orci eget sapien. Proin venenatis aliquet elit eu eleifend. In leo massa, convallis a felis eget, malesuada sagittis ipsum.');
     }
 
     /**
@@ -203,7 +236,8 @@ class Product extends AbstractSubject
             throw new Exception('Can not select rating: random option is not chosen');
         }
         $rating = $this->data['rating'];
-        $this->client->findElement(WebDriverBy::xpath("//input[@name='rating' and @value='{$rating}']"))->click();
+        $by = WebDriverBy::xpath("//input[@name='rating' and @value='{$rating}']");
+        $this->waitAndClick($by);
     }
 
     public function getRandomRating()
@@ -211,9 +245,14 @@ class Product extends AbstractSubject
         return ['rating' => rand(1, 5)];
     }
 
+    /**
+     * @throws NoSuchElementException
+     * @throws TimeOutException
+     */
     public function submitReview()
     {
-        $this->client->findElement(WebDriverBy::id('button-review'))->click();
+        $by = WebDriverBy::id('button-review');
+        $this->waitAndClick($by);
     }
 
     /**
@@ -233,5 +272,21 @@ class Product extends AbstractSubject
             mkdir($this->screenshotsDir . "/{$bugId}", 0777, true);
         }
         $this->client->takeScreenshot($this->screenshotsDir . "/{$bugId}/{$index}.png");
+    }
+
+    /**
+     * @param WebDriverBy $by
+     * @return WebDriverElement
+     * @throws NoSuchElementException
+     * @throws TimeOutException
+     */
+    public function waitAndClick(WebDriverBy $by): WebDriverElement
+    {
+        $this->client->wait()->until(
+            WebDriverExpectedCondition::elementToBeClickable($by)
+        );
+        $element = $this->client->findElement($by);
+        $element->click();
+        return $element;
     }
 }
