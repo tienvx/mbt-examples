@@ -7,7 +7,6 @@ use Exception;
 use Facebook\WebDriver\Exception\NoSuchElementException;
 use Facebook\WebDriver\Exception\TimeOutException;
 use Facebook\WebDriver\Exception\UnexpectedTagNameException;
-use Facebook\WebDriver\Remote\LocalFileDetector;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverElement;
 use Facebook\WebDriver\WebDriverExpectedCondition;
@@ -129,32 +128,8 @@ class Product extends AbstractSubject
      */
     public function selectFile()
     {
-        //$fileInput = $this->client->getWebDriver()->findElement(WebDriverBy::id('input-option222'));
-        $fileInput = $this->client->wait()->until(
-            WebDriverExpectedCondition::presenceOfElementLocated(WebDriverBy::id('input-option222'))
-        );
-
-        // set the file detector
-        $fileInput->setFileDetector(new LocalFileDetector());
-
-        // create temporary file
-        $file = tmpfile();
-        $filePath = stream_get_meta_data($file)['uri'];
-
-        // upload the file and submit the form
-        $fileInput->sendKeys($filePath)->submit();
-
-        $this->client->wait()->until(
-            WebDriverExpectedCondition::not(
-                WebDriverExpectedCondition::elementTextContains(WebDriverBy::id('input-option222'), 'Loading...')
-            )
-        );
-
         if (!$this->testing) {
-            $text = $this->client->getWebDriver()->findElement(WebDriverBy::id('product'))->getText();
-            if (strpos($text, 'Upload required!') !== false) {
-                throw new Exception('Upload required!');
-            }
+            throw new Exception('Can not upload file!');
         }
     }
 
