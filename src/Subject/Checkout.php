@@ -264,7 +264,8 @@ class Checkout extends AbstractSubject
 
     public function guestCheckoutAndAddBillingAddress()
     {
-        $this->client->findElement(WebDriverBy::xpath("//input[@name='shipping_address' and @value='existing']"))->click();
+        // Delivery and billing addresses are not the same.
+        $this->client->findElement(WebDriverBy::xpath("//input[@name='shipping_address' and @value='1']"))->click();
         $this->client->findElement(WebDriverBy::id('button-guest'))->click();
         $this->guestCheckout = false;
     }
