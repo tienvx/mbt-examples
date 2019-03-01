@@ -264,22 +264,34 @@ class Checkout extends AbstractSubject
     public function addDeliveryMethod()
     {
         $this->client->findElement(WebDriverBy::id('button-shipping-method'))->click();
+
+        $by = WebDriverBy::cssSelector('#collapse-payment-method .panel-body :first-child');
+        $this->waitUntilVisibilityOfElementLocated($by);
     }
 
     public function addPaymentMethod()
     {
         $this->client->findElement(WebDriverBy::xpath("//input[@name='agree']"))->click();
         $this->client->findElement(WebDriverBy::id('button-payment-method'))->click();
+
+        $by = WebDriverBy::cssSelector('#collapse-checkout-confirm .panel-body :first-child');
+        $this->waitUntilVisibilityOfElementLocated($by);
     }
 
     public function confirmOrder()
     {
         $this->client->findElement(WebDriverBy::id('button-confirm'))->click();
+        $this->client->wait()->until(
+            WebDriverExpectedCondition::urlIs($this->url . '/index.php?route=checkout/success')
+        );
     }
 
     public function continueShopping()
     {
         $this->client->findElement(WebDriverBy::linkText('Continue'))->click();
+        $this->client->wait()->until(
+            WebDriverExpectedCondition::urlIs($this->url . '/index.php?route=common/home')
+        );
     }
 
     public function fillPersonalDetails()
