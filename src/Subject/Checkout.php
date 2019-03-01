@@ -105,15 +105,9 @@ class Checkout extends AbstractSubject
         $element = $this->client->findElement($by);
         $element->click();
 
-        try {
-            $by = WebDriverBy::cssSelector('#collapse-payment-address .panel-body .row');
-            $this->client->wait()->until(
-                WebDriverExpectedCondition::visibilityOfElementLocated($by)
-            );
-        }
-        catch (NoSuchElementException $e) {
-            // It's okay, we are waiting for element to be loaded by ajax and appear in the page.
-        }
+        $by = WebDriverBy::cssSelector('#collapse-payment-address .panel-body :first-child');
+        $this->waitUntilVisibilityOfElementLocated($by);
+
         $this->loggedIn = true;
     }
 
@@ -121,15 +115,10 @@ class Checkout extends AbstractSubject
     {
         $this->client->findElement(WebDriverBy::xpath("//input[@name='account' and @value='guest']"))->click();
         $this->client->findElement(WebDriverBy::id('button-account'))->click();
-        try {
-            $by = WebDriverBy::cssSelector('#collapse-payment-address .panel-body .row');
-            $this->client->wait()->until(
-                WebDriverExpectedCondition::visibilityOfElementLocated($by)
-            );
-        }
-        catch (NoSuchElementException $e) {
-            // It's okay, we are waiting for element to be loaded by ajax and appear in the page.
-        }
+
+        $by = WebDriverBy::cssSelector('#collapse-payment-address .panel-body :first-child');
+        $this->waitUntilVisibilityOfElementLocated($by);
+
         $this->guestCheckout = true;
     }
 
@@ -137,15 +126,10 @@ class Checkout extends AbstractSubject
     {
         $this->client->findElement(WebDriverBy::xpath("//input[@name='account' and @value='register']"))->click();
         $this->client->findElement(WebDriverBy::id('button-account'))->click();
-        try {
-            $by = WebDriverBy::cssSelector('#collapse-payment-address .panel-body .row');
-            $this->client->wait()->until(
-                WebDriverExpectedCondition::visibilityOfElementLocated($by)
-            );
-        }
-        catch (NoSuchElementException $e) {
-            // It's okay, we are waiting for element to be loaded by ajax and appear in the page.
-        }
+
+        $by = WebDriverBy::cssSelector('#collapse-payment-address .panel-body :first-child');
+        $this->waitUntilVisibilityOfElementLocated($by);
+
         $this->registerAccount = true;
     }
 
@@ -155,15 +139,22 @@ class Checkout extends AbstractSubject
         return strpos($element->getText(), 'I want to use an existing address') !== false;
     }
 
+    /**
+     * @throws TimeOutException
+     */
     public function useExistingBillingAddress()
     {
         $this->client->findElement(WebDriverBy::xpath("//input[@name='payment_address' and @value='existing']"))->click();
         $this->client->findElement(WebDriverBy::id('button-payment-address'))->click();
+
+        $by = WebDriverBy::cssSelector('#collapse-shipping-address .panel-body :first-child');
+        $this->waitUntilVisibilityOfElementLocated($by);
     }
 
     /**
      * @throws UnexpectedTagNameException
      * @throws NoSuchElementException
+     * @throws TimeOutException
      */
     public function useNewBillingAddress()
     {
@@ -177,11 +168,33 @@ class Checkout extends AbstractSubject
         $regionElement = $this->client->findElement(WebDriverBy::id('input-payment-zone'));
         $region = new WebDriverSelect($regionElement);
         $region->selectByValue('3513');
+
+        $this->client->findElement(WebDriverBy::id('button-payment-address'))->click();
+
+        $by = WebDriverBy::cssSelector('#collapse-shipping-address .panel-body :first-child');
+        $this->waitUntilVisibilityOfElementLocated($by);
     }
 
-    public function addBillingAddress()
+    /**
+     * @throws UnexpectedTagNameException
+     * @throws NoSuchElementException
+     * @throws TimeOutException
+     */
+    public function addNameAndBillingAddress()
     {
+        $this->client->findElement(WebDriverBy::id('input-payment-firstname'))->sendKeys('First');
+        $this->client->findElement(WebDriverBy::id('input-payment-lastname'))->sendKeys('Last');
+        $this->client->findElement(WebDriverBy::id('input-payment-address-1'))->sendKeys('Here');
+        $this->client->findElement(WebDriverBy::id('input-payment-city'))->sendKeys('There');
+        $this->client->findElement(WebDriverBy::id('input-payment-postcode'))->sendKeys('1234');
+        $regionElement = $this->client->findElement(WebDriverBy::id('input-payment-zone'));
+        $region = new WebDriverSelect($regionElement);
+        $region->selectByValue('3513');
+
         $this->client->findElement(WebDriverBy::id('button-payment-address'))->click();
+
+        $by = WebDriverBy::cssSelector('#collapse-shipping-address .panel-body :first-child');
+        $this->waitUntilVisibilityOfElementLocated($by);
     }
 
     public function useExistingDeliveryAddress()
@@ -206,10 +219,7 @@ class Checkout extends AbstractSubject
         $regionElement = $this->client->findElement(WebDriverBy::id('input-shipping-zone'));
         $region = new WebDriverSelect($regionElement);
         $region->selectByValue('3513');
-    }
 
-    public function addDeliveryAddress()
-    {
         $this->client->findElement(WebDriverBy::id('button-shipping-address'))->click();
     }
 
@@ -276,6 +286,7 @@ class Checkout extends AbstractSubject
     public function registerAndAddBillingAddress()
     {
         $this->client->findElement(WebDriverBy::xpath("//input[@name='agree']"))->click();
+        $this->client->findElement(WebDriverBy::xpath("//input[@name='shipping_address' and @value='1']"))->click();
         $this->client->findElement(WebDriverBy::id('button-register'))->click();
 
         $this->registerAccount = false;
@@ -355,5 +366,21 @@ class Checkout extends AbstractSubject
             mkdir($this->screenshotsDir . "/{$bugId}", 0777, true);
         }
         $this->client->takeScreenshot($this->screenshotsDir . "/{$bugId}/{$index}.png");
+    }
+
+    /**
+     * @param WebDriverBy $by
+     * @throws TimeOutException
+     */
+    public function waitUntilVisibilityOfElementLocated(WebDriverBy $by)
+    {
+        try {
+            $this->client->wait()->until(
+                WebDriverExpectedCondition::visibilityOfElementLocated($by)
+            );
+        }
+        catch (NoSuchElementException $e) {
+            // It's okay, we are waiting for element to be loaded by ajax and appear in the page.
+        }
     }
 }
