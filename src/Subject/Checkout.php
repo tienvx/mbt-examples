@@ -89,14 +89,14 @@ class Checkout extends AbstractSubject
             WebDriverExpectedCondition::visibilityOfElementLocated($by)
         );
         $element = $this->client->findElement($by);
-        $element->sendKeys('youremail@example.com');
+        $element->sendKeys('test@example.com');
         // Password
         $by = WebDriverBy::id('input-password');
         $this->client->wait()->until(
             WebDriverExpectedCondition::visibilityOfElementLocated($by)
         );
         $element = $this->client->findElement($by);
-        $element->sendKeys('admin');
+        $element->sendKeys('1234');
         // Submit
         $by = WebDriverBy::id('button-login');
         $this->client->wait()->until(
