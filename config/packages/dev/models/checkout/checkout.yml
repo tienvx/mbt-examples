@@ -15,9 +15,9 @@ framework:
                 - personalDetailsFilled
                 - passwordFilled
                 - billingAddressFilled
-                - deliveryAddressFilled
                 - awaitingAccount
                 - awaitingBillingAddress
+                - awaitingNameAndBillingAddress
                 - awaitingDeliveryAddress
                 - awaitingDeliveryMethod
                 - awaitingPaymentMethod
@@ -48,7 +48,7 @@ framework:
                     from: awaitingAccount
                     to:
                         - accountAdded
-                        - awaitingBillingAddress
+                        - awaitingNameAndBillingAddress
                     guard: "!subject.loggedIn()"
                     metadata:
                         probability: 33
@@ -73,7 +73,7 @@ framework:
                         probability: 33
                         label: "Register Account"
                 useExistingBillingAddress:
-                    from: awaitingBillingAddress
+                    from: awaitingNameAndBillingAddress
                     to:
                         - billingAddressAdded
                         - awaitingDeliveryAddress
@@ -81,19 +81,13 @@ framework:
                     metadata:
                         label: "Use existing billing address"
                 useNewBillingAddress:
-                    from: awaitingBillingAddress
-                    to: billingAddressFilled
-                    guard: "subject.loggedIn() && subject.hasExistingBillingAddress()"
-                    metadata:
-                        label: "Use new billing address"
-                addBillingAddress:
-                    from: billingAddressFilled
+                    from: awaitingNameAndBillingAddress
                     to:
                         - billingAddressAdded
                         - awaitingDeliveryAddress
-                    guard: "subject.loggedIn()"
+                    guard: "subject.loggedIn() && subject.hasExistingBillingAddress()"
                     metadata:
-                        label: "Add billing address"
+                        label: "Add new billing address"
                 fillPersonalDetails:
                     from: awaitingPersonalDetails
                     to: personalDetailsFilled
@@ -109,9 +103,17 @@ framework:
                 fillBillingAddress:
                     from: awaitingBillingAddress
                     to: billingAddressFilled
-                    guard: "!subject.loggedIn() || !subject.hasExistingBillingAddress()"
+                    guard: "!subject.loggedIn()"
                     metadata:
                         label: "Fill billing address"
+                addNameAndBillingAddress:
+                    from: awaitingNameAndBillingAddress
+                    to:
+                        - billingAddressAdded
+                        - awaitingDeliveryAddress
+                    guard: "subject.loggedIn() && !subject.hasExistingBillingAddress()"
+                    metadata:
+                        label: "Add name and billing address"
                 registerAndAddBillingAddress:
                     from:
                         - personalDetailsFilled
@@ -144,16 +146,11 @@ framework:
                         label: "Use existing delivery address"
                 useNewDeliveryAddress:
                     from: awaitingDeliveryAddress
-                    to: deliveryAddressFilled
-                    metadata:
-                        label: "Use new delivery address"
-                addDeliveryAddress:
-                    from: deliveryAddressFilled
                     to:
                         - deliveryAddressAdded
                         - awaitingDeliveryMethod
                     metadata:
-                        label: "Add delivery address"
+                        label: "Use new delivery address"
                 addDeliveryMethod:
                     from: awaitingDeliveryMethod
                     to:
