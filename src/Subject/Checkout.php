@@ -105,6 +105,15 @@ class Checkout extends AbstractSubject
         $element = $this->client->findElement($by);
         $element->click();
 
+        try {
+            $by = WebDriverBy::cssSelector('#collapse-payment-address .panel-body .row');
+            $this->client->wait()->until(
+                WebDriverExpectedCondition::visibilityOfElementLocated($by)
+            );
+        }
+        catch (NoSuchElementException $e) {
+            // It's okay, we are waiting for element to be loaded by ajax and appear in the page.
+        }
         $this->loggedIn = true;
     }
 
@@ -112,6 +121,15 @@ class Checkout extends AbstractSubject
     {
         $this->client->findElement(WebDriverBy::xpath("//input[@name='account' and @value='guest']"))->click();
         $this->client->findElement(WebDriverBy::id('button-account'))->click();
+        try {
+            $by = WebDriverBy::cssSelector('#collapse-payment-address .panel-body .row');
+            $this->client->wait()->until(
+                WebDriverExpectedCondition::visibilityOfElementLocated($by)
+            );
+        }
+        catch (NoSuchElementException $e) {
+            // It's okay, we are waiting for element to be loaded by ajax and appear in the page.
+        }
         $this->guestCheckout = true;
     }
 
@@ -119,6 +137,15 @@ class Checkout extends AbstractSubject
     {
         $this->client->findElement(WebDriverBy::xpath("//input[@name='account' and @value='register']"))->click();
         $this->client->findElement(WebDriverBy::id('button-account'))->click();
+        try {
+            $by = WebDriverBy::cssSelector('#collapse-payment-address .panel-body .row');
+            $this->client->wait()->until(
+                WebDriverExpectedCondition::visibilityOfElementLocated($by)
+            );
+        }
+        catch (NoSuchElementException $e) {
+            // It's okay, we are waiting for element to be loaded by ajax and appear in the page.
+        }
         $this->registerAccount = true;
     }
 
