@@ -302,11 +302,23 @@ class Checkout extends AbstractSubject
         );
         $element = $this->client->findElement($by);
         $element->click();
+        $this->client->wait()->until(
+            WebDriverExpectedCondition::elementTextContains(WebDriverBy::className('alert'), 'Success')
+        );
     }
 
     private function goToCheckout()
     {
         $this->client->get($this->url . '/index.php?route=checkout/checkout');
+        try {
+            $by = WebDriverBy::cssSelector('.panel-body .row');
+            $this->client->wait()->until(
+                WebDriverExpectedCondition::visibilityOfElementLocated($by)
+            );
+        }
+        catch (NoSuchElementException $e) {
+            // It's okay, we are waiting for element to be loaded by ajax and appear in the page.
+        }
     }
 
     public function captureScreenshot($bugId, $index)
