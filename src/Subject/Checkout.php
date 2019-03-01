@@ -180,7 +180,7 @@ class Checkout extends AbstractSubject
      * @throws NoSuchElementException
      * @throws TimeOutException
      */
-    public function addNameAndBillingAddress()
+    public function addBillingAddress()
     {
         $this->client->findElement(WebDriverBy::id('input-payment-firstname'))->sendKeys('First');
         $this->client->findElement(WebDriverBy::id('input-payment-lastname'))->sendKeys('Last');
@@ -197,15 +197,22 @@ class Checkout extends AbstractSubject
         $this->waitUntilVisibilityOfElementLocated($by);
     }
 
+    /**
+     * @throws TimeOutException
+     */
     public function useExistingDeliveryAddress()
     {
         $this->client->findElement(WebDriverBy::xpath("//input[@name='shipping_address' and @value='existing']"))->click();
         $this->client->findElement(WebDriverBy::id('button-shipping-address'))->click();
+
+        $by = WebDriverBy::cssSelector('#collapse-shipping-method .panel-body :first-child');
+        $this->waitUntilVisibilityOfElementLocated($by);
     }
 
     /**
      * @throws UnexpectedTagNameException
      * @throws NoSuchElementException
+     * @throws TimeOutException
      */
     public function useNewDeliveryAddress()
     {
@@ -221,6 +228,37 @@ class Checkout extends AbstractSubject
         $region->selectByValue('3513');
 
         $this->client->findElement(WebDriverBy::id('button-shipping-address'))->click();
+
+        $by = WebDriverBy::cssSelector('#collapse-shipping-method .panel-body :first-child');
+        $this->waitUntilVisibilityOfElementLocated($by);
+    }
+
+    /**
+     * @throws UnexpectedTagNameException
+     * @throws NoSuchElementException
+     * @throws TimeOutException
+     */
+    public function addDeliveryAddress()
+    {
+        $this->client->findElement(WebDriverBy::id('input-shipping-firstname'))->sendKeys('First');
+        $this->client->findElement(WebDriverBy::id('input-shipping-lastname'))->sendKeys('Last');
+        $this->client->findElement(WebDriverBy::id('input-shipping-address-1'))->sendKeys('Here');
+        $this->client->findElement(WebDriverBy::id('input-shipping-city'))->sendKeys('There');
+        $this->client->findElement(WebDriverBy::id('input-shipping-postcode'))->sendKeys('1234');
+        $regionElement = $this->client->findElement(WebDriverBy::id('input-payment-zone'));
+        $region = new WebDriverSelect($regionElement);
+        $region->selectByValue('3513');
+
+        $this->client->findElement(WebDriverBy::id('button-shipping-address'))->click();
+
+        $by = WebDriverBy::cssSelector('#collapse-shipping-method .panel-body :first-child');
+        $this->waitUntilVisibilityOfElementLocated($by);
+    }
+
+    public function hasExistingDeliveryAddress()
+    {
+        $element = $this->client->findElement(WebDriverBy::id('collapse-shipping-address'));
+        return strpos($element->getText(), 'I want to use an existing address') !== false;
     }
 
     public function addDeliveryMethod()
