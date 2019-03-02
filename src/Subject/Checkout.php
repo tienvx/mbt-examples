@@ -282,7 +282,8 @@ class Checkout extends AbstractSubject
     {
         $this->client->findElement(WebDriverBy::id('button-confirm'))->click();
         $this->client->wait()->until(
-            WebDriverExpectedCondition::urlIs($this->url . '/index.php?route=checkout/success')
+            WebDriverExpectedCondition::urlIs($this->url . '/index.php?route=checkout/success'),
+            'Current url does not match ' . $this->url . '/index.php?route=checkout/success'
         );
     }
 
@@ -290,7 +291,8 @@ class Checkout extends AbstractSubject
     {
         $this->client->findElement(WebDriverBy::linkText('Continue'))->click();
         $this->client->wait()->until(
-            WebDriverExpectedCondition::urlIs($this->url . '/index.php?route=common/home')
+            WebDriverExpectedCondition::urlIs($this->url . '/index.php?route=common/home'),
+            'Current url does not match ' . $this->url . '/index.php?route=common/home'
         );
     }
 
