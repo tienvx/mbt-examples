@@ -86,7 +86,7 @@ framework:
                         - awaitingDeliveryAddress
                     guard: "subject.loggedIn() && subject.hasExistingBillingAddress()"
                     metadata:
-                        label: "Add new billing address"
+                        label: "Use new billing address"
                 fillPersonalDetails:
                     from: awaitingPersonalDetails
                     to: personalDetailsFilled

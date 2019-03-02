@@ -5,7 +5,7 @@
     "require": {
         "tienvx/mbt-bundle": "^1.1",
         "tienvx/mbt-api-bundle": "^1.1",
-        "symfony/panther": "^0.2.0"
+        "symfony/panther": "^0.3.0"
     },
     "authors": [
         {
