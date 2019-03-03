@@ -175,7 +175,8 @@ class Checkout extends AbstractSubject
         $this->client->findElement(WebDriverBy::id('input-payment-lastname'))->sendKeys('Last');
         $this->client->findElement(WebDriverBy::id('input-payment-address-1'))->sendKeys('Here');
         $this->client->findElement(WebDriverBy::id('input-payment-city'))->sendKeys('There');
-        $this->client->findElement(WebDriverBy::id('input-payment-postcode'))->sendKeys('1234');
+        // Postcode, country, region/state are pre-filled, but clear postcode is enough
+        $this->client->findElement(WebDriverBy::id('input-payment-postcode'))->clear()->sendKeys('1234');
         $regionElement = $this->client->findElement(WebDriverBy::id('input-payment-zone'));
         $region = new WebDriverSelect($regionElement);
         $region->selectByValue('3513');
@@ -197,7 +198,8 @@ class Checkout extends AbstractSubject
         $this->client->findElement(WebDriverBy::id('input-payment-lastname'))->sendKeys('Last');
         $this->client->findElement(WebDriverBy::id('input-payment-address-1'))->sendKeys('Here');
         $this->client->findElement(WebDriverBy::id('input-payment-city'))->sendKeys('There');
-        $this->client->findElement(WebDriverBy::id('input-payment-postcode'))->sendKeys('1234');
+        // Postcode, country, region/state are pre-filled, but clear postcode is enough
+        $this->client->findElement(WebDriverBy::id('input-payment-postcode'))->clear()->sendKeys('1234');
         $regionElement = $this->client->findElement(WebDriverBy::id('input-payment-zone'));
         $region = new WebDriverSelect($regionElement);
         $region->selectByValue('3513');
@@ -233,7 +235,8 @@ class Checkout extends AbstractSubject
         $this->client->findElement(WebDriverBy::id('input-shipping-lastname'))->sendKeys('Last');
         $this->client->findElement(WebDriverBy::id('input-shipping-address-1'))->sendKeys('Here');
         $this->client->findElement(WebDriverBy::id('input-shipping-city'))->sendKeys('There');
-        $this->client->findElement(WebDriverBy::id('input-shipping-postcode'))->sendKeys('1234');
+        // Postcode, country, region/state are pre-filled, but clear postcode is enough
+        $this->client->findElement(WebDriverBy::id('input-shipping-postcode'))->clear()->sendKeys('1234');
         $regionElement = $this->client->findElement(WebDriverBy::id('input-shipping-zone'));
         $region = new WebDriverSelect($regionElement);
         $region->selectByValue('3513');
@@ -256,7 +259,8 @@ class Checkout extends AbstractSubject
         $this->client->findElement(WebDriverBy::id('input-shipping-lastname'))->sendKeys('Last');
         $this->client->findElement(WebDriverBy::id('input-shipping-address-1'))->sendKeys('Here');
         $this->client->findElement(WebDriverBy::id('input-shipping-city'))->sendKeys('There');
-        $this->client->findElement(WebDriverBy::id('input-shipping-postcode'))->sendKeys('1234');
+        // Postcode, country, region/state are pre-filled, but clear postcode is enough
+        $this->client->findElement(WebDriverBy::id('input-shipping-postcode'))->clear()->sendKeys('1234');
         $regionElement = $this->client->findElement(WebDriverBy::id('input-shipping-zone'));
         $region = new WebDriverSelect($regionElement);
         $region->selectByValue('3513');
