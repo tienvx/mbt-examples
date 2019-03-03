@@ -140,11 +140,15 @@ class Checkout extends AbstractSubject
             $this->client->wait()->until(
                 WebDriverExpectedCondition::visibilityOfElementLocated($by)
             );
+            return true;
         }
         catch (NoSuchElementException $e) {
             return false;
         }
         catch (TimeOutException $e) {
+            return false;
+        }
+        finally {
             return false;
         }
     }
@@ -282,11 +286,15 @@ class Checkout extends AbstractSubject
             $this->client->wait()->until(
                 WebDriverExpectedCondition::visibilityOfElementLocated($by)
             );
+            return true;
         }
         catch (NoSuchElementException $e) {
             return false;
         }
         catch (TimeOutException $e) {
+            return false;
+        }
+        finally {
             return false;
         }
     }
