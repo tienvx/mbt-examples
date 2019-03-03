@@ -135,8 +135,18 @@ class Checkout extends AbstractSubject
 
     public function hasExistingBillingAddress()
     {
-        $element = $this->client->findElement(WebDriverBy::id('collapse-payment-address'));
-        return strpos($element->getText(), 'I want to use an existing address') !== false;
+        $by = WebDriverBy::xpath("//input[@name='payment_address' and @value='existing']");
+        try {
+            $this->client->wait()->until(
+                WebDriverExpectedCondition::visibilityOfElementLocated($by)
+            );
+        }
+        catch (NoSuchElementException $e) {
+            return false;
+        }
+        catch (TimeOutException $e) {
+            return false;
+        }
     }
 
     /**
@@ -237,6 +247,7 @@ class Checkout extends AbstractSubject
      * @throws UnexpectedTagNameException
      * @throws NoSuchElementException
      * @throws TimeOutException
+     * @throws Exception
      */
     public function addDeliveryAddress()
     {
@@ -245,11 +256,20 @@ class Checkout extends AbstractSubject
         $this->client->findElement(WebDriverBy::id('input-shipping-address-1'))->sendKeys('Here');
         $this->client->findElement(WebDriverBy::id('input-shipping-city'))->sendKeys('There');
         $this->client->findElement(WebDriverBy::id('input-shipping-postcode'))->sendKeys('1234');
-        $regionElement = $this->client->findElement(WebDriverBy::id('input-payment-zone'));
+        $regionElement = $this->client->findElement(WebDriverBy::id('input-shipping-zone'));
         $region = new WebDriverSelect($regionElement);
         $region->selectByValue('3513');
 
-        $this->client->findElement(WebDriverBy::id('button-shipping-address'))->click();
+        if ($this->hasExistingBillingAddress()) {
+            $this->client->findElement(WebDriverBy::id('button-shipping-address'))->click();
+        } else {
+            try {
+                $this->client->findElement(WebDriverBy::id('button-guest-shipping'))->click();
+            }
+            catch (NoSuchElementException $e) {
+                $this->client->findElement(WebDriverBy::cssSelector("#collapse-payment-address input[type='button']"))->click();
+            }
+        }
 
         $by = WebDriverBy::cssSelector('#collapse-shipping-method .panel-body :first-child');
         $this->waitUntilVisibilityOfElementLocated($by);
@@ -257,8 +277,18 @@ class Checkout extends AbstractSubject
 
     public function hasExistingDeliveryAddress()
     {
-        $element = $this->client->findElement(WebDriverBy::id('collapse-shipping-address'));
-        return strpos($element->getText(), 'I want to use an existing address') !== false;
+        $by = WebDriverBy::xpath("//input[@name='shipping_address' and @value='existing']");
+        try {
+            $this->client->wait()->until(
+                WebDriverExpectedCondition::visibilityOfElementLocated($by)
+            );
+        }
+        catch (NoSuchElementException $e) {
+            return false;
+        }
+        catch (TimeOutException $e) {
+            return false;
+        }
     }
 
     public function addDeliveryMethod()
@@ -329,6 +359,10 @@ class Checkout extends AbstractSubject
         // Delivery and billing addresses are not the same.
         $this->client->findElement(WebDriverBy::xpath("//input[@name='shipping_address' and @value='1']"))->click();
         $this->client->findElement(WebDriverBy::id('button-guest'))->click();
+
+        $by = WebDriverBy::cssSelector('#collapse-shipping-address .panel-body :first-child');
+        $this->waitUntilVisibilityOfElementLocated($by);
+
         $this->guestCheckout = false;
     }
 
@@ -340,6 +374,9 @@ class Checkout extends AbstractSubject
         $this->client->findElement(WebDriverBy::xpath("//input[@name='agree']"))->click();
         $this->client->findElement(WebDriverBy::xpath("//input[@name='shipping_address' and @value='1']"))->click();
         $this->client->findElement(WebDriverBy::id('button-register'))->click();
+
+        $by = WebDriverBy::cssSelector('#collapse-shipping-address .panel-body :first-child');
+        $this->waitUntilVisibilityOfElementLocated($by);
 
         $this->registerAccount = false;
         $this->loggedIn = true;
@@ -398,18 +435,15 @@ class Checkout extends AbstractSubject
         );
     }
 
+    /**
+     * @throws TimeOutException
+     */
     private function goToCheckout()
     {
         $this->client->get($this->url . '/index.php?route=checkout/checkout');
-        try {
-            $by = WebDriverBy::cssSelector('.panel-body .row');
-            $this->client->wait()->until(
-                WebDriverExpectedCondition::visibilityOfElementLocated($by)
-            );
-        }
-        catch (NoSuchElementException $e) {
-            // It's okay, we are waiting for element to be loaded by ajax and appear in the page.
-        }
+
+        $by = WebDriverBy::cssSelector('.panel-body  :first-child');
+        $this->waitUntilVisibilityOfElementLocated($by);
     }
 
     public function captureScreenshot($bugId, $index)
