@@ -148,9 +148,6 @@ class Checkout extends AbstractSubject
         catch (TimeOutException $e) {
             return false;
         }
-        finally {
-            return false;
-        }
     }
 
     /**
@@ -292,9 +289,6 @@ class Checkout extends AbstractSubject
             return false;
         }
         catch (TimeOutException $e) {
-            return false;
-        }
-        finally {
             return false;
         }
     }
