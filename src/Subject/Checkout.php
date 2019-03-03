@@ -264,14 +264,14 @@ class Checkout extends AbstractSubject
         $region = new WebDriverSelect($regionElement);
         $region->selectByValue('3513');
 
-        if ($this->hasExistingBillingAddress()) {
+        if ($this->hasExistingDeliveryAddress()) {
             $this->client->findElement(WebDriverBy::id('button-shipping-address'))->click();
         } else {
             try {
                 $this->client->findElement(WebDriverBy::id('button-guest-shipping'))->click();
             }
             catch (NoSuchElementException $e) {
-                $this->client->findElement(WebDriverBy::cssSelector("#collapse-payment-address input[type='button']"))->click();
+                $this->client->findElement(WebDriverBy::cssSelector("#collapse-shipping-address input[type='button']"))->click();
             }
         }
 
