@@ -319,19 +319,29 @@ class Checkout extends AbstractSubject
     public function confirmOrder()
     {
         $this->client->findElement(WebDriverBy::id('button-confirm'))->click();
-        $this->client->wait()->until(
-            WebDriverExpectedCondition::urlIs($this->url . '/index.php?route=checkout/success'),
-            'Current url does not match ' . $this->url . '/index.php?route=checkout/success'
-        );
+        try {
+            $this->client->wait()->until(
+                WebDriverExpectedCondition::urlContains($this->url . '/index.php?route=checkout/success')
+
+            );
+        }
+        catch (TimeOutException $e) {
+            throw new TimeOutException(sprintf('Current url %s does not contain %s ', $this->client->getCurrentURL(), $this->url . '/index.php?route=checkout/success'));
+        }
     }
 
     public function continueShopping()
     {
         $this->client->findElement(WebDriverBy::linkText('Continue'))->click();
-        $this->client->wait()->until(
-            WebDriverExpectedCondition::urlIs($this->url . '/index.php?route=common/home'),
-            'Current url does not match ' . $this->url . '/index.php?route=common/home'
-        );
+        try {
+            $this->client->wait()->until(
+                WebDriverExpectedCondition::urlContains($this->url . '/index.php?route=common/home')
+
+            );
+        }
+        catch (TimeOutException $e) {
+            throw new TimeOutException(sprintf('Current url %s does not contain %s ', $this->client->getCurrentURL(), $this->url . '/index.php?route=common/home'));
+        }
     }
 
     public function fillPersonalDetails()
