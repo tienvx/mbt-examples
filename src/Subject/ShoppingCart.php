@@ -152,6 +152,7 @@ class ShoppingCart extends AbstractSubject
     public function setUp()
     {
         $this->client = Client::createChromeClient();
+        $this->goToHome();
     }
 
     public function tearDown()
