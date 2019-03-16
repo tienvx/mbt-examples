@@ -55,6 +55,7 @@ class Checkout extends AbstractSubject
     public function setUp()
     {
         $this->client = Client::createChromeClient();
+        $this->goToHome();
     }
 
     public function tearDown()
@@ -484,5 +485,10 @@ class Checkout extends AbstractSubject
         catch (NoSuchElementException $e) {
             // It's okay, we are waiting for element to be loaded by ajax and appear in the page.
         }
+    }
+
+    private function goToHome()
+    {
+        $this->client->get($this->url . '/index.php?route=common/home');
     }
 }
