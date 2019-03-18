@@ -86,21 +86,21 @@ class Checkout extends AbstractSubject
     {
         // Email
         $by = WebDriverBy::id('input-email');
-        $this->client->wait()->until(
+        $this->client->wait(3)->until(
             WebDriverExpectedCondition::visibilityOfElementLocated($by)
         );
         $element = $this->client->findElement($by);
         $element->sendKeys('test@example.com');
         // Password
         $by = WebDriverBy::id('input-password');
-        $this->client->wait()->until(
+        $this->client->wait(3)->until(
             WebDriverExpectedCondition::visibilityOfElementLocated($by)
         );
         $element = $this->client->findElement($by);
         $element->sendKeys('1234');
         // Submit
         $by = WebDriverBy::id('button-login');
-        $this->client->wait()->until(
+        $this->client->wait(3)->until(
             WebDriverExpectedCondition::elementToBeClickable($by)
         );
         $element = $this->client->findElement($by);
@@ -112,6 +112,9 @@ class Checkout extends AbstractSubject
         $this->loggedIn = true;
     }
 
+    /**
+     * @throws TimeOutException
+     */
     public function guestCheckout()
     {
         $this->client->findElement(WebDriverBy::xpath("//input[@name='account' and @value='guest']"))->click();
@@ -123,6 +126,9 @@ class Checkout extends AbstractSubject
         $this->guestCheckout = true;
     }
 
+    /**
+     * @throws TimeOutException
+     */
     public function registerAccount()
     {
         $this->client->findElement(WebDriverBy::xpath("//input[@name='account' and @value='register']"))->click();
@@ -134,11 +140,15 @@ class Checkout extends AbstractSubject
         $this->registerAccount = true;
     }
 
+    /**
+     * @return bool
+     * @throws Exception
+     */
     public function hasExistingBillingAddress()
     {
         $by = WebDriverBy::xpath("//input[@name='payment_address' and @value='existing']");
         try {
-            $this->client->wait()->until(
+            $this->client->wait(3)->until(
                 WebDriverExpectedCondition::visibilityOfElementLocated($by)
             );
             return true;
@@ -281,11 +291,15 @@ class Checkout extends AbstractSubject
         $this->waitUntilVisibilityOfElementLocated($by);
     }
 
+    /**
+     * @return bool
+     * @throws Exception
+     */
     public function hasExistingDeliveryAddress()
     {
         $by = WebDriverBy::xpath("//input[@name='shipping_address' and @value='existing']");
         try {
-            $this->client->wait()->until(
+            $this->client->wait(3)->until(
                 WebDriverExpectedCondition::visibilityOfElementLocated($by)
             );
             return true;
@@ -298,6 +312,9 @@ class Checkout extends AbstractSubject
         }
     }
 
+    /**
+     * @throws TimeOutException
+     */
     public function addDeliveryMethod()
     {
         $this->client->findElement(WebDriverBy::id('button-shipping-method'))->click();
@@ -306,6 +323,9 @@ class Checkout extends AbstractSubject
         $this->waitUntilVisibilityOfElementLocated($by);
     }
 
+    /**
+     * @throws TimeOutException
+     */
     public function addPaymentMethod()
     {
         $this->client->findElement(WebDriverBy::xpath("//input[@name='agree']"))->click();
@@ -315,11 +335,15 @@ class Checkout extends AbstractSubject
         $this->waitUntilVisibilityOfElementLocated($by);
     }
 
+    /**
+     * @throws NoSuchElementException
+     * @throws TimeOutException
+     */
     public function confirmOrder()
     {
         $this->client->findElement(WebDriverBy::id('button-confirm'))->click();
         try {
-            $this->client->wait()->until(
+            $this->client->wait(3)->until(
                 WebDriverExpectedCondition::urlContains($this->url . '/index.php?route=checkout/success')
 
             );
@@ -329,11 +353,15 @@ class Checkout extends AbstractSubject
         }
     }
 
+    /**
+     * @throws NoSuchElementException
+     * @throws TimeOutException
+     */
     public function continueShopping()
     {
         $this->client->findElement(WebDriverBy::linkText('Continue'))->click();
         try {
-            $this->client->wait()->until(
+            $this->client->wait(3)->until(
                 WebDriverExpectedCondition::urlContains($this->url . '/index.php?route=common/home')
 
             );
@@ -371,6 +399,9 @@ class Checkout extends AbstractSubject
         $region->selectByValue('3513');
     }
 
+    /**
+     * @throws TimeOutException
+     */
     public function guestCheckoutAndAddBillingAddress()
     {
         // Delivery and billing addresses are not the same.
@@ -432,7 +463,7 @@ class Checkout extends AbstractSubject
     private function goToProduct($id)
     {
         $this->client->get($this->url . "/index.php?route=product/product&product_id=$id");
-        $this->client->waitFor('#product-product');
+        $this->client->waitFor('#product-product', 3);
     }
 
     /**
@@ -442,12 +473,12 @@ class Checkout extends AbstractSubject
     private function addToCart()
     {
         $by = WebDriverBy::id('button-cart');
-        $this->client->wait()->until(
+        $this->client->wait(3)->until(
             WebDriverExpectedCondition::elementToBeClickable($by)
         );
         $element = $this->client->findElement($by);
         $element->click();
-        $this->client->wait()->until(
+        $this->client->wait(3)->until(
             WebDriverExpectedCondition::elementTextContains(WebDriverBy::className('alert'), 'Success')
         );
     }
@@ -478,7 +509,7 @@ class Checkout extends AbstractSubject
     public function waitUntilVisibilityOfElementLocated(WebDriverBy $by)
     {
         try {
-            $this->client->wait()->until(
+            $this->client->wait(3)->until(
                 WebDriverExpectedCondition::visibilityOfElementLocated($by)
             );
         }
