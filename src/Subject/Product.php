@@ -240,7 +240,7 @@ class Product extends AbstractSubject
     private function goToProduct($id)
     {
         $this->client->get($this->url . "/index.php?route=product/product&product_id=$id");
-        $this->client->waitFor('#product-product');
+        $this->client->waitFor('#product-product', 3);
     }
 
     public function captureScreenshot($bugId, $index)
@@ -259,7 +259,7 @@ class Product extends AbstractSubject
      */
     public function waitAndClick(WebDriverBy $by): WebDriverElement
     {
-        $this->client->wait()->until(
+        $this->client->wait(3)->until(
             WebDriverExpectedCondition::elementToBeClickable($by)
         );
         $element = $this->client->findElement($by);
@@ -273,7 +273,7 @@ class Product extends AbstractSubject
      */
     public function closeAlerts()
     {
-        $this->client->waitFor('.alert');
+        $this->client->waitFor('.alert', 3);
         /** @var WebDriverElement[] $elements */
         $elements = $this->client->findElements(WebDriverBy::cssSelector('.alert > .close'));
         foreach ($elements as $element) {
