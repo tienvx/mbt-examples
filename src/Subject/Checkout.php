@@ -86,21 +86,21 @@ class Checkout extends AbstractSubject
     {
         // Email
         $by = WebDriverBy::id('input-email');
-        $this->client->wait(3)->until(
+        $this->client->wait(1)->until(
             WebDriverExpectedCondition::visibilityOfElementLocated($by)
         );
         $element = $this->client->findElement($by);
         $element->sendKeys('test@example.com');
         // Password
         $by = WebDriverBy::id('input-password');
-        $this->client->wait(3)->until(
+        $this->client->wait(1)->until(
             WebDriverExpectedCondition::visibilityOfElementLocated($by)
         );
         $element = $this->client->findElement($by);
         $element->sendKeys('1234');
         // Submit
         $by = WebDriverBy::id('button-login');
-        $this->client->wait(3)->until(
+        $this->client->wait(1)->until(
             WebDriverExpectedCondition::elementToBeClickable($by)
         );
         $element = $this->client->findElement($by);
@@ -148,7 +148,7 @@ class Checkout extends AbstractSubject
     {
         $by = WebDriverBy::xpath("//input[@name='payment_address' and @value='existing']");
         try {
-            $this->client->wait(3)->until(
+            $this->client->wait(1)->until(
                 WebDriverExpectedCondition::visibilityOfElementLocated($by)
             );
             return true;
@@ -299,7 +299,7 @@ class Checkout extends AbstractSubject
     {
         $by = WebDriverBy::xpath("//input[@name='shipping_address' and @value='existing']");
         try {
-            $this->client->wait(3)->until(
+            $this->client->wait(1)->until(
                 WebDriverExpectedCondition::visibilityOfElementLocated($by)
             );
             return true;
@@ -343,7 +343,7 @@ class Checkout extends AbstractSubject
     {
         $this->client->findElement(WebDriverBy::id('button-confirm'))->click();
         try {
-            $this->client->wait(3)->until(
+            $this->client->wait(1)->until(
                 WebDriverExpectedCondition::urlContains($this->url . '/index.php?route=checkout/success')
 
             );
@@ -361,7 +361,7 @@ class Checkout extends AbstractSubject
     {
         $this->client->findElement(WebDriverBy::linkText('Continue'))->click();
         try {
-            $this->client->wait(3)->until(
+            $this->client->wait(1)->until(
                 WebDriverExpectedCondition::urlContains($this->url . '/index.php?route=common/home')
 
             );
@@ -463,7 +463,7 @@ class Checkout extends AbstractSubject
     private function goToProduct($id)
     {
         $this->client->get($this->url . "/index.php?route=product/product&product_id=$id");
-        $this->client->waitFor('#product-product', 3);
+        $this->client->waitFor('#product-product', 1);
     }
 
     /**
@@ -473,12 +473,12 @@ class Checkout extends AbstractSubject
     private function addToCart()
     {
         $by = WebDriverBy::id('button-cart');
-        $this->client->wait(3)->until(
+        $this->client->wait(1)->until(
             WebDriverExpectedCondition::elementToBeClickable($by)
         );
         $element = $this->client->findElement($by);
         $element->click();
-        $this->client->wait(3)->until(
+        $this->client->wait(1)->until(
             WebDriverExpectedCondition::elementTextContains(WebDriverBy::className('alert'), 'Success')
         );
     }
@@ -509,7 +509,7 @@ class Checkout extends AbstractSubject
     public function waitUntilVisibilityOfElementLocated(WebDriverBy $by)
     {
         try {
-            $this->client->wait(3)->until(
+            $this->client->wait(1)->until(
                 WebDriverExpectedCondition::visibilityOfElementLocated($by)
             );
         }
