@@ -434,7 +434,7 @@ class ShoppingCart extends AbstractSubject
             $this->cart[$product]++;
         }
         $by = WebDriverBy::cssSelector("button[onclick*=\"cart.add('$product'\"]");
-        $this->client->wait(3)->until(
+        $this->client->wait(1)->until(
             WebDriverExpectedCondition::elementToBeClickable($by)
         );
         $element = $this->client->findElement($by);
@@ -460,7 +460,7 @@ class ShoppingCart extends AbstractSubject
             $this->cart[$this->product]++;
         }
         $by = WebDriverBy::id('button-cart');
-        $this->client->wait(3)->until(
+        $this->client->wait(1)->until(
             WebDriverExpectedCondition::elementToBeClickable($by)
         );
         $element = $this->client->findElement($by);
@@ -590,7 +590,7 @@ class ShoppingCart extends AbstractSubject
     private function goToProduct($id)
     {
         $this->client->get($this->url . "/index.php?route=product/product&product_id=$id");
-        $this->client->waitFor('#product-product', 3);
+        $this->client->waitFor('#product-product', 1);
     }
 
     private function goToCart()
