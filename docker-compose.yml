@@ -22,7 +22,6 @@ services:
         volumes:
             - './config/jwt:/usr/local/src/app/config/jwt'
             - './config/packages/dev/models:/usr/local/src/app/config/packages/dev/models'
-            - './config/packages/dev/reporters.yaml:/usr/local/src/app/config/packages/dev/reporters.yaml'
             - './src/Subject:/usr/local/src/app/src/Subject'
             - './src/Helper:/usr/local/src/app/src/Helper'
             - './screenshots:/usr/local/src/app/var/screenshots'
