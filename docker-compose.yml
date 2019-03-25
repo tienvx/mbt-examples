@@ -39,6 +39,7 @@ services:
             dockerfile: Dockerfile
             args:
                 MBT_VERSION: ${MBT_VERSION}
+        image: "mbt-examples_custom-worker:${MBT_VERSION}"
         #image: "tienvx/mbt-e2e-worker:${MBT_VERSION}"
         volumes:
             - './config/packages/dev/models:/usr/local/src/app/config/packages/dev/models'

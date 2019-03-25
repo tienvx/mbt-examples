@@ -45,13 +45,17 @@ class Product extends AbstractSubject
      */
     public function setUp()
     {
-        $this->client = Client::createChromeClient();
+        if (!$this->testingModel) {
+            $this->client = Client::createChromeClient();
+        }
         $this->goToProduct($this->productId);
     }
 
     public function tearDown()
     {
-        $this->client->quit();
+        if (!$this->testingModel) {
+            $this->client->quit();
+        }
     }
 
     /**
@@ -64,7 +68,9 @@ class Product extends AbstractSubject
             throw new Exception('Can not select radio: random option is not chosen');
         }
         $radio = $this->data['radio'];
-        $this->client->findElement(WebDriverBy::xpath("//input[@name='option[218]' and @value='{$radio}']"))->click();
+        if (!$this->testingModel) {
+            $this->client->findElement(WebDriverBy::xpath("//input[@name='option[218]' and @value='{$radio}']"))->click();
+        }
     }
 
     public function getRandomRadio()
@@ -82,7 +88,9 @@ class Product extends AbstractSubject
             throw new Exception('Can not select checkbox: random option is not chosen');
         }
         $checkbox = $this->data['checkbox'];
-        $this->client->findElement(WebDriverBy::xpath("//input[@name='option[223][]' and @value='{$checkbox}']"))->click();
+        if (!$this->testingModel) {
+            $this->client->findElement(WebDriverBy::xpath("//input[@name='option[223][]' and @value='{$checkbox}']"))->click();
+        }
     }
 
     public function getRandomCheckbox()
@@ -93,7 +101,9 @@ class Product extends AbstractSubject
 
     public function fillText()
     {
-        $this->client->findElement(WebDriverBy::id('input-option208'))->sendKeys('Test text');
+        if (!$this->testingModel) {
+            $this->client->findElement(WebDriverBy::id('input-option208'))->sendKeys('Test text');
+        }
     }
 
     /**
@@ -108,9 +118,11 @@ class Product extends AbstractSubject
             throw new Exception('Can not select dropdown: random option is not chosen');
         }
         $checkbox = $this->data['select'];
-        $regionElement = $this->client->findElement(WebDriverBy::id('input-option217'));
-        $region = new WebDriverSelect($regionElement);
-        $region->selectByValue($checkbox);
+        if (!$this->testingModel) {
+            $regionElement = $this->client->findElement(WebDriverBy::id('input-option217'));
+            $region = new WebDriverSelect($regionElement);
+            $region->selectByValue($checkbox);
+        }
     }
 
     public function getRandomSelect()
@@ -120,7 +132,9 @@ class Product extends AbstractSubject
 
     public function fillTextarea()
     {
-        $this->client->findElement(WebDriverBy::id('input-option209'))->sendKeys('Test textarea');
+        if (!$this->testingModel) {
+            $this->client->findElement(WebDriverBy::id('input-option209'))->sendKeys('Test textarea');
+        }
     }
 
     /**
@@ -128,7 +142,7 @@ class Product extends AbstractSubject
      */
     public function selectFile()
     {
-        if (!$this->testing) {
+        if (!$this->testingModel) {
             throw new Exception('Can not upload file!');
         }
     }
@@ -145,8 +159,10 @@ class Product extends AbstractSubject
      */
     public function addToCart()
     {
-        $by = WebDriverBy::id('button-cart');
-        $this->waitAndClick($by);
+        if (!$this->testingModel) {
+            $by = WebDriverBy::id('button-cart');
+            $this->waitAndClick($by);
+        }
     }
 
     /**
@@ -155,9 +171,11 @@ class Product extends AbstractSubject
      */
     public function addToWishList()
     {
-        $by = WebDriverBy::xpath("//button[@data-original-title='Add to Wish List']");
-        $this->waitAndClick($by);
-        $this->closeAlerts();
+        if (!$this->testingModel) {
+            $by = WebDriverBy::xpath("//button[@data-original-title='Add to Wish List']");
+            $this->waitAndClick($by);
+            $this->closeAlerts();
+        }
     }
 
     /**
@@ -166,9 +184,11 @@ class Product extends AbstractSubject
      */
     public function compareThisProduct()
     {
-        $by = WebDriverBy::xpath("//button[@data-original-title='Compare this Product']");
-        $this->waitAndClick($by);
-        $this->closeAlerts();
+        if (!$this->testingModel) {
+            $by = WebDriverBy::xpath("//button[@data-original-title='Compare this Product']");
+            $this->waitAndClick($by);
+            $this->closeAlerts();
+        }
     }
 
     /**
@@ -177,8 +197,10 @@ class Product extends AbstractSubject
      */
     public function writeAReview()
     {
-        $by = WebDriverBy::linkText('Write a review');
-        $this->waitAndClick($by);
+        if (!$this->testingModel) {
+            $by = WebDriverBy::linkText('Write a review');
+            $this->waitAndClick($by);
+        }
     }
 
     /**
@@ -187,9 +209,11 @@ class Product extends AbstractSubject
      */
     public function fillName()
     {
-        $by = WebDriverBy::id('input-name');
-        $element = $this->waitAndClick($by);
-        $element->sendKeys('My Name');
+        if (!$this->testingModel) {
+            $by = WebDriverBy::id('input-name');
+            $element = $this->waitAndClick($by);
+            $element->sendKeys('My Name');
+        }
     }
 
     /**
@@ -198,9 +222,11 @@ class Product extends AbstractSubject
      */
     public function fillReview()
     {
-        $by = WebDriverBy::id('input-review');
-        $element = $this->waitAndClick($by);
-        $element->sendKeys('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et rutrum sem, at lacinia orci. Suspendisse eget posuere odio, a venenatis libero. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Sed mauris dui, congue et tellus at, pharetra bibendum diam. Donec diam justo, aliquam quis massa vel, cursus commodo odio. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. In tempus mi sit amet semper imperdiet. Maecenas mollis nisi nulla, at viverra sapien auctor vel. Phasellus tincidunt, dolor et eleifend pretium, nulla magna malesuada nisi, id hendrerit mi orci eget sapien. Proin venenatis aliquet elit eu eleifend. In leo massa, convallis a felis eget, malesuada sagittis ipsum.');
+        if (!$this->testingModel) {
+            $by = WebDriverBy::id('input-review');
+            $element = $this->waitAndClick($by);
+            $element->sendKeys('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et rutrum sem, at lacinia orci. Suspendisse eget posuere odio, a venenatis libero. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Sed mauris dui, congue et tellus at, pharetra bibendum diam. Donec diam justo, aliquam quis massa vel, cursus commodo odio. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. In tempus mi sit amet semper imperdiet. Maecenas mollis nisi nulla, at viverra sapien auctor vel. Phasellus tincidunt, dolor et eleifend pretium, nulla magna malesuada nisi, id hendrerit mi orci eget sapien. Proin venenatis aliquet elit eu eleifend. In leo massa, convallis a felis eget, malesuada sagittis ipsum.');
+        }
     }
 
     /**
@@ -213,8 +239,10 @@ class Product extends AbstractSubject
             throw new Exception('Can not select rating: random option is not chosen');
         }
         $rating = $this->data['rating'];
-        $by = WebDriverBy::xpath("//input[@name='rating' and @value='{$rating}']");
-        $this->waitAndClick($by);
+        if (!$this->testingModel) {
+            $by = WebDriverBy::xpath("//input[@name='rating' and @value='{$rating}']");
+            $this->waitAndClick($by);
+        }
     }
 
     public function getRandomRating()
@@ -228,8 +256,10 @@ class Product extends AbstractSubject
      */
     public function submitReview()
     {
-        $by = WebDriverBy::id('button-review');
-        $this->waitAndClick($by);
+        if (!$this->testingModel) {
+            $by = WebDriverBy::id('button-review');
+            $this->waitAndClick($by);
+        }
     }
 
     /**
@@ -239,8 +269,10 @@ class Product extends AbstractSubject
      */
     private function goToProduct($id)
     {
-        $this->client->get($this->url . "/index.php?route=product/product&product_id=$id");
-        $this->client->waitFor('#product-product', 1);
+        if (!$this->testingModel) {
+            $this->client->get($this->url . "/index.php?route=product/product&product_id=$id");
+            $this->client->waitFor('#product-product', 1);
+        }
     }
 
     public function captureScreenshot($bugId, $index)
@@ -259,12 +291,14 @@ class Product extends AbstractSubject
      */
     public function waitAndClick(WebDriverBy $by): WebDriverElement
     {
-        $this->client->wait(1)->until(
-            WebDriverExpectedCondition::elementToBeClickable($by)
-        );
-        $element = $this->client->findElement($by);
-        $element->click();
-        return $element;
+        if (!$this->testingModel) {
+            $this->client->wait(1)->until(
+                WebDriverExpectedCondition::elementToBeClickable($by)
+            );
+            $element = $this->client->findElement($by);
+            $element->click();
+            return $element;
+        }
     }
 
     /**
@@ -273,11 +307,18 @@ class Product extends AbstractSubject
      */
     public function closeAlerts()
     {
-        $this->client->waitFor('.alert', 1);
-        /** @var WebDriverElement[] $elements */
-        $elements = $this->client->findElements(WebDriverBy::cssSelector('.alert > .close'));
-        foreach ($elements as $element) {
-            $element->click();
+        if (!$this->testingModel) {
+            $this->client->waitFor('.alert', 1);
+            /** @var WebDriverElement[] $elements */
+            $elements = $this->client->findElements(WebDriverBy::cssSelector('.alert > .close'));
+            foreach ($elements as $element) {
+                $element->click();
+            }
         }
+    }
+
+    public function getScreenshotUrl($bugId, $index)
+    {
+        return sprintf('http://localhost/mbt-api/bug-screenshot/%d/%d', $bugId, $index);
     }
 }

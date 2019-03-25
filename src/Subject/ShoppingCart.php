@@ -151,13 +151,17 @@ class ShoppingCart extends AbstractSubject
 
     public function setUp()
     {
-        $this->client = Client::createChromeClient();
+        if (!$this->testingModel) {
+            $this->client = Client::createChromeClient();
+        }
         $this->goToHome();
     }
 
     public function tearDown()
     {
-        $this->client->quit();
+        if (!$this->testingModel) {
+            $this->client->quit();
+        }
     }
 
     /**
@@ -172,7 +176,9 @@ class ShoppingCart extends AbstractSubject
         $category = $this->data['category'];
         $this->category = $category;
         $this->product = null;
-        $this->goToCategory($category);
+        if (!$this->testingModel) {
+            $this->goToCategory($category);
+        }
     }
 
     /**
@@ -187,7 +193,9 @@ class ShoppingCart extends AbstractSubject
         $category = $this->data['category'];
         $this->category = $category;
         $this->product = null;
-        $this->goToCategory($category);
+        if (!$this->testingModel) {
+            $this->goToCategory($category);
+        }
     }
 
     /**
@@ -202,7 +210,9 @@ class ShoppingCart extends AbstractSubject
         $category = $this->data['category'];
         $this->category = $category;
         $this->product = null;
-        $this->goToCategory($category);
+        if (!$this->testingModel) {
+            $this->goToCategory($category);
+        }
     }
 
     /**
@@ -217,7 +227,9 @@ class ShoppingCart extends AbstractSubject
         $category = $this->data['category'];
         $this->category = $category;
         $this->product = null;
-        $this->goToCategory($category);
+        if (!$this->testingModel) {
+            $this->goToCategory($category);
+        }
     }
 
     /**
@@ -387,7 +399,11 @@ class ShoppingCart extends AbstractSubject
                 throw new Exception('Can not check if cart has selected product or not: product is not selected');
             }
             $product = $this->data['product'];
-            return $this->hasElement($this->client, WebDriverBy::cssSelector("#checkout-cart button[onclick=\"cart.remove('$product');\"]"));
+
+            if (!$this->testingModel) {
+                return $this->hasElement($this->client, WebDriverBy::cssSelector("#checkout-cart button[onclick=\"cart.remove('$product');\"]"));
+            }
+            return !empty($this->cart[$product]);
         }
     }
 
@@ -401,7 +417,7 @@ class ShoppingCart extends AbstractSubject
             throw new Exception('Can not add product from home: product is not selected');
         }
         $product = $this->data['product'];
-        if (!$this->testing) {
+        if (!$this->testingModel) {
             if (in_array($product, $this->needOptions)) {
                 throw new Exception('You need to specify options for this product! Can not add product');
             }
@@ -423,7 +439,7 @@ class ShoppingCart extends AbstractSubject
             throw new Exception('Can not add product from category: product is not selected');
         }
         $product = $this->data['product'];
-        if (!$this->testing) {
+        if (!$this->testingModel) {
             if (in_array($product, $this->needOptions)) {
                 throw new Exception('You need to specify options for this product! Can not add product');
             }
@@ -433,12 +449,14 @@ class ShoppingCart extends AbstractSubject
         } else {
             $this->cart[$product]++;
         }
-        $by = WebDriverBy::cssSelector("button[onclick*=\"cart.add('$product'\"]");
-        $this->client->wait(1)->until(
-            WebDriverExpectedCondition::elementToBeClickable($by)
-        );
-        $element = $this->client->findElement($by);
-        $element->click();
+        if (!$this->testingModel) {
+            $by = WebDriverBy::cssSelector("button[onclick*=\"cart.add('$product'\"]");
+            $this->client->wait(1)->until(
+                WebDriverExpectedCondition::elementToBeClickable($by)
+            );
+            $element = $this->client->findElement($by);
+            $element->click();
+        }
     }
 
     /**
@@ -448,7 +466,7 @@ class ShoppingCart extends AbstractSubject
      */
     public function addFromProduct()
     {
-        if (!$this->testing) {
+        if (!$this->testingModel) {
             if (in_array($this->product, $this->needOptions)) {
                 throw new Exception('You need to specify options for this product! Can not add product');
             }
@@ -459,12 +477,14 @@ class ShoppingCart extends AbstractSubject
         else {
             $this->cart[$this->product]++;
         }
-        $by = WebDriverBy::id('button-cart');
-        $this->client->wait(1)->until(
-            WebDriverExpectedCondition::elementToBeClickable($by)
-        );
-        $element = $this->client->findElement($by);
-        $element->click();
+        if (!$this->testingModel) {
+            $by = WebDriverBy::id('button-cart');
+            $this->client->wait(1)->until(
+                WebDriverExpectedCondition::elementToBeClickable($by)
+            );
+            $element = $this->client->findElement($by);
+            $element->click();
+        }
     }
 
     /**
@@ -478,7 +498,9 @@ class ShoppingCart extends AbstractSubject
         }
         $product = $this->data['product'];
         unset($this->cart[$product]);
-        $this->client->findElement(WebDriverBy::cssSelector("button[onclick=\"cart.remove('$product');\"]"))->click();
+        if (!$this->testingModel) {
+            $this->client->findElement(WebDriverBy::cssSelector("button[onclick=\"cart.remove('$product');\"]"))->click();
+        }
     }
 
     /**
@@ -493,8 +515,10 @@ class ShoppingCart extends AbstractSubject
         $product = $this->data['product'];
         $quantity = rand(1, 99);
         $this->cart[$product] = $quantity;
-        $this->client->findElement(WebDriverBy::cssSelector("input[name=\"quantity[$product]\"]"))->sendKeys($quantity);
-        $this->client->findElement(WebDriverBy::cssSelector("input[name=\"quantity[$product]\"]+.input-group-btn>button[data-original-title=\"Update\"]"))->click();
+        if (!$this->testingModel) {
+            $this->client->findElement(WebDriverBy::cssSelector("input[name=\"quantity[$product]\"]"))->sendKeys($quantity);
+            $this->client->findElement(WebDriverBy::cssSelector("input[name=\"quantity[$product]\"]+.input-group-btn>button[data-original-title=\"Update\"]"))->click();
+        }
     }
 
     public function home()
@@ -518,7 +542,7 @@ class ShoppingCart extends AbstractSubject
      */
     public function checkout()
     {
-        if (!$this->testing) {
+        if (!$this->testingModel) {
             foreach ($this->cart as $product => $quantity) {
                 if (in_array($product, $this->outOfStock)) {
                     throw new Exception('You added an out-of-stock product into cart! Can not checkout');
@@ -579,7 +603,9 @@ class ShoppingCart extends AbstractSubject
 
     private function goToCategory($id)
     {
-        $this->client->get($this->url . "/index.php?route=product/category&path=$id");
+        if (!$this->testingModel) {
+            $this->client->get($this->url . "/index.php?route=product/category&path=$id");
+        }
     }
 
     /**
@@ -589,23 +615,31 @@ class ShoppingCart extends AbstractSubject
      */
     private function goToProduct($id)
     {
-        $this->client->get($this->url . "/index.php?route=product/product&product_id=$id");
-        $this->client->waitFor('#product-product', 1);
+        if (!$this->testingModel) {
+            $this->client->get($this->url . "/index.php?route=product/product&product_id=$id");
+            $this->client->waitFor('#product-product', 1);
+        }
     }
 
     private function goToCart()
     {
-        $this->client->get($this->url . '/index.php?route=checkout/cart');
+        if (!$this->testingModel) {
+            $this->client->get($this->url . '/index.php?route=checkout/cart');
+        }
     }
 
     private function goToCheckout()
     {
-        $this->client->get($this->url . '/index.php?route=checkout/checkout');
+        if (!$this->testingModel) {
+            $this->client->get($this->url . '/index.php?route=checkout/checkout');
+        }
     }
 
     private function goToHome()
     {
-        $this->client->get($this->url . '/index.php?route=common/home');
+        if (!$this->testingModel) {
+            $this->client->get($this->url . '/index.php?route=common/home');
+        }
     }
 
     public function captureScreenshot($bugId, $index)
@@ -614,5 +648,10 @@ class ShoppingCart extends AbstractSubject
             mkdir($this->screenshotsDir . "/{$bugId}", 0777, true);
         }
         $this->client->takeScreenshot($this->screenshotsDir . "/{$bugId}/{$index}.png");
+    }
+
+    public function getScreenshotUrl($bugId, $index)
+    {
+        return sprintf('http://localhost/mbt-api/bug-screenshot/%d/%d', $bugId, $index);
     }
 }
