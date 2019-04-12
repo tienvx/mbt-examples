@@ -9,10 +9,9 @@ Contains examples for mbt-bundle project
 ## Dependencies
 
 - git
-- [composer](https://getcomposer.org/download/)
 - docker
 - [docker-compose](https://docs.docker.com/compose/)
-- openssl
+- [compose-on-kubernetes](https://github.com/docker/compose-on-kubernetes)
 
 ## Install
 
@@ -50,13 +49,6 @@ $ docker-compose exec app sed -i "s/'http:\/\/example.com\/admin\/'/\$_SERVER['S
 - [api](http://localhost/api)
 - [app](http://localhost:81)
 - [admin](http://localhost:82)
-
-## Development
-
-```bash
-$ composer install
-$ # Edit your models and subjects
-```
 
 ## License
 mbt-examples is available under the [MIT license](LICENSE).
