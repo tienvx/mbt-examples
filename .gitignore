@@ -1,7 +1,2 @@
 /.idea/
-/config/jwt/*.pem
 
-composer.lock
-/vendor/
-
-/screenshots/
