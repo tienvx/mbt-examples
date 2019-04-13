@@ -27,6 +27,8 @@ services:
             - "4444:4444"
     chrome:
         image: selenium/node-chrome
+        links:
+            - app:example.com
         volumes:
             - /dev/shm:/dev/shm
         environment:
@@ -37,6 +39,8 @@ services:
         entrypoint: bash -c 'SE_OPTS="-host $$HOSTNAME" /opt/bin/entry_point.sh'
     firefox:
         image: selenium/node-firefox
+        links:
+            - app:example.com
         volumes:
             - /dev/shm:/dev/shm
         environment:
@@ -97,8 +101,6 @@ services:
             replicas: 1
     worker:
         image: "tienvx/mbt-example-worker:${MBT_VERSION}"
-        links:
-            - app:example.com
         depends_on:
             - queue
             - db
