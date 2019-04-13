@@ -8,7 +8,7 @@ services:
             MYSQL_PASSWORD: pass
             MYSQL_ROOT_PASSWORD: root
         healthcheck:
-            test: ["CMD", "/usr/bin/mysql", "--user=user", "--password=pass", "--execute \"SHOW DATABASES;\""]
+            test: ["CMD", "mysqladmin", "ping", "--user=user", "--password=pass", "--silent"]
             interval: 30s
             timeout: 10s
             retries: 5
