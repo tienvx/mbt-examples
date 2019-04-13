@@ -1,6 +1,5 @@
 #!/bin/sh
 
-docker-compose exec api mkdir config/jwt
 docker-compose exec api openssl genrsa -out config/jwt/private.pem -aes256 4096
 docker-compose exec api openssl rsa -pubout -in config/jwt/private.pem -out config/jwt/public.pem
 docker-compose exec api chmod +r config/jwt/private.pem
