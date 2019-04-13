@@ -53,7 +53,8 @@ services:
             - MINIO_ACCESS_KEY=FAKE-aWs-s3-keY
             - MINIO_SECRET_KEY=FAKE-aWs-s3-sEcreT
             - MINIO_REGION=us-east-1
-        command: server --address :9000 /data
+        entrypoint: sh
+        command: -c 'mkdir -p /data/mbt && minio server --address :9000 /data'
     app:
         image: 'tienvx/mbt-example-app'
         ports:
