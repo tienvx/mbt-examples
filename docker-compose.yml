@@ -21,6 +21,39 @@ services:
             interval: 30s
             timeout: 10s
             retries: 5
+    hub:
+        image: selenium/hub
+        ports:
+            - "4444:4444"
+    chrome:
+        image: selenium/node-chrome
+        volumes:
+            - /dev/shm:/dev/shm
+        environment:
+            HUB_HOST: hub
+            HUB_PORT: 4444
+        deploy:
+            replicas: 1
+        entrypoint: bash -c 'SE_OPTS="-host $$HOSTNAME" /opt/bin/entry_point.sh'
+    firefox:
+        image: selenium/node-firefox
+        volumes:
+            - /dev/shm:/dev/shm
+        environment:
+            HUB_HOST: hub
+            HUB_PORT: 4444
+        deploy:
+            replicas: 1
+        entrypoint: bash -c 'SE_OPTS="-host $$HOSTNAME" /opt/bin/entry_point.sh'
+    minio:
+        image:   'minio/minio'
+        ports: ['9000:9000']
+        environment:
+            # https://docs.minio.io/docs/minio-server-configuration-guide
+            - MINIO_ACCESS_KEY=FAKE-aWs-s3-keY
+            - MINIO_SECRET_KEY=FAKE-aWs-s3-sEcreT
+            - MINIO_REGION=us-east-1
+        command: server --address :9000 /data
     app:
         image: 'tienvx/mbt-example-app'
         ports:
@@ -34,7 +67,7 @@ services:
             - db
         restart: on-failure
     api:
-        image: "tienvx/mbt-api:${MBT_VERSION}"
+        image: "tienvx/mbt-example-api:${MBT_VERSION}"
         ports:
             - 80:80
         healthcheck:
@@ -45,19 +78,22 @@ services:
         depends_on:
             - queue
             - db
+            - minio
         restart: on-failure
         environment:
             APP_ENV: prod
             DATABASE_URL: 'mysql://user:pass@db:3306/db'
             MESSENGER_TRANSPORT_DSN: 'amqp://guest:guest@queue:5672/%2f/messages'
-            USER_PASSWORD: '$$2y$$13$$gWuD7B7irvHWJo7kMx9w8eJpLEuSZiR5iMgK1p2foCeYPsjsAk0k.'
-            ADMIN_PASSWORD: '$$2y$$13$$3rT10fXyh9o12mVSaPnbmu92HX3anslUtXabjXu6zdYojpopeFVba'
+            USER_PASSWORD: '$$2y$$13$$gWuD7B7irvHWJo7kMx9w8eJpLEuSZiR5iMgK1p2foCeYPsjsAk0k.' # user
+            ADMIN_PASSWORD: '$$2y$$13$$3rT10fXyh9o12mVSaPnbmu92HX3anslUtXabjXu6zdYojpopeFVba' # admin
+            AWS_S3_VERSION: 'latest'
+            AWS_S3_REGION: 'us-east-1'
+            AWS_S3_ENDPOINT: 'http://minio:9000'
+            AWS_S3_KEY: 'FAKE-aWs-s3-keY'
+            AWS_S3_SECRET: 'FAKE-aWs-s3-sEcreT'
+            AWS_S3_BUCKET: 'mbt'
         deploy:
-            placement:
-                constraints: [node.role == manager]
             replicas: 1
-            restart_policy:
-                condition: on-failure
     worker:
         image: "tienvx/mbt-example-worker:${MBT_VERSION}"
         links:
@@ -65,18 +101,26 @@ services:
         depends_on:
             - queue
             - db
+            - minio
         restart: on-failure
         environment:
             APP_ENV: prod
             DATABASE_URL: 'mysql://user:pass@db:3306/db'
             MESSENGER_TRANSPORT_DSN: 'amqp://guest:guest@queue:5672/%2f/messages'
             MAILER_URL: 'smtp://localhost:25?encryption=ssl&auth_mode=login&username=&password='
+            SLACK_TOKEN: 'xxxx-xxxxxxxxxxx-xxxxxxxxx-xxxxxxxxxx-xxxxxx'
+            SLACK_CHANNEL: '#my-channel'
+            FROM_EMAIL: 'mbt@example.com'
+            TO_EMAIL: 'error@example.com'
+            EMAIL_SUBJECT: 'A Bug Was Found!'
+            AWS_S3_VERSION: 'latest'
+            AWS_S3_REGION: 'us-east-1'
+            AWS_S3_ENDPOINT: 'http://minio:9000'
+            AWS_S3_KEY: 'FAKE-aWs-s3-keY'
+            AWS_S3_SECRET: 'FAKE-aWs-s3-sEcreT'
+            AWS_S3_BUCKET: 'mbt'
         deploy:
-            placement:
-                constraints: [node.role == worker]
             replicas: 4
-            restart_policy:
-                condition: on-failure
     admin:
         image: "tienvx/mbt-admin:${MBT_VERSION}"
         ports:
