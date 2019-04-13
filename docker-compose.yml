@@ -24,7 +24,7 @@ services:
     hub:
         image: selenium/hub
         ports:
-            - "4444:4444"
+            - 4444:4444
     chrome:
         image: selenium/node-chrome
         links:
@@ -49,9 +49,25 @@ services:
         deploy:
             replicas: 1
         entrypoint: bash -c 'SE_OPTS="-host $$HOSTNAME" /opt/bin/entry_point.sh'
+    # https://github.com/budtmo/docker-android/blob/master/README_APPIUM_AND_SELENIUM.md
+    # https://github.com/budtmo/docker-android/blob/master/docker-compose.yml
+    android:
+        image: budtmo/docker-android-x86-9.0
+        depends_on:
+            - hub
+        ports:
+            - 6080:6080
+        environment:
+            - DEVICE=Samsung Galaxy S7 Edge
+            - CONNECT_TO_GRID=true
+            - APPIUM=true
+            - SELENIUM_HOST=hub
+            - MOBILE_WEB_TEST=true
+            - AUTO_RECORD=true
     minio:
         image:   'minio/minio'
-        ports: ['9000:9000']
+        ports:
+            - 9000:9000
         environment:
             # https://docs.minio.io/docs/minio-server-configuration-guide
             - MINIO_ACCESS_KEY=FAKE-aWs-s3-keY
