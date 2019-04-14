@@ -53,6 +53,8 @@ services:
     # https://github.com/budtmo/docker-android/blob/master/docker-compose.yml
     android:
         image: budtmo/docker-android-x86-9.0
+        links:
+            - app:example.com
         depends_on:
             - hub
         ports:
@@ -63,7 +65,7 @@ services:
             - APPIUM=true
             - SELENIUM_HOST=hub
             - MOBILE_WEB_TEST=true
-            - AUTO_RECORD=true
+            - AUTO_RECORD=false
     minio:
         image:   'minio/minio'
         ports:
