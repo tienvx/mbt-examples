@@ -53,6 +53,7 @@ services:
     # https://github.com/budtmo/docker-android/blob/master/docker-compose.yml
     android:
         image: budtmo/docker-android-x86-9.0
+        privileged: true
         links:
             - app:example.com
         depends_on:
