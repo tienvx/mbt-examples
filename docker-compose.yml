@@ -52,7 +52,7 @@ services:
     # https://github.com/budtmo/docker-android/blob/master/README_APPIUM_AND_SELENIUM.md
     # https://github.com/budtmo/docker-android/blob/master/docker-compose.yml
     android:
-        image: budtmo/docker-android-x86-9.0
+        image: tienvx/docker-android
         privileged: true
         links:
             - app:example.com
