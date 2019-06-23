@@ -22,11 +22,11 @@ services:
             timeout: 10s
             retries: 5
     hub:
-        image: selenium/hub:3.141.59-neon
+        image: selenium/hub:3.141.59-radium
         ports:
             - 4444:4444
     chrome:
-        image: selenium/node-chrome:3.141.59-neon
+        image: selenium/node-chrome:3.141.59-radium
         links:
             - app:example.com
         volumes:
@@ -38,7 +38,7 @@ services:
             replicas: 1
         entrypoint: bash -c 'SE_OPTS="-host $$HOSTNAME" /opt/bin/entry_point.sh'
     firefox:
-        image: selenium/node-firefox:3.141.59-neon
+        image: selenium/node-firefox:3.141.59-radium
         links:
             - app:example.com
         volumes:
@@ -48,7 +48,7 @@ services:
             HUB_PORT: 4444
         deploy:
             replicas: 1
-        entrypoint: bash -c 'SE_OPTS="-host $$HOSTNAME" /opt/bin/entry_point.sh'
+        entrypoint: bash -c 'SE_OPTS="-host $$HOSTNAME -enablePassThrough false" /opt/bin/entry_point.sh'
     # https://github.com/budtmo/docker-android/blob/master/README_APPIUM_AND_SELENIUM.md
     # https://github.com/budtmo/docker-android/blob/master/docker-compose.yml
     android:
@@ -89,7 +89,6 @@ services:
             retries: 5
         depends_on:
             - db
-        restart: on-failure
     api:
         image: "tienvx/mbt-example-api:${MBT_VERSION}"
         ports:
@@ -103,7 +102,6 @@ services:
             - queue
             - db
             - minio
-        restart: on-failure
         environment:
             APP_ENV: prod
             DATABASE_URL: 'mysql://user:pass@db:3306/db'
@@ -126,14 +124,14 @@ services:
             - queue
             - db
             - minio
-        restart: on-failure
         environment:
             APP_ENV: prod
             DATABASE_URL: 'mysql://user:pass@db:3306/db'
             MESSENGER_TRANSPORT_DSN: 'amqp://guest:guest@queue:5672/%2f/messages'
-            MAILER_URL: 'smtp://localhost:25?encryption=ssl&auth_mode=login&username=&password='
             SLACK_TOKEN: 'xxxx-xxxxxxxxxxx-xxxxxxxxx-xxxxxxxxxx-xxxxxx'
-            SLACK_CHANNEL: '#my-channel'
+            SLACK_FROM: 'My name'
+            SLACK_TO: '#my-channel'
+            SLACK_MESSAGE: 'A Bug Was Found!'
             FROM_EMAIL: 'mbt@example.com'
             TO_EMAIL: 'error@example.com'
             EMAIL_SUBJECT: 'A Bug Was Found!'
@@ -143,6 +141,7 @@ services:
             AWS_S3_KEY: 'FAKE-aWs-s3-keY'
             AWS_S3_SECRET: 'FAKE-aWs-s3-sEcreT'
             AWS_S3_BUCKET: 'mbt'
+            MAILER_DSN: 'smtp://localhost:25?encryption=ssl&auth_mode=login&username=&password='
         deploy:
             replicas: 4
     admin:
