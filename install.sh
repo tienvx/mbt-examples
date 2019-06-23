@@ -1,9 +1,5 @@
 #!/bin/sh
 
-docker-compose exec api openssl genrsa -out config/jwt/private.pem -aes256 4096
-docker-compose exec api openssl rsa -pubout -in config/jwt/private.pem -out config/jwt/public.pem
-docker-compose exec api chmod +r config/jwt/private.pem
-docker-compose exec api openssl rsa -in config/jwt/private.pem -out config/jwt/private.pem
 docker-compose exec api bin/console doctrine:database:create  --if-not-exists
 docker-compose exec api bin/console doctrine:schema:update --force
 docker-compose exec api bin/console cache:clear
