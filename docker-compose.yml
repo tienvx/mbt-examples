@@ -15,7 +15,7 @@ services:
     queue:
         image: rabbitmq:3.7-management
         ports:
-            - 15672:15672
+            - 84:15672
         healthcheck:
             test: ["CMD", "rabbitmqctl", "status"]
             interval: 30s
@@ -70,7 +70,7 @@ services:
     minio:
         image:   'minio/minio'
         ports:
-            - 9000:9000
+            - 83:9000
         environment:
             # https://docs.minio.io/docs/minio-server-configuration-guide
             - MINIO_ACCESS_KEY=FAKE-aWs-s3-keY
