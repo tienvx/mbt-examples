@@ -106,14 +106,20 @@ services:
             APP_ENV: prod
             DATABASE_URL: 'mysql://user:pass@db:3306/db'
             MESSENGER_TRANSPORT_DSN: 'amqp://guest:guest@queue:5672/%2f/messages'
-            USER_PASSWORD: '$$2y$$13$$gWuD7B7irvHWJo7kMx9w8eJpLEuSZiR5iMgK1p2foCeYPsjsAk0k.' # user
-            ADMIN_PASSWORD: '$$2y$$13$$3rT10fXyh9o12mVSaPnbmu92HX3anslUtXabjXu6zdYojpopeFVba' # admin
             AWS_S3_VERSION: 'latest'
             AWS_S3_REGION: 'us-east-1'
             AWS_S3_ENDPOINT: 'http://minio:9000'
             AWS_S3_KEY: 'FAKE-aWs-s3-keY'
             AWS_S3_SECRET: 'FAKE-aWs-s3-sEcreT'
             AWS_S3_BUCKET: 'mbt'
+            SLACK_HOOK_URL: "${SLACK_HOOK_URL}"
+            SLACK_FROM: "${SLACK_FROM}"
+            SLACK_TO: "${SLACK_TO}"
+            SLACK_MESSAGE: "${SLACK_MESSAGE}"
+            EMAIL_FROM: "${EMAIL_FROM}"
+            EMAIL_TO: "${EMAIL_TO}"
+            EMAIL_SUBJECT: "${EMAIL_SUBJECT}"
+            MAILER_DSN: "${MAILER_DSN}"
         deploy:
             replicas: 1
     worker:
@@ -128,20 +134,20 @@ services:
             APP_ENV: prod
             DATABASE_URL: 'mysql://user:pass@db:3306/db'
             MESSENGER_TRANSPORT_DSN: 'amqp://guest:guest@queue:5672/%2f/messages'
-            SLACK_TOKEN: 'xxxx-xxxxxxxxxxx-xxxxxxxxx-xxxxxxxxxx-xxxxxx'
-            SLACK_FROM: 'My name'
-            SLACK_TO: '#my-channel'
-            SLACK_MESSAGE: 'A Bug Was Found!'
-            FROM_EMAIL: 'mbt@example.com'
-            TO_EMAIL: 'error@example.com'
-            EMAIL_SUBJECT: 'A Bug Was Found!'
             AWS_S3_VERSION: 'latest'
             AWS_S3_REGION: 'us-east-1'
             AWS_S3_ENDPOINT: 'http://minio:9000'
             AWS_S3_KEY: 'FAKE-aWs-s3-keY'
             AWS_S3_SECRET: 'FAKE-aWs-s3-sEcreT'
             AWS_S3_BUCKET: 'mbt'
-            MAILER_DSN: 'smtp://localhost:25?encryption=ssl&auth_mode=login&username=&password='
+            SLACK_HOOK_URL: "${SLACK_HOOK_URL}"
+            SLACK_FROM: "${SLACK_FROM}"
+            SLACK_TO: "${SLACK_TO}"
+            SLACK_MESSAGE: "${SLACK_MESSAGE}"
+            EMAIL_FROM: "${EMAIL_FROM}"
+            EMAIL_TO: "${EMAIL_TO}"
+            EMAIL_SUBJECT: "${EMAIL_SUBJECT}"
+            MAILER_DSN: "${MAILER_DSN}"
         deploy:
             replicas: 4
     admin:
