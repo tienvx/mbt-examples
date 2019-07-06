@@ -24,7 +24,7 @@ services:
     hub:
         image: selenium/hub:3.141.59-radium
         ports:
-            - 4444:4444
+            - 85:4444
     chrome:
         image: selenium/node-chrome:3.141.59-radium
         links:
@@ -48,7 +48,7 @@ services:
             HUB_PORT: 4444
         deploy:
             replicas: 1
-        entrypoint: bash -c 'SE_OPTS="-host $$HOSTNAME -enablePassThrough false" /opt/bin/entry_point.sh'
+        entrypoint: bash -c 'SE_OPTS="-host $$HOSTNAME" /opt/bin/entry_point.sh'
     # https://github.com/budtmo/docker-android/blob/master/README_APPIUM_AND_SELENIUM.md
     # https://github.com/budtmo/docker-android/blob/master/docker-compose.yml
     android:

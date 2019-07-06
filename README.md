@@ -31,6 +31,7 @@ $ # Open browser, go to http://localhost:82/
 - [admin](http://localhost:82)
 - [minio](http://localhost:83)
 - [rabbitmq](http://localhost:84)
+- [selenium hub](http://localhost:85)
 
 ## License
 mbt-examples is available under the [MIT license](LICENSE).
