@@ -157,5 +157,5 @@ services:
         depends_on:
             - api
         environment:
-            REACT_APP_API_URL: 'http://localhost/api'
-            REACT_APP_MBT_API_URL: 'http://localhost/mbt-api'
+            API_URL: 'http://localhost/api'
+            MBT_API_URL: 'http://localhost/mbt-api'
