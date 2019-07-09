@@ -29,8 +29,8 @@ $ # Open browser, go to http://localhost:82/
 - [api](http://localhost/api)
 - [app](http://localhost:81)
 - [admin](http://localhost:82)
-- [minio](http://localhost:83)
-- [rabbitmq](http://localhost:84)
+- [rabbitmq](http://localhost:83)
+- [minio](http://localhost:84)
 - [selenium hub](http://localhost:85)
 
 ## License
