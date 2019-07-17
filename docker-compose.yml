@@ -157,5 +157,4 @@ services:
         depends_on:
             - api
         environment:
-            API_URL: 'http://localhost/api'
-            MBT_API_URL: 'http://localhost/mbt-api'
+            API_URL: 'http://localhost'
