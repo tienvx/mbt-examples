@@ -2,6 +2,7 @@
 
 docker-compose exec api bin/console doctrine:database:create  --if-not-exists
 docker-compose exec api bin/console doctrine:schema:update --force
+docker-compose exec api bin/console cache:clear
 docker-compose exec app php install/cli_install.php install \
       --db_hostname db \
       --db_username user \
