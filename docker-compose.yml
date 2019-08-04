@@ -25,15 +25,27 @@ services:
         image: selenium/hub:3.141.59-radium
         ports:
             - 85:4444
+        healthcheck:
+            test: ["CMD", "/opt/bin/check-grid.sh", "--host", "0.0.0.0", "--port", "4444"]
+            interval: 30s
+            timeout: 10s
+            retries: 5
+        environment:
+            SE_OPTS: "-timeout 30"
     chrome:
         image: selenium/node-chrome:3.141.59-radium
         links:
             - app:example.com
+        depends_on:
+            - hub
         volumes:
             - /dev/shm:/dev/shm
         environment:
             HUB_HOST: hub
             HUB_PORT: 4444
+            #START_XVFB: 0
+            NODE_MAX_INSTANCES: 5
+            NODE_MAX_SESSION: 5
         deploy:
             replicas: 1
         entrypoint: bash -c 'SE_OPTS="-host $$HOSTNAME" /opt/bin/entry_point.sh'
@@ -41,11 +53,16 @@ services:
         image: selenium/node-firefox:3.141.59-radium
         links:
             - app:example.com
+        depends_on:
+            - hub
         volumes:
             - /dev/shm:/dev/shm
         environment:
             HUB_HOST: hub
             HUB_PORT: 4444
+            #START_XVFB: 0
+            NODE_MAX_INSTANCES: 5
+            NODE_MAX_SESSION: 5
         deploy:
             replicas: 1
         entrypoint: bash -c 'SE_OPTS="-host $$HOSTNAME" /opt/bin/entry_point.sh'
@@ -59,7 +76,7 @@ services:
         depends_on:
             - hub
         ports:
-            - 6080:6080
+            - 86:6080
         environment:
             - DEVICE=Samsung Galaxy S7 Edge
             - CONNECT_TO_GRID=true
@@ -73,9 +90,9 @@ services:
             - 84:9000
         environment:
             # https://docs.minio.io/docs/minio-server-configuration-guide
-            - MINIO_ACCESS_KEY=FAKE-aWs-s3-keY
-            - MINIO_SECRET_KEY=FAKE-aWs-s3-sEcreT
-            - MINIO_REGION=us-east-1
+            MINIO_ACCESS_KEY: "$AWS_S3_KEY"
+            MINIO_SECRET_KEY: "$AWS_S3_SECRET"
+            MINIO_REGION: "$AWS_S3_REGION"
         entrypoint: sh
         command: -c 'mkdir -p /data/mbt && minio server --address :9000 /data'
     app:
@@ -107,10 +124,10 @@ services:
             DATABASE_URL: 'mysql://user:pass@db:3306/db'
             MESSENGER_TRANSPORT_DSN: 'amqp://guest:guest@queue:5672/%2f/messages'
             AWS_S3_VERSION: 'latest'
-            AWS_S3_REGION: 'us-east-1'
+            AWS_S3_REGION: "$AWS_S3_REGION"
             AWS_S3_ENDPOINT: 'http://minio:9000'
-            AWS_S3_KEY: 'FAKE-aWs-s3-keY'
-            AWS_S3_SECRET: 'FAKE-aWs-s3-sEcreT'
+            AWS_S3_KEY: "$AWS_S3_KEY"
+            AWS_S3_SECRET: "$AWS_S3_SECRET"
             AWS_S3_BUCKET: 'mbt'
             SLACK_HOOK_URL: "${SLACK_HOOK_URL}"
             SLACK_FROM: "${SLACK_FROM}"
@@ -135,10 +152,10 @@ services:
             DATABASE_URL: 'mysql://user:pass@db:3306/db'
             MESSENGER_TRANSPORT_DSN: 'amqp://guest:guest@queue:5672/%2f/messages'
             AWS_S3_VERSION: 'latest'
-            AWS_S3_REGION: 'us-east-1'
+            AWS_S3_REGION: "$AWS_S3_REGION"
             AWS_S3_ENDPOINT: 'http://minio:9000'
-            AWS_S3_KEY: 'FAKE-aWs-s3-keY'
-            AWS_S3_SECRET: 'FAKE-aWs-s3-sEcreT'
+            AWS_S3_KEY: "$AWS_S3_KEY"
+            AWS_S3_SECRET: "$AWS_S3_SECRET"
             AWS_S3_BUCKET: 'mbt'
             SLACK_HOOK_URL: "${SLACK_HOOK_URL}"
             SLACK_FROM: "${SLACK_FROM}"

@@ -32,6 +32,10 @@ $ # Open browser, go to http://localhost:82/
 - [rabbitmq](http://localhost:83)
 - [minio](http://localhost:84)
 - [selenium hub](http://localhost:85)
+- [android](http://localhost:86)
+
+## Note
+* Number of workers (4) must less than or equals to max instances of selenium grid node (e.g. chrome - 5, firefox - 5, android - 5)
 
 ## License
 mbt-examples is available under the [MIT license](LICENSE).
