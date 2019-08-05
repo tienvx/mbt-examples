@@ -22,7 +22,7 @@ services:
             timeout: 10s
             retries: 5
     hub:
-        image: selenium/hub:3.141.59-radium
+        image: selenium/hub:3.141.59-titanium
         ports:
             - 85:4444
         healthcheck:
@@ -33,7 +33,7 @@ services:
         environment:
             SE_OPTS: "-timeout 30"
     chrome:
-        image: selenium/node-chrome:3.141.59-radium
+        image: selenium/node-chrome:3.141.59-titanium
         links:
             - app:example.com
         depends_on:
@@ -44,13 +44,13 @@ services:
             HUB_HOST: hub
             HUB_PORT: 4444
             #START_XVFB: 0
-            NODE_MAX_INSTANCES: 5
-            NODE_MAX_SESSION: 5
+            NODE_MAX_INSTANCES: 4
+            NODE_MAX_SESSION: 4
         deploy:
             replicas: 1
         entrypoint: bash -c 'SE_OPTS="-host $$HOSTNAME" /opt/bin/entry_point.sh'
     firefox:
-        image: selenium/node-firefox:3.141.59-radium
+        image: selenium/node-firefox:3.141.59-titanium
         links:
             - app:example.com
         depends_on:
@@ -61,29 +61,29 @@ services:
             HUB_HOST: hub
             HUB_PORT: 4444
             #START_XVFB: 0
-            NODE_MAX_INSTANCES: 5
-            NODE_MAX_SESSION: 5
+            NODE_MAX_INSTANCES: 4
+            NODE_MAX_SESSION: 4
         deploy:
             replicas: 1
         entrypoint: bash -c 'SE_OPTS="-host $$HOSTNAME" /opt/bin/entry_point.sh'
     # https://github.com/budtmo/docker-android/blob/master/README_APPIUM_AND_SELENIUM.md
     # https://github.com/budtmo/docker-android/blob/master/docker-compose.yml
-    android:
-        image: tienvx/docker-android
-        privileged: true
-        links:
-            - app:example.com
-        depends_on:
-            - hub
-        ports:
-            - 86:6080
-        environment:
-            - DEVICE=Samsung Galaxy S7 Edge
-            - CONNECT_TO_GRID=true
-            - APPIUM=true
-            - SELENIUM_HOST=hub
-            - MOBILE_WEB_TEST=true
-            - AUTO_RECORD=false
+    #android:
+    #    image: tienvx/docker-android
+    #    privileged: true
+    #    links:
+    #        - app:example.com
+    #    depends_on:
+    #        - hub
+    #    environment:
+    #        - DEVICE=Samsung Galaxy S10
+    #        - CONNECT_TO_GRID=true
+    #        - APPIUM=true
+    #        - SELENIUM_HOST=hub
+    #        - MOBILE_WEB_TEST=true
+    #        - AUTO_RECORD=false
+    #    deploy:
+    #        replicas: 4
     minio:
         image:   'minio/minio'
         ports:
