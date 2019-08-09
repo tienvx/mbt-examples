@@ -17,3 +17,9 @@ docker-compose exec app php install/cli_install.php install \
       --http_server http://example.com/
 docker-compose exec app sed -i "s/'http:\/\/example.com\/'/\$_SERVER['SERVER_NAME']/g" config.php
 docker-compose exec app sed -i "s/'http:\/\/example.com\/'/\$_SERVER['SERVER_NAME']/g" admin/config.php
+
+docker pull selenoid/vnc:firefox_68.0
+docker pull selenoid/vnc:chrome_76.0
+docker pull selenoid/vnc:opera_60.0
+docker pull selenoid/chrome-mobile:75.0
+docker pull selenoid/video-recorder:latest-release
