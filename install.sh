@@ -15,6 +15,5 @@ docker-compose exec app php install/cli_install.php install \
       --password admin \
       --email youremail@example.com \
       --http_server http://example.com/
-docker-compose exec app php install/customer_install.php
 docker-compose exec app sed -i "s/'http:\/\/example.com\/'/\$_SERVER['SERVER_NAME']/g" config.php
-docker-compose exec app sed -i "s/'http:\/\/example.com\/admin\/'/\$_SERVER['SERVER_NAME'] . 'admin\/'/g" admin/config.php
+docker-compose exec app sed -i "s/'http:\/\/example.com\/'/\$_SERVER['SERVER_NAME']/g" admin/config.php
