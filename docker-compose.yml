@@ -1,7 +1,13 @@
 version: '3'
+networks:
+    selenoid:
+        external:
+            name: selenoid
 services:
     db:
         image: mariadb:10
+        networks:
+            selenoid: null
         environment:
             MYSQL_DATABASE: db
             MYSQL_USER: user
@@ -14,6 +20,8 @@ services:
             retries: 5
     queue:
         image: rabbitmq:3.7-management
+        networks:
+            selenoid: null
         ports:
             - 83:15672
         healthcheck:
@@ -22,70 +30,28 @@ services:
             timeout: 10s
             retries: 5
     hub:
-        image: selenium/hub:3.141.59-titanium
+        image: "selenoid/hub"
+        networks:
+            selenoid: null
+        volumes:
+            - "$PWD/selenoid/config/:/etc/selenoid/:ro"
+            - "/var/run/docker.sock:/var/run/docker.sock"
+            - "$PWD/selenoid/video/:/opt/selenoid/video"
+            - "$PWD/selenoid/logs/:/opt/selenoid/logs"
+        environment:
+            - OVERRIDE_VIDEO_OUTPUT_DIR=$PWD/selenoid/video/
+        command: ["-conf", "/etc/selenoid/browsers.json", "-limit", "4", "-video-output-dir", "/opt/selenoid/video", "-log-output-dir", "/opt/selenoid/logs", "-container-network", "selenoid"]
+    selenoid-ui:
+        image: "aerokube/selenoid-ui"
+        networks:
+            selenoid: null
         ports:
-            - 85:4444
-        healthcheck:
-            test: ["CMD", "/opt/bin/check-grid.sh", "--host", "0.0.0.0", "--port", "4444"]
-            interval: 30s
-            timeout: 10s
-            retries: 5
-        environment:
-            SE_OPTS: "-timeout 30"
-    chrome:
-        image: selenium/node-chrome:3.141.59-titanium
-        links:
-            - app:example.com
-        depends_on:
-            - hub
-        volumes:
-            - /dev/shm:/dev/shm
-        environment:
-            HUB_HOST: hub
-            HUB_PORT: 4444
-            #START_XVFB: 0
-            NODE_MAX_INSTANCES: 4
-            NODE_MAX_SESSION: 4
-        deploy:
-            replicas: 1
-        entrypoint: bash -c 'SE_OPTS="-host $$HOSTNAME" /opt/bin/entry_point.sh'
-    firefox:
-        image: selenium/node-firefox:3.141.59-titanium
-        links:
-            - app:example.com
-        depends_on:
-            - hub
-        volumes:
-            - /dev/shm:/dev/shm
-        environment:
-            HUB_HOST: hub
-            HUB_PORT: 4444
-            #START_XVFB: 0
-            NODE_MAX_INSTANCES: 4
-            NODE_MAX_SESSION: 4
-        deploy:
-            replicas: 1
-        entrypoint: bash -c 'SE_OPTS="-host $$HOSTNAME" /opt/bin/entry_point.sh'
-    # https://github.com/budtmo/docker-android/blob/master/README_APPIUM_AND_SELENIUM.md
-    # https://github.com/budtmo/docker-android/blob/master/docker-compose.yml
-    #android:
-    #    image: tienvx/docker-android
-    #    privileged: true
-    #    links:
-    #        - app:example.com
-    #    depends_on:
-    #        - hub
-    #    environment:
-    #        - DEVICE=Samsung Galaxy S10
-    #        - CONNECT_TO_GRID=true
-    #        - APPIUM=true
-    #        - SELENIUM_HOST=hub
-    #        - MOBILE_WEB_TEST=true
-    #        - AUTO_RECORD=false
-    #    deploy:
-    #        replicas: 4
+            - "85:8080"
+        command: ["--selenoid-uri", "http://hub:4444"]
     minio:
         image:   'minio/minio'
+        networks:
+            selenoid: null
         ports:
             - 84:9000
         environment:
@@ -97,6 +63,10 @@ services:
         command: -c 'mkdir -p /data/mbt && minio server --address :9000 /data'
     app:
         image: 'tienvx/mbt-example-app'
+        networks:
+            selenoid:
+                aliases:
+                    - example.com
         ports:
             - 81:80
         healthcheck:
@@ -108,6 +78,8 @@ services:
             - db
     api:
         image: "tienvx/mbt-example-api:${MBT_VERSION}"
+        networks:
+            selenoid: null
         ports:
             - 80:80
         healthcheck:
@@ -141,8 +113,8 @@ services:
             replicas: 1
     worker:
         image: "tienvx/mbt-example-worker:${MBT_VERSION}"
-        links:
-            - app:example.com
+        networks:
+            selenoid: null
         depends_on:
             - queue
             - db
@@ -169,6 +141,8 @@ services:
             replicas: 4
     admin:
         image: "tienvx/mbt-admin:${MBT_VERSION}"
+        networks:
+            selenoid: null
         ports:
             - 82:80
         depends_on:
