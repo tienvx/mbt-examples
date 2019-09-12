@@ -38,5 +38,25 @@
                 "path": "/wd/hub"
             }
         }
+    },
+    "ie": {
+        "default": "11",
+        "versions": {
+            "11": {
+                "image": "windows/ie:11",
+                "port": "4444",
+                "path": "/"
+            }
+        }
+    },
+    "edge": {
+        "default": "18",
+        "versions": {
+            "18": {
+                "image": "windows/edge:18",
+                "port": "4444",
+                "path": "/"
+            }
+        }
     }
 }
