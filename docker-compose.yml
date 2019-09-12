@@ -139,6 +139,7 @@ services:
             MAILER_DSN: "${MAILER_DSN}"
         deploy:
             replicas: 4
+        command: ["wait-for", "queue:5672", "--", "php", "/usr/local/src/app/bin/console", "messenger:consume", "amqp"]
     admin:
         image: "tienvx/mbt-admin:${MBT_VERSION}"
         networks:
