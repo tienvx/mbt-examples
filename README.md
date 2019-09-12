@@ -39,6 +39,7 @@ $ # Open browser, go to http://localhost:82/
 ## Note
 * Number of workers (4) must be equals to hub's limit (4)
 * Need at least 400MB ram free (on idle, more if tasks are in progress)
+* Build your own windows images at https://github.com/aerokube/windows-images
 
 ## License
 mbt-examples is available under the [MIT license](LICENSE).
