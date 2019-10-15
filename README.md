@@ -91,10 +91,9 @@ $ php bin/console cache:clear
 ### Create your own project
 
 ```
-$ composer create-project symfony/skeleton your-project
+$ composer create-project tienvx/mbt-skeleton my-project
 $ cd your-project
 $ composer require --dev phpunit friendsofphp/php-cs-fixer # Optional
-$ composer require tienvx/mbt-bundle webmozart/assert symfony/http-client symfony/panther symfony/expression-language symfony/security-bundle symfony/maker-bundle
 ```
 
 ## License
