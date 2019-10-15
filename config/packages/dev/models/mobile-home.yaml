@@ -1,0 +1,54 @@
+framework:
+    workflows:
+        # https://demo.opencart.com
+        mobile_home:
+            type: "state_machine"
+            supports:
+                - Tienvx\Bundle\MbtBundle\Subject\SubjectInterface
+            metadata:
+                label: "Mobile Home"
+                tags: ["opencart's shopping cart", "demo", "testing", "model-based-testing", "mobile", "android"]
+            places:
+                - home
+                - cart
+            initial_marking: home
+            transitions:
+                add:
+                    from: home
+                    to: home
+                    metadata:
+                        probability: 25
+                        label: "Add product to cart"
+                wish:
+                    from: home
+                    to: home
+                    metadata:
+                        probability: 25
+                        label: "Add product to wish list"
+                compare:
+                    from: home
+                    to: home
+                    metadata:
+                        probability: 25
+                        label: "Add product into product comparision"
+                openCart:
+                    from: home
+                    to: cart
+                    guard: "!subject.cartIsOpen()"
+                    metadata:
+                        probability: 25
+                        label: "Open cart"
+                closeCart:
+                    from: cart
+                    to: home
+                    guard: "subject.cartIsOpen()"
+                    metadata:
+                        probability: 50
+                        label: "Close cart"
+                remove:
+                    from: cart
+                    to: cart
+                    guard: "subject.cartIsOpen() && subject.cartHasProducts()"
+                    metadata:
+                        probability: 50
+                        label: "Remove product from cart"

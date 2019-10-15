@@ -1,0 +1,21 @@
+services:
+    mbt.s3_client:
+        class: Aws\S3\S3Client
+        arguments:
+            -
+                version: '%env(AWS_S3_VERSION)%'
+                region: '%env(AWS_S3_REGION)%'
+                # endpoint and use_path_style_endpoint are required for minio (local s3)
+                endpoint: '%env(AWS_S3_ENDPOINT)%'
+                use_path_style_endpoint: true
+                credentials:
+                    key: '%env(AWS_S3_KEY)%'
+                    secret: '%env(AWS_S3_SECRET)%'
+flysystem:
+    storages:
+        mbt.storage:
+            adapter: 'aws'
+            options:
+                client: mbt.s3_client
+                bucket: '%env(AWS_S3_BUCKET)%'
+                prefix: ''

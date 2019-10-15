@@ -1,0 +1,28 @@
+tienvx_mbt:
+    predefined_cases:
+        checkout_out_of_stock_product:
+            title: 'Add (out of stock) product then checkout'
+            model: 'shopping_cart'
+            steps:
+                - transition: null
+                  data: []
+                - transition: viewAnyCategoryFromHome
+                  data:
+                      - key: category
+                        value: 57
+                - transition: addFromCategory
+                  data:
+                      - key: product
+                        value: 49
+                - transition: viewOtherCategory
+                  data:
+                      - key: category
+                        value: 34
+                - transition: viewProductFromCategory
+                  data:
+                      - key: product
+                        value: 48
+                - transition: backToHomeFromProduct
+                  data: []
+                - transition: checkoutFromHome
+                  data: []
