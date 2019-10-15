@@ -24,19 +24,19 @@ There are 2 ways to run these examples:
 ```
 $ cd docker
 $ docker network create selenoid
-$ docker-compose --compatibility up
+$ docker-compose up --scale worker=2
 $ bash install.sh # Run on another terminal
 ```
 
 ### Usage
 
-Open web browser, navigate to http://localhost and register new user
+Open web browser, navigate to http://localhost and login using admin/admin, or register new user
 
 ### Notes
 
 * Put your models to config/packages/dev directory
-* Number of workers (4) must be equals to hub's limit (4)
-* Need at least 340MB ram free (on idle, more if tasks are in progress)
+* Number of workers (2) must be less than or equals to hub's limit (5)
+* Need at least 270MB RAM free (on idle, 2 workers), more if tasks are in progress
 * Build your own windows images at https://github.com/aerokube/windows-images
 * Useful tools available on other ports:
   * [app](http://localhost:81)
