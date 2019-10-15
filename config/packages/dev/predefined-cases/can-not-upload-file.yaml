@@ -1,0 +1,22 @@
+tienvx_mbt:
+    predefined_cases:
+        can_not_upload_file:
+            title: 'Test upload file'
+            model: 'product'
+            steps:
+                - transition: null
+                  data: []
+                - transition: selectOptions
+                  data: []
+                - transition: selectSelect
+                  data:
+                      - key: select
+                        value: 2
+                - transition: selectTime
+                  data: []
+                - transition: selectDateTime
+                  data: []
+                - transition: fillText
+                  data: []
+                - transition: selectFile
+                  data: []

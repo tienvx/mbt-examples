@@ -1,0 +1,32 @@
+tienvx_mbt:
+    predefined_cases:
+        mobile_full_flow:
+            title: 'Mobile (Full Flow)'
+            model: 'mobile_home'
+            steps:
+                - transition: null
+                  data: []
+                - transition: add
+                  data:
+                      - key: product
+                        value: 43
+                - transition: wish
+                  data:
+                      - key: product
+                        value: 42
+                - transition: compare
+                  data:
+                      - key: product
+                        value: 30
+                - transition: add
+                  data:
+                      - key: product
+                        value: 40
+                - transition: openCart
+                  data: []
+                - transition: remove
+                  data:
+                      - key: product
+                        value: 40
+                - transition: closeCart
+                  data: []

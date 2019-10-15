@@ -1,0 +1,50 @@
+framework:
+    workflows:
+        # http://docs.opencart.com/en-gb/system/users/api/
+        # https://github.com/opencart/opencart/blob/master/upload/catalog/controller/api/login.php
+        api_cart:
+            type: "state_machine"
+            supports:
+                - Tienvx\Bundle\MbtBundle\Subject\SubjectInterface
+            metadata:
+                label: "API Cart"
+                tags: ["opencart's shopping cart", "demo", "testing", "model-based-testing", "api"]
+            places:
+                - unauthorized
+                - authorized
+            initial_marking: unauthorized
+            transitions:
+                login:
+                    from: unauthorized
+                    to: authorized
+                    guard: "!subject.hasApiToken()"
+                    metadata:
+                        label: "Login using api"
+                products:
+                    from: authorized
+                    to: authorized
+                    guard: "subject.hasApiToken()"
+                    metadata:
+                        probability: 25
+                        label: "Get products"
+                add:
+                    from: authorized
+                    to: authorized
+                    guard: "subject.hasApiToken()"
+                    metadata:
+                        probability: 25
+                        label: "Add product into cart"
+                edit:
+                    from: authorized
+                    to: authorized
+                    guard: "subject.hasApiToken() && subject.cartHasProducts()"
+                    metadata:
+                        probability: 25
+                        label: "Edit quantity of product in cart"
+                remove:
+                    from: authorized
+                    to: authorized
+                    guard: "subject.hasApiToken() && subject.cartHasProducts()"
+                    metadata:
+                        label: "Remove product from cart"
+                        probability: 25

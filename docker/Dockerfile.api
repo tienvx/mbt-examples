@@ -1,0 +1,24 @@
+FROM tienvx/mbt-api:v1.13.0
+
+RUN apk add -q --no-cache --virtual .build-deps $PHPIZE_DEPS && \
+    docker-php-ext-install pdo_mysql > /dev/null && \
+    apk del -q .build-deps
+
+COPY config/packages/dev/models /usr/local/src/app/config/packages/prod/models
+COPY config/packages/dev/predefined-cases /usr/local/src/app/config/packages/prod/predefined-cases
+COPY src /usr/local/src/app/src
+
+COPY docker/config/tienvx_mbt.yaml /usr/local/src/app/config/packages/tienvx_mbt.yaml
+COPY docker/config/flysystem.yaml /usr/local/src/app/config/packages/flysystem.yaml
+
+RUN curl -sSL https://getcomposer.org/composer.phar -o /usr/bin/composer && \
+    chmod +x /usr/bin/composer && \
+    composer require -q \
+        symfony/mime \
+        symfony/mailer \
+        symfony/twig-bundle \
+        alek13/slack \
+        league/flysystem-aws-s3-v3 \
+        aws/aws-sdk-php && \
+    composer clearcache -q && \
+    rm /usr/bin/composer

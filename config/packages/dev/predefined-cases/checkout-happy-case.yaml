@@ -1,0 +1,28 @@
+tienvx_mbt:
+    predefined_cases:
+        checkout_happy_case:
+            title: 'One of many checkout flows'
+            model: 'checkout'
+            steps:
+                - transition: null
+                  data: []
+                - transition: addProductAndCheckoutNotLoggedIn
+                  data: []
+                - transition: guestCheckout
+                  data: []
+                - transition: fillPersonalDetails
+                  data: []
+                - transition: fillBillingAddress
+                  data: []
+                - transition: guestCheckoutAndAddBillingAddress
+                  data: []
+                - transition: useExistingDeliveryAddress
+                  data: []
+                - transition: addDeliveryMethod
+                  data: []
+                - transition: addPaymentMethod
+                  data: []
+                - transition: confirmOrder
+                  data: []
+                - transition: continueShopping
+                  data: []

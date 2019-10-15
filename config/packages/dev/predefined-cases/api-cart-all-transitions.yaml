@@ -1,0 +1,28 @@
+tienvx_mbt:
+    predefined_cases:
+        api_cart_all_transitions:
+            title: 'Api Cart (Add, Edit, Remove)'
+            model: 'api_cart'
+            steps:
+                - transition: null
+                  data: []
+                - transition: login
+                  data: []
+                - transition: products
+                  data: []
+                - transition: add
+                  data:
+                      - key: product
+                        value: 30
+                - transition: add
+                  data:
+                      - key: product
+                        value: 42
+                - transition: edit
+                  data:
+                      - key: product
+                        value: 42
+                - transition: remove
+                  data:
+                      - key: product
+                        value: 30
