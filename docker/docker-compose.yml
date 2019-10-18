@@ -30,14 +30,14 @@ services:
         networks:
             selenoid: null
         ports:
-            - "85:8080"
+            - "84:8080"
         command: ["--selenoid-uri", "http://hub:4444"]
     minio:
         image:   'minio/minio'
         networks:
             selenoid: null
         ports:
-            - 84:9000
+            - 83:9000
         environment:
             # https://docs.minio.io/docs/minio-server-configuration-guide
             MINIO_ACCESS_KEY: "$AWS_S3_KEY"

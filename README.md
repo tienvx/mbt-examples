@@ -25,7 +25,7 @@ There are 2 ways to run these examples:
 $ cd docker
 $ docker network create selenoid
 $ docker-compose up --scale worker=2
-$ bash install.sh # Run on another terminal
+$ ./install.sh # Run on another terminal
 ```
 
 ### Usage
@@ -41,9 +41,8 @@ Open web browser, navigate to http://localhost and login using admin/admin, or r
 * Useful tools available on other ports:
   * [app](http://localhost:81)
   * [api](http://localhost:82/api)
-  * [rabbitmq](http://localhost:83)
-  * [minio](http://localhost:84)
-  * [selenoid ui](http://localhost:85)
+  * [minio](http://localhost:83)
+  * [selenoid ui](http://localhost:84)
 
 ## Development mode
 
