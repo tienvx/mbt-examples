@@ -3,6 +3,8 @@ networks:
     selenoid:
         external:
             name: selenoid
+volumes:
+    source:
 services:
     db:
         image: jbergstroem/mariadb-alpine
@@ -55,19 +57,31 @@ services:
             - 81:80
         depends_on:
             - db
+    api-nginx:
+        image: nginx:alpine
+        networks:
+            selenoid: null
+        ports:
+            - 82:80
+        volumes:
+            - source:/usr/local/src/app
+            - ./api-nginx.conf:/etc/nginx/conf.d/default.conf
+        depends_on:
+            - api
     api:
         build:
             context: ..
             dockerfile: docker/Dockerfile.api
         networks:
             selenoid: null
-        ports:
-            - 82:80
         depends_on:
             - db
             - minio
         env_file:
             - .env
+        volumes:
+            - source:/usr/local/src/app
+            - ./api-fpm.conf:/usr/local/etc/php-fpm.d/zzz-api-fpm.conf
     worker:
         build:
             context: ..
@@ -79,7 +93,9 @@ services:
             - minio
         env_file:
             - .env
-        command: ["wait-for", "db:3306", "--timeout=99", "--", "php", "/usr/local/src/app/bin/console", "messenger:consume", "async"]
+        volumes:
+            - ./worker-command.sh:/usr/local/bin/worker-command.sh
+        command: ["sh", "/usr/local/bin/worker-command.sh"]
     admin:
         image: "tienvx/mbt-admin:v1.13.0"
         networks:

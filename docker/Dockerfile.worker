@@ -1,4 +1,4 @@
-FROM tienvx/mbt-worker:v1.13.0
+FROM tienvx/mbt-worker:v1.14.0
 
 RUN apk add -q --no-cache --virtual .build-deps zlib-dev $PHPIZE_DEPS && \
     apk add -q --no-cache \
@@ -26,15 +26,18 @@ RUN curl -sSL https://getcomposer.org/composer.phar -o /usr/bin/composer && \
         alek13/slack \
         league/flysystem-aws-s3-v3 \
         aws/aws-sdk-php && \
-    composer clearcache -q && \
-    rm /usr/bin/composer
-
-RUN cd /usr/local/src/app/vendor/facebook/webdriver && \
+    # Begin patch panther
+    cd /usr/local/src/app/vendor/facebook/webdriver && \
     wget -q https://gist.githubusercontent.com/tienvx/6401d3c7bc49c534ee5a1b33e4481b3e/raw/ae8d96dcc4aebc78b4a779c80557006a1ba54ce4/560.4.diff && \
     apk add -q --no-cache patch && \
     patch -t -p1 < 560.4.diff; exit 0 && \
     rm 560.4.diff && \
-    apk del -q patch
+    apk del -q patch && \
+    # End patch panther
+    cd /usr/local/src/app && \
+    composer dump-autoload --no-dev --classmap-authoritative && \
+    composer clearcache -q && \
+    rm /usr/bin/composer
 
 RUN curl -sSL https://raw.githubusercontent.com/eficode/wait-for/master/wait-for -o /usr/bin/wait-for && \
     chmod +x /usr/bin/wait-for

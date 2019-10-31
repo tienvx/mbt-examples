@@ -1,8 +1,4 @@
-FROM tienvx/mbt-api:v1.13.0
-
-RUN apk add -q --no-cache --virtual .build-deps $PHPIZE_DEPS && \
-    docker-php-ext-install pdo_mysql > /dev/null && \
-    apk del -q .build-deps
+FROM tienvx/mbt-api:v1.14.0
 
 COPY config/packages/dev/models /usr/local/src/app/config/packages/prod/models
 COPY config/packages/dev/predefined-cases /usr/local/src/app/config/packages/prod/predefined-cases
@@ -20,5 +16,6 @@ RUN curl -sSL https://getcomposer.org/composer.phar -o /usr/bin/composer && \
         alek13/slack \
         league/flysystem-aws-s3-v3 \
         aws/aws-sdk-php && \
+    composer dump-autoload --no-dev --classmap-authoritative && \
     composer clearcache -q && \
     rm /usr/bin/composer
