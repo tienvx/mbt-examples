@@ -97,7 +97,7 @@ services:
             - ./worker-command.sh:/usr/local/bin/worker-command.sh
         command: ["sh", "/usr/local/bin/worker-command.sh"]
     admin:
-        image: "tienvx/mbt-admin:v1.13.0"
+        image: "tienvx/mbt-admin:v1.14.0"
         networks:
             selenoid: null
         ports:
