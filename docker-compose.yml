@@ -10,22 +10,19 @@ services:
         image: jbergstroem/mariadb-alpine
         networks:
             selenoid: null
-        environment:
-            MYSQL_DATABASE: db
-            MYSQL_USER: user
-            MYSQL_PASSWORD: pass
-            MYSQL_ROOT_PASSWORD: root
+        env_file:
+            - docker/.env-db
     hub:
         image: "selenoid/hub"
         networks:
             selenoid: null
         volumes:
-            - "$PWD/selenoid/config/:/etc/selenoid/:ro"
+            - "$PWD/docker/selenoid/config/:/etc/selenoid/:ro"
             - "/var/run/docker.sock:/var/run/docker.sock"
-            - "$PWD/selenoid/video/:/opt/selenoid/video"
-            - "$PWD/selenoid/logs/:/opt/selenoid/logs"
+            - "$PWD/docker/selenoid/video/:/opt/selenoid/video"
+            - "$PWD/docker/selenoid/logs/:/opt/selenoid/logs"
         environment:
-            - OVERRIDE_VIDEO_OUTPUT_DIR=$PWD/selenoid/video/
+            - OVERRIDE_VIDEO_OUTPUT_DIR=$PWD/docker/selenoid/video/
         command: ["-conf", "/etc/selenoid/browsers.json", "-limit", "5", "-video-output-dir", "/opt/selenoid/video", "-log-output-dir", "/opt/selenoid/logs", "-container-network", "selenoid"]
     selenoid-ui:
         image: "aerokube/selenoid-ui"
@@ -40,11 +37,8 @@ services:
             selenoid: null
         ports:
             - 83:9000
-        environment:
-            # https://docs.minio.io/docs/minio-server-configuration-guide
-            MINIO_ACCESS_KEY: "$AWS_S3_KEY"
-            MINIO_SECRET_KEY: "$AWS_S3_SECRET"
-            MINIO_REGION: "$AWS_S3_REGION"
+        env_file:
+            - docker/.env-minio
         entrypoint: sh
         command: -c 'mkdir -p /data/mbt && minio server --address :9000 /data'
     app:
@@ -65,39 +59,36 @@ services:
             - 82:80
         volumes:
             - source:/usr/local/src/app
-            - ./api-nginx.conf:/etc/nginx/conf.d/default.conf
+            - ./docker/build/api-nginx.conf:/etc/nginx/conf.d/default.conf
         depends_on:
             - api
     api:
         build:
-            context: ..
-            dockerfile: docker/Dockerfile.api
+            context: .
+            dockerfile: docker/build/Dockerfile.api
         networks:
             selenoid: null
         depends_on:
             - db
             - minio
         env_file:
-            - .env
+            - docker/.env
         volumes:
             - source:/usr/local/src/app
-            - ./api-fpm.conf:/usr/local/etc/php-fpm.d/zzz-api-fpm.conf
     worker:
         build:
-            context: ..
-            dockerfile: docker/Dockerfile.worker
+            context: .
+            dockerfile: docker/build/Dockerfile.worker
         networks:
             selenoid: null
         depends_on:
             - db
             - minio
         env_file:
-            - .env
-        volumes:
-            - ./worker-command.sh:/usr/local/bin/worker-command.sh
-        command: ["sh", "/usr/local/bin/worker-command.sh"]
+            - docker/.env
+        command: ["wait-for", "db:3306", "--timeout=99", "--", "php", "/usr/local/src/app/bin/console", "messenger:consume", "async"]
     admin:
-        image: "tienvx/mbt-admin:v1.14.0"
+        image: "tienvx/mbt-admin:v1.15.0"
         networks:
             selenoid: null
         ports:

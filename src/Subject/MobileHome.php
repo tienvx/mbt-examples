@@ -2,20 +2,20 @@
 
 namespace App\Subject;
 
+use App\Helper\SetUp;
+use App\PageObjects\HomePage;
+use App\PageObjects\MasterPage;
+use Exception;
 use Facebook\WebDriver\Exception\NoSuchElementException;
 use Facebook\WebDriver\Exception\TimeOutException;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverExpectedCondition;
-use Exception;
 use Symfony\Component\Process\Process;
 use Tienvx\Bundle\MbtBundle\Annotation\Subject;
 use Tienvx\Bundle\MbtBundle\Annotation\Transition;
-use Tienvx\Bundle\MbtBundle\Entity\Data;
-use Tienvx\Bundle\MbtBundle\Helper\DataHelper;
+use Tienvx\Bundle\MbtBundle\Steps\Data;
+use Tienvx\Bundle\MbtBundle\Steps\DataHelper;
 use Tienvx\Bundle\MbtBundle\Subject\AbstractSubject;
-use App\Helper\SetUp;
-use App\PageObjects\HomePage;
-use App\PageObjects\MasterPage;
 
 /**
  * @Subject("mobile_home")
@@ -59,17 +59,14 @@ class MobileHome extends AbstractSubject
 
     public function __construct()
     {
-        parent::__construct();
         $this->cart = [];
     }
 
     /**
-     * @param bool $testing
-     *
      * @throws NoSuchElementException
      * @throws TimeOutException
      */
-    public function setUp(bool $testing = false)
+    public function setUp(bool $testing = false): void
     {
         if ($testing) {
             $this->url = 'https://demo.opencart.com';
@@ -78,7 +75,7 @@ class MobileHome extends AbstractSubject
         $this->goToHome();
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         $this->client->quit();
     }
@@ -95,8 +92,6 @@ class MobileHome extends AbstractSubject
 
     /**
      * @Transition("add")
-     *
-     * @param Data $data
      *
      * @throws Exception
      */
@@ -128,8 +123,6 @@ class MobileHome extends AbstractSubject
     /**
      * @Transition("wish")
      *
-     * @param Data $data
-     *
      * @throws Exception
      */
     public function wish(Data $data)
@@ -147,8 +140,6 @@ class MobileHome extends AbstractSubject
 
     /**
      * @Transition("compare")
-     *
-     * @param Data $data
      *
      * @throws Exception
      */
@@ -219,8 +210,6 @@ class MobileHome extends AbstractSubject
     /**
      * @Transition("remove")
      *
-     * @param Data $data
-     *
      * @throws Exception
      */
     public function remove(Data $data)
@@ -271,7 +260,7 @@ class MobileHome extends AbstractSubject
         $element->click();
     }
 
-    public function captureScreenshot($bugId, $index)
+    public function captureScreenshot($bugId, $index): void
     {
         $this->client->takeScreenshot('/tmp/screenshot.png');
 
@@ -282,10 +271,5 @@ class MobileHome extends AbstractSubject
         $this->filesystem->put("{$bugId}/{$index}.png", $image);
 
         unlink('/tmp/screenshot.png');
-    }
-
-    public function getScreenshotUrl($bugId, $index)
-    {
-        return sprintf('http://localhost/api/bugs/%d/screenshot/%d', $bugId, $index);
     }
 }

@@ -2,24 +2,23 @@
     "type": "project",
     "license": "proprietary",
     "require": {
-        "php": "^7.1.3",
+        "php": "^7.2.5",
         "ext-ctype": "*",
         "ext-iconv": "*",
-        "symfony/console": "4.3.*",
-        "symfony/dotenv": "4.3.*",
-        "symfony/expression-language": "4.3.*",
+        "facebook/webdriver": "^1.8@dev",
+        "symfony/dotenv": "5.0.*",
+        "symfony/expression-language": "5.0.*",
         "symfony/flex": "^1.3.1",
-        "symfony/framework-bundle": "4.3.*",
-        "symfony/http-client": "4.3.*",
-        "symfony/maker-bundle": "^1.13",
-        "symfony/panther": "^0.5.2",
-        "symfony/security-bundle": "4.3.*",
-        "symfony/yaml": "4.3.*",
-        "tienvx/mbt-bundle": "^1.13",
-        "webmozart/assert": "^1.5"
+        "symfony/http-client": "5.0.*",
+        "symfony/panther": "^0.6.0",
+        "symfony/security-bundle": "5.0.*",
+        "symfony/yaml": "5.0.*",
+        "tienvx/mbt-bundle": "^1.15",
+        "webmozart/assert": "^1.6"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^2.15",
+        "friendsofphp/php-cs-fixer": "^2.16",
+        "symfony/maker-bundle": "^1.0",
         "symfony/test-pack": "^1.0"
     },
     "config": {
@@ -42,6 +41,7 @@
         "paragonie/random_compat": "2.*",
         "symfony/polyfill-ctype": "*",
         "symfony/polyfill-iconv": "*",
+        "symfony/polyfill-php72": "*",
         "symfony/polyfill-php71": "*",
         "symfony/polyfill-php70": "*",
         "symfony/polyfill-php56": "*"
@@ -63,8 +63,8 @@
     },
     "extra": {
         "symfony": {
-            "allow-contrib": false,
-            "require": "4.3.*"
+            "allow-contrib": true,
+            "require": "5.0.*"
         }
     }
 }

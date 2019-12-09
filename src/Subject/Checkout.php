@@ -2,8 +2,10 @@
 
 namespace App\Subject;
 
-use Symfony\Component\Process\Process;
 use App\Helper\ElementHelper;
+use App\Helper\SetUp;
+use App\PageObjects\CheckoutPage;
+use App\PageObjects\ProductPage;
 use Exception;
 use Facebook\WebDriver\Exception\NoSuchElementException;
 use Facebook\WebDriver\Exception\TimeOutException;
@@ -11,12 +13,10 @@ use Facebook\WebDriver\Exception\UnexpectedTagNameException;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverExpectedCondition;
 use Facebook\WebDriver\WebDriverSelect;
+use Symfony\Component\Process\Process;
 use Tienvx\Bundle\MbtBundle\Annotation\Subject;
 use Tienvx\Bundle\MbtBundle\Annotation\Transition;
 use Tienvx\Bundle\MbtBundle\Subject\AbstractSubject;
-use App\Helper\SetUp;
-use App\PageObjects\CheckoutPage;
-use App\PageObjects\ProductPage;
 
 /**
  * @Subject("checkout")
@@ -51,7 +51,7 @@ class Checkout extends AbstractSubject
      */
     protected $registerAccount = false;
 
-    public function setUp(bool $testing = false)
+    public function setUp(bool $testing = false): void
     {
         if ($testing) {
             $this->url = 'https://demo.opencart.com';
@@ -60,7 +60,7 @@ class Checkout extends AbstractSubject
         $this->goToHome();
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         $this->client->quit();
     }
@@ -506,7 +506,7 @@ class Checkout extends AbstractSubject
         $this->waitUntilVisibilityOfElementLocated($by);
     }
 
-    public function captureScreenshot($bugId, $index)
+    public function captureScreenshot($bugId, $index): void
     {
         $this->client->takeScreenshot('/tmp/screenshot.png');
 
@@ -520,8 +520,6 @@ class Checkout extends AbstractSubject
     }
 
     /**
-     * @param WebDriverBy $by
-     *
      * @throws TimeOutException
      */
     public function waitUntilVisibilityOfElementLocated(WebDriverBy $by)
@@ -538,10 +536,5 @@ class Checkout extends AbstractSubject
     private function goToHome()
     {
         $this->client->get($this->url.'/index.php?route=common/home');
-    }
-
-    public function getScreenshotUrl($bugId, $index)
-    {
-        return sprintf('http://localhost/api/bugs/%d/screenshot/%d', $bugId, $index);
     }
 }
