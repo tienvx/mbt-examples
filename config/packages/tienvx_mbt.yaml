@@ -1,11 +1,14 @@
+imports:
+    - { resource: dev/models/*.yaml }
+    - { resource: dev/predefined-cases/*.yaml }
+
 tienvx_mbt:
-    slack_hook_url: '%env(SLACK_HOOK_URL)%'
-    slack_from: '%env(SLACK_FROM)%'
-    slack_to: '%env(SLACK_TO)%'
-    slack_message: '%env(SLACK_MESSAGE)%'
+#    max_steps: 300
+#    transition_coverage: 100
+#    place_coverage: 100
+#    default_bug_title: 'New bug'
     email_from: '%env(EMAIL_FROM)%'
-    email_to: '%env(EMAIL_TO)%'
-    email_subject: '%env(EMAIL_SUBJECT)%'
+    admin_url: '%env(ADMIN_URL)%'
 
 flysystem:
     storages:

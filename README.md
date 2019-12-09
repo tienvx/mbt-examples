@@ -3,16 +3,14 @@
 This project contains example models to demonstrate how to test using MBT Bundle tool.
 
 There are 2 ways to run these examples:
-* [Deployment mode](#deployment-mode)
-  * If you want to see how everything work together
+* [With Docker](#with-docker)
+  * Everything are pre-configured, include admin UI
   * Require more CPU and RAM
-  * With UI
-* [Development mode](#development-mode)
-  * If you want to customize code & quickly test it
+* [Without Docker](#without-docker)
+  * Code can be customized & quickly tested on command line, without admin UI
   * Require less CPU and RAM
-  * Without UI
 
-## Deployment mode
+## With Docker
 
 ### Requirements
 
@@ -22,11 +20,10 @@ There are 2 ways to run these examples:
 ### Install
 
 ```
-$ cd docker
 $ docker network create selenoid
-$ docker-compose --project-name mbt-examples up --scale worker=2
+$ docker-compose up --scale worker=2
 $ # Open another terminal
-$ ./install.sh
+$ ./docker/install.sh
 $ curl -d '{"username":"admin","password":"admin"}' -H "Content-Type: application/json" -XPOST http://localhost:82/mbt-api/register
 ```
 
@@ -46,7 +43,7 @@ Open web browser, navigate to http://localhost and login using admin/admin, or r
   * [minio](http://localhost:83)
   * [selenoid ui](http://localhost:84)
 
-## Development mode
+## Without Docker
 
 ### Requirements
 
@@ -61,18 +58,20 @@ $ composer install
 
 ### Usage
 
-Run the following command to test a model. Replace `[MODEL_NAME]` by:
+Run the following command to test a model:
+
+```
+$ env PANTHER_NO_HEADLESS=1 php bin/console mbt:model:test [MODEL_NAME] --generator random --generator-options '{"maxSteps": 20}'
+```
+
+**Note** - replace `[MODEL_NAME]` by:
 * api_cart
 * checkout
 * mobile_home
 * product
 * shopping_cart
 
-```
-$ env PANTHER_NO_HEADLESS=1 php bin/console mbt:model:test [MODEL_NAME] --generator random --generator-options '{"maxSteps": 20}'
-```
-
-The command will open new Chrome window, navigate to https://demo.opencart.com/
+The command will open new Chrome window, and navigate to https://demo.opencart.com/
 
 ### Generate code
 

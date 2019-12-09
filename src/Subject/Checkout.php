@@ -51,7 +51,7 @@ class Checkout extends AbstractSubject
      */
     protected $registerAccount = false;
 
-    public function setUp(bool $testing = false)
+    public function setUp(bool $testing = false): void
     {
         if ($testing) {
             $this->url = 'https://demo.opencart.com';
@@ -60,7 +60,7 @@ class Checkout extends AbstractSubject
         $this->goToHome();
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         $this->client->quit();
     }
@@ -506,7 +506,7 @@ class Checkout extends AbstractSubject
         $this->waitUntilVisibilityOfElementLocated($by);
     }
 
-    public function captureScreenshot($bugId, $index)
+    public function captureScreenshot($bugId, $index): void
     {
         $this->client->takeScreenshot('/tmp/screenshot.png');
 
@@ -538,10 +538,5 @@ class Checkout extends AbstractSubject
     private function goToHome()
     {
         $this->client->get($this->url.'/index.php?route=common/home');
-    }
-
-    public function getScreenshotUrl($bugId, $index)
-    {
-        return sprintf('http://localhost/api/bugs/%d/screenshot/%d', $bugId, $index);
     }
 }

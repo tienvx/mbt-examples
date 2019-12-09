@@ -9,8 +9,8 @@ use Symfony\Contracts\HttpClient\Exception\ExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Tienvx\Bundle\MbtBundle\Annotation\Subject;
 use Tienvx\Bundle\MbtBundle\Annotation\Transition;
-use Tienvx\Bundle\MbtBundle\Entity\Data;
-use Tienvx\Bundle\MbtBundle\Helper\DataHelper;
+use Tienvx\Bundle\MbtBundle\Steps\Data;
+use Tienvx\Bundle\MbtBundle\Steps\DataHelper;
 use Tienvx\Bundle\MbtBundle\Subject\AbstractSubject;
 use Webmozart\Assert\Assert;
 
@@ -100,11 +100,10 @@ class ApiCart extends AbstractSubject
 
     public function __construct()
     {
-        parent::__construct();
         $this->cart = [];
     }
 
-    public function setUp(bool $testing = false)
+    public function setUp(bool $testing = false): void
     {
         if ($testing) {
             $this->url = 'https://demo.opencart.com';
@@ -112,7 +111,7 @@ class ApiCart extends AbstractSubject
         $this->client = HttpClient::create();
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         $this->client = null;
     }
@@ -227,34 +226,29 @@ class ApiCart extends AbstractSubject
     /**
      * @throws ExceptionInterface
      */
-    public function captureScreenshot($bugId, $index)
+    public function captureScreenshot($bugId, $index): void
     {
         $text = json_encode($this->products());
         $this->filesystem->put("{$bugId}/{$index}.txt", $text);
     }
 
-    public function isImageScreenshot()
+    public function isImageScreenshot(): bool
     {
         return false;
     }
 
-    public function hasScreenshot($bugId, $index)
+    public function hasScreenshot($bugId, $index): bool
     {
         return $this->filesystem->has("{$bugId}/{$index}.txt");
     }
 
-    public function getScreenshot($bugId, $index)
+    public function getScreenshot($bugId, $index): string
     {
         try {
             return $this->filesystem->read("{$bugId}/{$index}.txt");
         } catch (FileNotFoundException $e) {
             return '';
         }
-    }
-
-    public function getScreenshotUrl($bugId, $index)
-    {
-        return sprintf('http://localhost/api/bugs/%d/screenshot/%d', $bugId, $index);
     }
 
     public function randomProductFromCart()

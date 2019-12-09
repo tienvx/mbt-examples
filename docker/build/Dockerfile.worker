@@ -1,4 +1,4 @@
-FROM tienvx/mbt-worker:v1.14.0
+FROM tienvx/mbt-worker:v1.15.0
 
 RUN apk add -q --no-cache --virtual .build-deps zlib-dev $PHPIZE_DEPS && \
     apk add -q --no-cache \
@@ -11,8 +11,7 @@ COPY config/packages/dev/models /usr/local/src/app/config/packages/prod/models
 COPY config/packages/dev/predefined-cases /usr/local/src/app/config/packages/prod/predefined-cases
 COPY src /usr/local/src/app/src
 
-COPY docker/config/tienvx_mbt.yaml /usr/local/src/app/config/packages/tienvx_mbt.yaml
-COPY docker/config/flysystem.yaml /usr/local/src/app/config/packages/flysystem.yaml
+COPY docker/build/tienvx_mbt.yaml /usr/local/src/app/config/packages/tienvx_mbt.yaml
 
 RUN curl -sSL https://getcomposer.org/composer.phar -o /usr/bin/composer && \
     chmod +x /usr/bin/composer && \
@@ -20,20 +19,10 @@ RUN curl -sSL https://getcomposer.org/composer.phar -o /usr/bin/composer && \
         symfony/http-client \
         webmozart/assert \
         symfony/panther \
-        symfony/mime \
-        symfony/mailer \
+        facebook/webdriver:^1.8@dev \
         symfony/twig-bundle \
-        alek13/slack \
         league/flysystem-aws-s3-v3 \
         aws/aws-sdk-php && \
-    # Begin patch panther
-    cd /usr/local/src/app/vendor/facebook/webdriver && \
-    wget -q https://gist.githubusercontent.com/tienvx/6401d3c7bc49c534ee5a1b33e4481b3e/raw/ae8d96dcc4aebc78b4a779c80557006a1ba54ce4/560.4.diff && \
-    apk add -q --no-cache patch && \
-    patch -t -p1 < 560.4.diff; exit 0 && \
-    rm 560.4.diff && \
-    apk del -q patch && \
-    # End patch panther
     cd /usr/local/src/app && \
     composer dump-autoload --no-dev --classmap-authoritative && \
     composer clearcache -q && \

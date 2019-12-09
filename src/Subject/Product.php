@@ -14,7 +14,7 @@ use Symfony\Component\Process\Process;
 use App\Helper\ElementHelper;
 use Tienvx\Bundle\MbtBundle\Annotation\Subject;
 use Tienvx\Bundle\MbtBundle\Annotation\Transition;
-use Tienvx\Bundle\MbtBundle\Entity\Data;
+use Tienvx\Bundle\MbtBundle\Steps\Data;
 use Tienvx\Bundle\MbtBundle\Subject\AbstractSubject;
 use App\Helper\SetUp;
 use App\PageObjects\MasterPage;
@@ -44,7 +44,7 @@ class Product extends AbstractSubject
      * @throws NoSuchElementException
      * @throws TimeOutException
      */
-    public function setUp(bool $testing = false)
+    public function setUp(bool $testing = false): void
     {
         if ($testing) {
             $this->url = 'https://demo.opencart.com';
@@ -53,7 +53,7 @@ class Product extends AbstractSubject
         $this->goToProduct($this->productId);
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         $this->client->quit();
     }
@@ -294,7 +294,7 @@ class Product extends AbstractSubject
         $this->client->waitFor(ProductPage::$product, 1);
     }
 
-    public function captureScreenshot($bugId, $index)
+    public function captureScreenshot($bugId, $index): void
     {
         $this->client->takeScreenshot('/tmp/screenshot.png');
 
@@ -338,10 +338,5 @@ class Product extends AbstractSubject
         foreach ($elements as $element) {
             $element->click();
         }
-    }
-
-    public function getScreenshotUrl($bugId, $index)
-    {
-        return sprintf('http://localhost/api/bugs/%d/screenshot/%d', $bugId, $index);
     }
 }

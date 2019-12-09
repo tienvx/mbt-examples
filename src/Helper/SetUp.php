@@ -24,7 +24,7 @@ trait SetUp
         } else {
             $caps = new DesiredCapabilities();
             $caps->setCapability(WebDriverCapabilityType::BROWSER_NAME, WebDriverBrowserType::FIREFOX);
-            $caps->setCapability(WebDriverCapabilityType::VERSION, '68.0');
+            $caps->setCapability(WebDriverCapabilityType::VERSION, '70.0');
             // These capabilities are for Selenoid only
             $caps->setCapability('enableVNC', true);
             $caps->setCapability('enableLog', false);
@@ -41,7 +41,7 @@ trait SetUp
         } else {
             $caps = new DesiredCapabilities();
             $caps->setCapability(WebDriverCapabilityType::BROWSER_NAME, WebDriverBrowserType::CHROME);
-            $caps->setCapability(WebDriverCapabilityType::VERSION, '76.0');
+            $caps->setCapability(WebDriverCapabilityType::VERSION, '78.0');
             // These capabilities are for Selenoid only
             $caps->setCapability('enableVNC', true);
             $caps->setCapability('enableLog', false);
@@ -59,7 +59,7 @@ trait SetUp
         } else {
             $caps = new DesiredCapabilities();
             $caps->setCapability(WebDriverCapabilityType::BROWSER_NAME, WebDriverBrowserType::OPERA);
-            $caps->setCapability(WebDriverCapabilityType::VERSION, '60.0');
+            $caps->setCapability(WebDriverCapabilityType::VERSION, '65.0');
             // These capabilities are for Selenoid only
             $caps->setCapability('enableVNC', true);
             $caps->setCapability('enableLog', false);

@@ -8,12 +8,12 @@ use Facebook\WebDriver\Exception\TimeOutException;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverExpectedCondition;
 use Symfony\Component\Process\Process;
-use Tienvx\Bundle\MbtBundle\Helper\DataHelper;
 use App\Helper\ElementHelper;
 use Tienvx\Bundle\MbtBundle\Annotation\Place;
 use Tienvx\Bundle\MbtBundle\Annotation\Subject;
 use Tienvx\Bundle\MbtBundle\Annotation\Transition;
-use Tienvx\Bundle\MbtBundle\Entity\Data;
+use Tienvx\Bundle\MbtBundle\Steps\Data;
+use Tienvx\Bundle\MbtBundle\Steps\DataHelper;
 use Tienvx\Bundle\MbtBundle\Subject\AbstractSubject;
 use App\Helper\SetUp;
 use App\PageObjects\CartPage;
@@ -146,13 +146,12 @@ class ShoppingCart extends AbstractSubject
 
     public function __construct()
     {
-        parent::__construct();
         $this->cart = [];
         $this->category = null;
         $this->product = null;
     }
 
-    public function setUp(bool $testing = false)
+    public function setUp(bool $testing = false): void
     {
         if ($testing) {
             $this->url = 'https://demo.opencart.com';
@@ -161,7 +160,7 @@ class ShoppingCart extends AbstractSubject
         $this->goToHome();
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         $this->client->quit();
     }
@@ -591,7 +590,7 @@ class ShoppingCart extends AbstractSubject
         $this->client->get($this->url.'/index.php?route=common/home');
     }
 
-    public function captureScreenshot($bugId, $index)
+    public function captureScreenshot($bugId, $index): void
     {
         $this->client->takeScreenshot('/tmp/screenshot.png');
 
@@ -602,11 +601,6 @@ class ShoppingCart extends AbstractSubject
         $this->filesystem->put("{$bugId}/{$index}.png", $image);
 
         unlink('/tmp/screenshot.png');
-    }
-
-    public function getScreenshotUrl($bugId, $index)
-    {
-        return sprintf('http://localhost/api/bugs/%d/screenshot/%d', $bugId, $index);
     }
 
     public function randomCategory()
