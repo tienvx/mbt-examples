@@ -2,8 +2,10 @@
 
 namespace App\Subject;
 
-use Symfony\Component\Process\Process;
 use App\Helper\ElementHelper;
+use App\Helper\SetUp;
+use App\PageObjects\CheckoutPage;
+use App\PageObjects\ProductPage;
 use Exception;
 use Facebook\WebDriver\Exception\NoSuchElementException;
 use Facebook\WebDriver\Exception\TimeOutException;
@@ -11,12 +13,10 @@ use Facebook\WebDriver\Exception\UnexpectedTagNameException;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverExpectedCondition;
 use Facebook\WebDriver\WebDriverSelect;
+use Symfony\Component\Process\Process;
 use Tienvx\Bundle\MbtBundle\Annotation\Subject;
 use Tienvx\Bundle\MbtBundle\Annotation\Transition;
 use Tienvx\Bundle\MbtBundle\Subject\AbstractSubject;
-use App\Helper\SetUp;
-use App\PageObjects\CheckoutPage;
-use App\PageObjects\ProductPage;
 
 /**
  * @Subject("checkout")
@@ -520,8 +520,6 @@ class Checkout extends AbstractSubject
     }
 
     /**
-     * @param WebDriverBy $by
-     *
      * @throws TimeOutException
      */
     public function waitUntilVisibilityOfElementLocated(WebDriverBy $by)

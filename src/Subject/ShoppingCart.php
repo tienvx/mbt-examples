@@ -2,23 +2,23 @@
 
 namespace App\Subject;
 
+use App\Helper\ElementHelper;
+use App\Helper\SetUp;
+use App\PageObjects\CartPage;
+use App\PageObjects\CategoryPage;
+use App\PageObjects\ProductPage;
 use Exception;
 use Facebook\WebDriver\Exception\NoSuchElementException;
 use Facebook\WebDriver\Exception\TimeOutException;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverExpectedCondition;
 use Symfony\Component\Process\Process;
-use App\Helper\ElementHelper;
 use Tienvx\Bundle\MbtBundle\Annotation\Place;
 use Tienvx\Bundle\MbtBundle\Annotation\Subject;
 use Tienvx\Bundle\MbtBundle\Annotation\Transition;
 use Tienvx\Bundle\MbtBundle\Steps\Data;
 use Tienvx\Bundle\MbtBundle\Steps\DataHelper;
 use Tienvx\Bundle\MbtBundle\Subject\AbstractSubject;
-use App\Helper\SetUp;
-use App\PageObjects\CartPage;
-use App\PageObjects\CategoryPage;
-use App\PageObjects\ProductPage;
 
 /**
  * @Subject("shopping_cart")
@@ -168,8 +168,6 @@ class ShoppingCart extends AbstractSubject
     /**
      * @Transition("viewAnyCategoryFromHome")
      *
-     * @param Data $data
-     *
      * @throws Exception
      */
     public function viewAnyCategoryFromHome(Data $data)
@@ -178,8 +176,6 @@ class ShoppingCart extends AbstractSubject
     }
 
     /**
-     * @param Data $data
-     *
      * @throws Exception
      */
     private function viewCategory(Data $data)
@@ -193,8 +189,6 @@ class ShoppingCart extends AbstractSubject
     /**
      * @Transition("viewOtherCategory")
      *
-     * @param Data $data
-     *
      * @throws Exception
      */
     public function viewOtherCategory(Data $data)
@@ -204,8 +198,6 @@ class ShoppingCart extends AbstractSubject
 
     /**
      * @Transition("viewAnyCategoryFromProduct")
-     *
-     * @param Data $data
      *
      * @throws Exception
      */
@@ -217,8 +209,6 @@ class ShoppingCart extends AbstractSubject
     /**
      * @Transition("viewAnyCategoryFromCart")
      *
-     * @param Data $data
-     *
      * @throws Exception
      */
     public function viewAnyCategoryFromCart(Data $data)
@@ -228,8 +218,6 @@ class ShoppingCart extends AbstractSubject
 
     /**
      * @Transition("viewProductFromHome")
-     *
-     * @param Data $data
      *
      * @throws Exception
      */
@@ -244,8 +232,6 @@ class ShoppingCart extends AbstractSubject
     /**
      * @Transition("viewProductFromCart")
      *
-     * @param Data $data
-     *
      * @throws Exception
      */
     public function viewProductFromCart(Data $data)
@@ -258,8 +244,6 @@ class ShoppingCart extends AbstractSubject
 
     /**
      * @Transition("viewProductFromCategory")
-     *
-     * @param Data $data
      *
      * @throws Exception
      */
@@ -394,8 +378,6 @@ class ShoppingCart extends AbstractSubject
     /**
      * @Transition("addFromHome")
      *
-     * @param Data $data
-     *
      * @throws Exception
      */
     public function addFromHome(Data $data)
@@ -413,8 +395,6 @@ class ShoppingCart extends AbstractSubject
 
     /**
      * @Transition("addFromCategory")
-     *
-     * @param Data $data
      *
      * @throws Exception
      */
@@ -465,8 +445,6 @@ class ShoppingCart extends AbstractSubject
     /**
      * @Transition("remove")
      *
-     * @param Data $data
-     *
      * @throws Exception
      */
     public function remove(Data $data)
@@ -479,8 +457,6 @@ class ShoppingCart extends AbstractSubject
 
     /**
      * @Transition("update")
-     *
-     * @param Data $data
      *
      * @throws Exception
      */

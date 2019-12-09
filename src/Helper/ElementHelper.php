@@ -10,9 +10,6 @@ use Symfony\Component\Panther\Client;
 trait ElementHelper
 {
     /**
-     * @param Client      $client
-     * @param WebDriverBy $by
-     *
      * @return bool
      */
     public function hasElement(Client $client, WebDriverBy $by)

@@ -2,6 +2,10 @@
 
 namespace App\Subject;
 
+use App\Helper\ElementHelper;
+use App\Helper\SetUp;
+use App\PageObjects\MasterPage;
+use App\PageObjects\ProductPage;
 use Exception;
 use Facebook\WebDriver\Exception\NoSuchElementException;
 use Facebook\WebDriver\Exception\TimeOutException;
@@ -11,14 +15,10 @@ use Facebook\WebDriver\WebDriverElement;
 use Facebook\WebDriver\WebDriverExpectedCondition;
 use Facebook\WebDriver\WebDriverSelect;
 use Symfony\Component\Process\Process;
-use App\Helper\ElementHelper;
 use Tienvx\Bundle\MbtBundle\Annotation\Subject;
 use Tienvx\Bundle\MbtBundle\Annotation\Transition;
 use Tienvx\Bundle\MbtBundle\Steps\Data;
 use Tienvx\Bundle\MbtBundle\Subject\AbstractSubject;
-use App\Helper\SetUp;
-use App\PageObjects\MasterPage;
-use App\PageObjects\ProductPage;
 
 /**
  * @Subject("product")
@@ -39,8 +39,6 @@ class Product extends AbstractSubject
     protected $url = 'http://example.com';
 
     /**
-     * @param bool $testing
-     *
      * @throws NoSuchElementException
      * @throws TimeOutException
      */
@@ -61,8 +59,6 @@ class Product extends AbstractSubject
     /**
      * @Transition("selectRadio")
      *
-     * @param Data $data
-     *
      * @throws Exception
      */
     public function selectRadio(Data $data)
@@ -81,8 +77,6 @@ class Product extends AbstractSubject
 
     /**
      * @Transition("selectCheckbox")
-     *
-     * @param Data $data
      *
      * @throws Exception
      */
@@ -110,8 +104,6 @@ class Product extends AbstractSubject
 
     /**
      * @Transition("selectSelect")
-     *
-     * @param Data $data
      *
      * @throws Exception
      * @throws NoSuchElementException
@@ -251,8 +243,6 @@ class Product extends AbstractSubject
     /**
      * @Transition("fillRating")
      *
-     * @param Data $data
-     *
      * @throws Exception
      */
     public function fillRating(Data $data)
@@ -308,10 +298,6 @@ class Product extends AbstractSubject
     }
 
     /**
-     * @param WebDriverBy $by
-     *
-     * @return WebDriverElement
-     *
      * @throws NoSuchElementException
      * @throws TimeOutException
      */

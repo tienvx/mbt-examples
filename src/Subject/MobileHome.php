@@ -2,20 +2,20 @@
 
 namespace App\Subject;
 
+use App\Helper\SetUp;
+use App\PageObjects\HomePage;
+use App\PageObjects\MasterPage;
+use Exception;
 use Facebook\WebDriver\Exception\NoSuchElementException;
 use Facebook\WebDriver\Exception\TimeOutException;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverExpectedCondition;
-use Exception;
 use Symfony\Component\Process\Process;
 use Tienvx\Bundle\MbtBundle\Annotation\Subject;
 use Tienvx\Bundle\MbtBundle\Annotation\Transition;
 use Tienvx\Bundle\MbtBundle\Steps\Data;
 use Tienvx\Bundle\MbtBundle\Steps\DataHelper;
 use Tienvx\Bundle\MbtBundle\Subject\AbstractSubject;
-use App\Helper\SetUp;
-use App\PageObjects\HomePage;
-use App\PageObjects\MasterPage;
 
 /**
  * @Subject("mobile_home")
@@ -63,8 +63,6 @@ class MobileHome extends AbstractSubject
     }
 
     /**
-     * @param bool $testing
-     *
      * @throws NoSuchElementException
      * @throws TimeOutException
      */
@@ -94,8 +92,6 @@ class MobileHome extends AbstractSubject
 
     /**
      * @Transition("add")
-     *
-     * @param Data $data
      *
      * @throws Exception
      */
@@ -127,8 +123,6 @@ class MobileHome extends AbstractSubject
     /**
      * @Transition("wish")
      *
-     * @param Data $data
-     *
      * @throws Exception
      */
     public function wish(Data $data)
@@ -146,8 +140,6 @@ class MobileHome extends AbstractSubject
 
     /**
      * @Transition("compare")
-     *
-     * @param Data $data
      *
      * @throws Exception
      */
@@ -217,8 +209,6 @@ class MobileHome extends AbstractSubject
 
     /**
      * @Transition("remove")
-     *
-     * @param Data $data
      *
      * @throws Exception
      */

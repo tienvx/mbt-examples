@@ -31,12 +31,12 @@ class SubjectTest extends KernelTestCase
     /**
      * @throws Exception
      */
-    public function testSubjects()
+    public function testSubjects(): void
     {
-        $this->assertInstanceOf(Checkout::class, $this->subjectManager->createSubject('checkout'));
-        $this->assertInstanceOf(Product::class, $this->subjectManager->createSubject('product'));
-        $this->assertInstanceOf(ShoppingCart::class, $this->subjectManager->createSubject('shopping_cart'));
-        $this->assertInstanceOf(ApiCart::class, $this->subjectManager->createSubject('api_cart'));
-        $this->assertInstanceOf(MobileHome::class, $this->subjectManager->createSubject('mobile_home'));
+        $this->assertInstanceOf(Checkout::class, $this->subjectManager->create('checkout'));
+        $this->assertInstanceOf(Product::class, $this->subjectManager->create('product'));
+        $this->assertInstanceOf(ShoppingCart::class, $this->subjectManager->create('shopping_cart'));
+        $this->assertInstanceOf(ApiCart::class, $this->subjectManager->create('api_cart'));
+        $this->assertInstanceOf(MobileHome::class, $this->subjectManager->create('mobile_home'));
     }
 }

@@ -154,8 +154,6 @@ class ApiCart extends AbstractSubject
     /**
      * @Transition("edit")
      *
-     * @param Data $data
-     *
      * @throws ExceptionInterface
      * @throws Exception
      */
@@ -176,8 +174,6 @@ class ApiCart extends AbstractSubject
     /**
      * @Transition("remove")
      *
-     * @param Data $data
-     *
      * @throws ExceptionInterface
      * @throws Exception
      */
@@ -195,8 +191,6 @@ class ApiCart extends AbstractSubject
 
     /**
      * @Transition("add")
-     *
-     * @param Data $data
      *
      * @throws ExceptionInterface
      * @throws Exception
