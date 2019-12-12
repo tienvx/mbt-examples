@@ -7,6 +7,7 @@ framework:
             supports:
                 - Tienvx\Bundle\MbtBundle\Subject\SubjectInterface
             metadata:
+                model: true
                 label: "API Cart"
                 tags: ["opencart's shopping cart", "demo", "testing", "model-based-testing", "api"]
             places:
