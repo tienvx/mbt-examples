@@ -88,7 +88,7 @@ services:
             - docker/.env
         command: ["wait-for", "db:3306", "--timeout=99", "--", "php", "/usr/local/src/app/bin/console", "messenger:consume", "async"]
     admin:
-        image: "tienvx/mbt-admin:v1.15.0"
+        image: "tienvx/mbt-admin:v1.15.1"
         networks:
             selenoid: null
         ports:
