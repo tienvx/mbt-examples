@@ -1,4 +1,4 @@
-FROM tienvx/mbt-api:v1.15.0
+FROM tienvx/mbt-api:v1.15.1
 
 COPY config/packages/dev/models /usr/local/src/app/config/packages/prod/models
 COPY config/packages/dev/predefined-cases /usr/local/src/app/config/packages/prod/predefined-cases
