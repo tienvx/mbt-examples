@@ -35,7 +35,7 @@ Open web browser, navigate to http://localhost and login using admin/admin, or r
 
 * Put your models to config/packages/dev directory
 * Number of workers (2) must be less than or equals to hub's limit (5)
-* Need at least 170MB RAM free (on idle, 2 workers), more if tasks are in progress
+* Need at least 250MB RAM free (2 idle workers), more if tasks are in progress
 * Build your own windows images at https://github.com/aerokube/windows-images
 * Useful tools available on other ports:
   * [app](http://localhost:81)

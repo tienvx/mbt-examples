@@ -1,4 +1,4 @@
-FROM tienvx/mbt-worker:v1.15.0
+FROM tienvx/mbt-worker:v1.15.1
 
 RUN apk add -q --no-cache --virtual .build-deps zlib-dev $PHPIZE_DEPS && \
     apk add -q --no-cache \
