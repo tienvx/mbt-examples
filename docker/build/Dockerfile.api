@@ -6,12 +6,13 @@ COPY src /usr/local/src/app/src
 
 COPY docker/build/tienvx_mbt.yaml /usr/local/src/app/config/packages/tienvx_mbt.yaml
 
-RUN curl -sSL https://getcomposer.org/composer.phar -o /usr/bin/composer && \
+RUN curl -sSL https://getcomposer.org/download/1.9.1/composer.phar -o /usr/bin/composer && \
     chmod +x /usr/bin/composer && \
     composer require -q \
         symfony/twig-bundle \
         league/flysystem-aws-s3-v3 \
         aws/aws-sdk-php && \
     composer dump-autoload --no-dev --classmap-authoritative && \
+    composer dump-env prod && \
     composer clearcache -q && \
     rm /usr/bin/composer
