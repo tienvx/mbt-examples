@@ -317,9 +317,6 @@
     "symfony/process": {
         "version": "v5.0.1"
     },
-    "symfony/property-access": {
-        "version": "v5.0.1"
-    },
     "symfony/property-info": {
         "version": "v5.0.1"
     },
@@ -337,28 +334,7 @@
             "config/routes.yaml"
         ]
     },
-    "symfony/security-bundle": {
-        "version": "4.4",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "4.4",
-            "ref": "30efd98dd3b4ead6e9ad4713b1efc43bbe94bf77"
-        },
-        "files": [
-            "config/packages/security.yaml"
-        ]
-    },
     "symfony/security-core": {
-        "version": "v5.0.1"
-    },
-    "symfony/security-csrf": {
-        "version": "v5.0.1"
-    },
-    "symfony/security-guard": {
-        "version": "v5.0.1"
-    },
-    "symfony/security-http": {
         "version": "v5.0.1"
     },
     "symfony/service-contracts": {
