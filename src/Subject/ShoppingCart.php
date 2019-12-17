@@ -31,7 +31,7 @@ class ShoppingCart extends AbstractSubject
     /**
      * @var string
      */
-    protected $url = 'http://example.com';
+    protected $url = 'https://opencart.mbtbundle.org';
 
     /**
      * @var array
@@ -153,9 +153,6 @@ class ShoppingCart extends AbstractSubject
 
     public function setUp(bool $testing = false): void
     {
-        if ($testing) {
-            $this->url = 'https://demo.opencart.com';
-        }
         $this->chrome($testing);
         $this->goToHome();
     }

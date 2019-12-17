@@ -12,6 +12,7 @@ RUN curl -sSL https://getcomposer.org/download/1.9.1/composer.phar -o /usr/bin/c
         symfony/twig-bundle \
         league/flysystem-aws-s3-v3 \
         aws/aws-sdk-php && \
+    rm -rf var/cache/dev && \
     composer dump-autoload --no-dev --classmap-authoritative && \
     composer dump-env prod && \
     composer clearcache -q && \

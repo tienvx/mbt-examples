@@ -1,0 +1,32 @@
+version: '3'
+networks:
+    default:
+        external:
+            name: selenoid
+services:
+    hub:
+        image: "selenoid/hub"
+        volumes:
+            - "$PWD/docker/selenoid/config/:/etc/selenoid/:ro"
+            - "/var/run/docker.sock:/var/run/docker.sock"
+            - "$PWD/docker/selenoid/video/:/opt/selenoid/video"
+            - "$PWD/docker/selenoid/logs/:/opt/selenoid/logs"
+        environment:
+            - OVERRIDE_VIDEO_OUTPUT_DIR=$PWD/docker/selenoid/video/
+        command: ["-conf", "/etc/selenoid/browsers.json", "-limit", "5", "-video-output-dir", "/opt/selenoid/video", "-log-output-dir", "/opt/selenoid/logs", "-container-network", "selenoid"]
+    selenoid-ui:
+        image: "aerokube/selenoid-ui"
+        ports:
+            - "84:8080"
+        command: ["--selenoid-uri", "http://hub:4444"]
+    minio:
+        ports:
+            - 83:9000
+    api-nginx:
+        ports:
+            - 82:80
+    admin:
+        environment:
+            API_URL: 'http://localhost:82'
+        ports:
+            - 80:80

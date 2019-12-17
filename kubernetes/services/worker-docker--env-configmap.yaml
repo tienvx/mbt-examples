@@ -1,0 +1,21 @@
+apiVersion: v1
+data:
+  APP_DEBUG: "0"
+  APP_ENV: prod
+  AWS_S3_BUCKET: mbt
+  AWS_S3_ENDPOINT: http://minio:9000
+  AWS_S3_KEY: FAKE-aWs-s3-keY
+  AWS_S3_REGION: us-east-1
+  AWS_S3_SECRET: FAKE-aWs-s3-sEcreT
+  AWS_S3_VERSION: latest
+  DATABASE_URL: mysql://user:pass@db:3306/db
+  MAILER_DSN: smtp://myemail%40gmail.com:myapppass@smtp.gmail.com:465/?encryption=ssl
+  MESSENGER_FAILURE_TRANSPORT_DSN: doctrine://default?queue_name=failure
+  MESSENGER_TRANSPORT_DSN: doctrine://default
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: worker-docker--env
+  name: worker-docker--env
+  namespace: mbt

@@ -1,0 +1,12 @@
+apiVersion: v1
+data:
+  MINIO_ACCESS_KEY: FAKE-aWs-s3-keY
+  MINIO_REGION: us-east-1
+  MINIO_SECRET_KEY: FAKE-aWs-s3-sEcreT
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: minio-docker--env-minio
+  name: minio-docker--env-minio
+  namespace: mbt

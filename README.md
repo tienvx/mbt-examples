@@ -6,7 +6,11 @@ There are 2 ways to run these examples:
 * [With Docker](#with-docker)
   * Everything are pre-configured, include admin UI
   * Require more CPU and RAM
-* [Without Docker](#without-docker)
+* [With Kubernetes](#with-kubernetes)
+  * Everything are pre-configured, include admin UI
+  * Require Kubernetes cluster
+  * Require even more CPU and RAM
+* [Local Machine](#local-machine)
   * Code can be customized & quickly tested on command line, without admin UI
   * Require less CPU and RAM
 
@@ -24,12 +28,11 @@ $ docker network create selenoid
 $ docker-compose up --scale worker=2
 $ # Open another terminal
 $ ./docker/install.sh
-$ curl -d '{"username":"admin","password":"admin"}' -H "Content-Type: application/json" -XPOST http://localhost:82/mbt-api/register
 ```
 
 ### Usage
 
-Open web browser, navigate to http://localhost and login using admin/admin, or register new user
+Open web browser, navigate to http://localhost and register new user (the first user will have role admin)
 
 ### Notes
 
@@ -38,12 +41,55 @@ Open web browser, navigate to http://localhost and login using admin/admin, or r
 * Need at least 250MB RAM free (2 idle workers), more if tasks are in progress
 * Build your own windows images at https://github.com/aerokube/windows-images
 * Useful tools available on other ports:
-  * [app](http://localhost:81)
   * [api](http://localhost:82/api)
   * [minio](http://localhost:83)
   * [selenoid ui](http://localhost:84)
 
-## Without Docker
+## With Kubernetes
+
+### Requirements
+
+* A Kubernetes's cluster
+* [kubectl](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/#installing-kubeadm-kubelet-and-kubectl)
+
+### Install
+
+Update your domain and your email in ./kubernetes/ingress.yaml,
+ ./kubernetes/issuer.yaml and ./kubernetes/services/admin-docker--env.yaml
+
+Then run:
+```
+$ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/nginx-0.26.1/deploy/static/mandatory.yaml
+$ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/nginx-0.26.1/deploy/static/provider/cloud-generic.yaml
+$ kubectl create namespace cert-manager
+$ kubectl apply --validate=false -f https://github.com/jetstack/cert-manager/releases/download/v0.12.0/cert-manager.yaml
+$ kubectl apply -f ./kubernetes/issuer.yaml
+$ kubectl apply -f ./kubernetes/moon.yaml
+$ kubectl create namespace mbt
+$ kubectl apply -f ./kubernetes/ingress.yaml
+$ kubectl apply -f ./kubernetes/hub.yaml
+$ kubectl apply -f ./kubernetes/services
+$ ./kubernetes/install.sh
+```
+
+If you are using `kubeadm` or `minikube`:
+* External ip of ingress service may be pending. In that case, change it to ip address of master node:
+```
+$ kubectl get service ingress-nginx -n ingress-nginx
+$ kubectl patch svc ingress-nginx -n ingress-nginx -p '{"spec": {"type": "LoadBalancer", "externalIPs":["192.168.10.251"]}}'
+```
+* You may need to update /etc/hosts
+```
+192.168.10.251 demo.mbtbundle.org api.mbtbundle.org opencart.mbtbundle.org
+```
+* Change https://api.mbtbundle.org to http://api.mbtbundle.org in ./kubernetes/services/admin-docker--env.yaml
+* Change https://demo.mbtbundle.org to http://demo.mbtbundle.org in ./kubernetes/services/api-docker--env-configmap.yaml
+
+### Usage
+
+Open web browser, navigate to https://your-domain.com and register new user (the first user will have role admin)
+
+## Local Machine
 
 ### Requirements
 
@@ -71,7 +117,7 @@ $ env PANTHER_NO_HEADLESS=1 php bin/console mbt:model:test [MODEL_NAME] --genera
 * product
 * shopping_cart
 
-The command will open new Chrome window, and navigate to https://demo.opencart.com/
+The command will open new Chrome window, and navigate to https://opencart.mbtbundle.org/
 
 ### Generate code
 
@@ -88,7 +134,7 @@ $ php bin/console make:reporter model_name ClassName
 $ php bin/console cache:clear
 ```
 
-### Create your own project
+## Create your own project
 
 ```
 $ composer create-project tienvx/mbt-skeleton my-project
