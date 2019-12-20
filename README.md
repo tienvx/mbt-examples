@@ -73,7 +73,7 @@ $ ./kubernetes/install.sh
 ```
 
 If you are using `kubeadm` or `minikube`:
-* External ip of ingress service may be pending. In that case, change it to ip address of master node:
+* External ip of ingress-nginx service may be pending. In that case, change it to ip address of master node:
 ```
 $ kubectl get service ingress-nginx -n ingress-nginx
 $ kubectl patch svc ingress-nginx -n ingress-nginx -p '{"spec": {"type": "LoadBalancer", "externalIPs":["192.168.10.251"]}}'
