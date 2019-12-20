@@ -91,6 +91,11 @@ spec:
             configMapKeyRef:
               key: CORS_ALLOW_ORIGIN
               name: api-docker--env
+        - name: TRUSTED_PROXIES
+          valueFrom:
+            configMapKeyRef:
+              key: TRUSTED_PROXIES
+              name: api-docker--env
         image: tienvx/mbt-examples-api:v1.15.1
         name: api
         resources: {}

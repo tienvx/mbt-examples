@@ -13,6 +13,7 @@ data:
   MESSENGER_FAILURE_TRANSPORT_DSN: doctrine://default?queue_name=failure
   MESSENGER_TRANSPORT_DSN: doctrine://default
   CORS_ALLOW_ORIGIN: ^https://demo.mbtbundle.org$
+  TRUSTED_PROXIES: 127.0.0.1,REMOTE_ADDR
 kind: ConfigMap
 metadata:
   creationTimestamp: null
