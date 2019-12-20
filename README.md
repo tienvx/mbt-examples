@@ -2,7 +2,7 @@
 
 This project contains example models to demonstrate how to test using MBT Bundle tool.
 
-There are 2 ways to run these examples:
+There are 3 ways to run these examples:
 * [With Docker](#with-docker)
   * Everything are pre-configured, include admin UI
   * Require more CPU and RAM
@@ -10,7 +10,7 @@ There are 2 ways to run these examples:
   * Everything are pre-configured, include admin UI
   * Require Kubernetes cluster
   * Require even more CPU and RAM
-* [Local Machine](#local-machine)
+* [Command Line](#command-line)
   * Code can be customized & quickly tested on command line, without admin UI
   * Require less CPU and RAM
 
@@ -38,7 +38,7 @@ Open web browser, navigate to http://localhost and register new user (the first 
 
 * Put your models to config/packages/dev directory
 * Number of workers (2) must be less than or equals to hub's limit (5)
-* Need at least 250MB RAM free (2 idle workers), more if tasks are in progress
+* Need at least 220MB RAM free (2 idle workers), more if tasks are in progress
 * Build your own windows images at https://github.com/aerokube/windows-images
 * Useful tools available on other ports:
   * [api](http://localhost:82/api)
@@ -89,7 +89,12 @@ $ kubectl patch svc ingress-nginx -n ingress-nginx -p '{"spec": {"type": "LoadBa
 
 Open web browser, navigate to https://your-domain.com and register new user (the first user will have role admin)
 
-## Local Machine
+### Notes
+
+* [Moon](https://aerokube.com/moon/latest/#_installing_license) only allow you to run up to 4 parallel sessions for free.
+* 4 is also the default number of workers.
+
+## Command Line
 
 ### Requirements
 
