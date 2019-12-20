@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -o kubernetes/services/
+    kompose.version: 1.19.0 (f63a961c)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: minio
+  name: minio
+  namespace: mbt
+spec:
+  ports:
+  - name: "9000"
+    port: 9000
+    targetPort: 9000
+  selector:
+    io.kompose.service: minio
+status:
+  loadBalancer: {}

@@ -1,0 +1,102 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -o kubernetes/services/
+    kompose.version: 1.19.0 (f63a961c)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: worker
+  name: worker
+  namespace: mbt
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      io.kompose.service: worker
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -o kubernetes/services/
+        kompose.version: 1.19.0 (f63a961c)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: worker
+    spec:
+      containers:
+      - args:
+        - wait-for
+        - db:3306
+        - --timeout=99
+        - --
+        - php
+        - /usr/local/src/app/bin/console
+        - messenger:consume
+        - async
+        env:
+        - name: APP_DEBUG
+          valueFrom:
+            configMapKeyRef:
+              key: APP_DEBUG
+              name: worker-docker--env
+        - name: APP_ENV
+          valueFrom:
+            configMapKeyRef:
+              key: APP_ENV
+              name: worker-docker--env
+        - name: AWS_S3_BUCKET
+          valueFrom:
+            configMapKeyRef:
+              key: AWS_S3_BUCKET
+              name: worker-docker--env
+        - name: AWS_S3_ENDPOINT
+          valueFrom:
+            configMapKeyRef:
+              key: AWS_S3_ENDPOINT
+              name: worker-docker--env
+        - name: AWS_S3_KEY
+          valueFrom:
+            configMapKeyRef:
+              key: AWS_S3_KEY
+              name: worker-docker--env
+        - name: AWS_S3_REGION
+          valueFrom:
+            configMapKeyRef:
+              key: AWS_S3_REGION
+              name: worker-docker--env
+        - name: AWS_S3_SECRET
+          valueFrom:
+            configMapKeyRef:
+              key: AWS_S3_SECRET
+              name: worker-docker--env
+        - name: AWS_S3_VERSION
+          valueFrom:
+            configMapKeyRef:
+              key: AWS_S3_VERSION
+              name: worker-docker--env
+        - name: DATABASE_URL
+          valueFrom:
+            configMapKeyRef:
+              key: DATABASE_URL
+              name: worker-docker--env
+        - name: MAILER_DSN
+          valueFrom:
+            configMapKeyRef:
+              key: MAILER_DSN
+              name: worker-docker--env
+        - name: MESSENGER_FAILURE_TRANSPORT_DSN
+          valueFrom:
+            configMapKeyRef:
+              key: MESSENGER_FAILURE_TRANSPORT_DSN
+              name: worker-docker--env
+        - name: MESSENGER_TRANSPORT_DSN
+          valueFrom:
+            configMapKeyRef:
+              key: MESSENGER_TRANSPORT_DSN
+              name: worker-docker--env
+        image: tienvx/mbt-examples-worker:v1.15.1
+        name: worker
+        resources: {}
+      restartPolicy: Always
+status: {}

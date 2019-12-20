@@ -1,0 +1,8 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: hub
+  namespace: mbt
+spec:
+  type: ExternalName
+  externalName: moon.moon.svc.cluster.local

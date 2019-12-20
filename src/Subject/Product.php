@@ -36,7 +36,7 @@ class Product extends AbstractSubject
     /**
      * @var string
      */
-    protected $url = 'http://example.com';
+    protected $url = 'https://opencart.mbtbundle.org';
 
     /**
      * @throws NoSuchElementException
@@ -44,9 +44,6 @@ class Product extends AbstractSubject
      */
     public function setUp(bool $testing = false): void
     {
-        if ($testing) {
-            $this->url = 'https://demo.opencart.com';
-        }
         $this->firefox($testing);
         $this->goToProduct($this->productId);
     }
