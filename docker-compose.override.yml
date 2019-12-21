@@ -19,14 +19,3 @@ services:
         ports:
             - "84:8080"
         command: ["--selenoid-uri", "http://hub:4444"]
-    minio:
-        ports:
-            - 83:9000
-    api-nginx:
-        ports:
-            - 82:80
-    admin:
-        environment:
-            API_URL: 'http://localhost:82'
-        ports:
-            - 80:80

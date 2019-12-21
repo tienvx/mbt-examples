@@ -10,10 +10,14 @@ services:
             - docker/.env-minio
         entrypoint: sh
         command: -c 'mkdir -p /data/mbt && minio server --address :9000 /data'
+        ports:
+            - 83:9000
     api-nginx:
         image: "tienvx/mbt-examples-api-nginx:v1.15.1"
         depends_on:
             - api
+        ports:
+            - 82:80
     api:
         image: "tienvx/mbt-examples-api:v1.15.1"
         depends_on:
@@ -33,3 +37,7 @@ services:
         image: "tienvx/mbt-admin:v1.15.1"
         depends_on:
             - api
+        environment:
+            API_URL: 'http://localhost:82'
+        ports:
+            - 80:80
