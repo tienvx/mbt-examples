@@ -57,6 +57,15 @@ Open web browser, navigate to http://localhost and register new user (the first 
 Update your domain and your email in ./kubernetes/ingress.yaml,
  ./kubernetes/issuer.yaml and ./kubernetes/services/admin-docker--env.yaml
 
+If you are installing on local machine, you may need to use `http` instead of `https`. If so, update /etc/hosts
+```
+192.168.10.251 demo.mbtbundle.org api.mbtbundle.org opencart.mbtbundle.org
+```
+and then change `https` to `http` of API_URL and CORS_ALLOW_ORIGIN environment variables
+in ./kubernetes/services/admin-docker--env.yaml and ./kubernetes/services/api-docker--env-configmap.yaml
+
+Assume that `192.168.10.251` is master node's ip address.
+
 Then run:
 ```
 $ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/nginx-0.26.1/deploy/static/mandatory.yaml
@@ -72,18 +81,12 @@ $ kubectl apply -f ./kubernetes/services
 $ ./kubernetes/install.sh
 ```
 
-If you are using `kubeadm` or `minikube`:
-* External ip of ingress-nginx service may be pending. In that case, change it to ip address of master node:
+If you are using `kubeadm` or `minikube`, external ip of ingress-nginx service may be pending.
+In that case, change it to ip address of master node:
 ```
 $ kubectl get service ingress-nginx -n ingress-nginx
 $ kubectl patch svc ingress-nginx -n ingress-nginx -p '{"spec": {"type": "LoadBalancer", "externalIPs":["192.168.10.251"]}}'
 ```
-* You may need to update /etc/hosts
-```
-192.168.10.251 demo.mbtbundle.org api.mbtbundle.org opencart.mbtbundle.org
-```
-* Change https://api.mbtbundle.org to http://api.mbtbundle.org in ./kubernetes/services/admin-docker--env.yaml
-* Change https://demo.mbtbundle.org to http://demo.mbtbundle.org in ./kubernetes/services/api-docker--env-configmap.yaml
 
 ### Usage
 
