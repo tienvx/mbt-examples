@@ -13,20 +13,20 @@ services:
         ports:
             - 83:9000
     api-nginx:
-        image: "tienvx/mbt-examples-api-nginx:v1.15.1"
+        image: "tienvx/mbt-examples-api-nginx:v1.16.0"
         depends_on:
             - api
         ports:
             - 82:80
     api:
-        image: "tienvx/mbt-examples-api:v1.15.1"
+        image: "tienvx/mbt-examples-api:v1.16.0"
         depends_on:
             - db
             - minio
         env_file:
             - docker/.env
     worker:
-        image: "tienvx/mbt-examples-worker:v1.15.1"
+        image: "tienvx/mbt-examples-worker:v1.16.0"
         depends_on:
             - db
             - minio
@@ -34,7 +34,7 @@ services:
             - docker/.env
         command: ["wait-for", "db:3306", "--timeout=99", "--", "php", "/usr/local/src/app/bin/console", "messenger:consume", "async"]
     admin:
-        image: "tienvx/mbt-admin:v1.15.1"
+        image: "tienvx/mbt-admin:v1.16.0"
         depends_on:
             - api
         environment:
