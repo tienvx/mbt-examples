@@ -31,7 +31,7 @@ spec:
             configMapKeyRef:
               key: API_URL
               name: admin-docker--env
-        image: tienvx/mbt-admin:v1.15.1
+        image: tienvx/mbt-admin:v1.16.0
         name: admin
         ports:
         - containerPort: 80

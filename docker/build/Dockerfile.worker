@@ -1,4 +1,4 @@
-FROM tienvx/mbt-worker:v1.15.1
+FROM tienvx/mbt-worker:v1.16.0
 
 RUN apk add -q --no-cache --virtual .build-deps zlib-dev $PHPIZE_DEPS && \
     apk add -q --no-cache \
@@ -13,13 +13,13 @@ COPY src /usr/local/src/app/src
 
 COPY docker/build/tienvx_mbt.yaml /usr/local/src/app/config/packages/tienvx_mbt.yaml
 
-RUN curl -sSL https://getcomposer.org/download/1.9.1/composer.phar -o /usr/bin/composer && \
+RUN curl -sSL https://getcomposer.org/download/1.10.1/composer.phar -o /usr/bin/composer && \
     chmod +x /usr/bin/composer && \
     composer require -q \
         symfony/http-client \
         webmozart/assert \
         symfony/panther \
-        facebook/webdriver:^1.8@dev \
+        php-webdriver/webdriver \
         symfony/twig-bundle \
         league/flysystem-aws-s3-v3 \
         aws/aws-sdk-php && \

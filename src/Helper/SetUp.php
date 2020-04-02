@@ -24,7 +24,7 @@ trait SetUp
         } else {
             $caps = new DesiredCapabilities();
             $caps->setCapability(WebDriverCapabilityType::BROWSER_NAME, WebDriverBrowserType::FIREFOX);
-            $caps->setCapability(WebDriverCapabilityType::VERSION, '70.0');
+            $caps->setCapability(WebDriverCapabilityType::VERSION, '74.0');
             // These capabilities are for Selenoid only
             $caps->setCapability('enableVNC', true);
             $caps->setCapability('enableLog', false);
@@ -41,7 +41,7 @@ trait SetUp
         } else {
             $caps = new DesiredCapabilities();
             $caps->setCapability(WebDriverCapabilityType::BROWSER_NAME, WebDriverBrowserType::CHROME);
-            $caps->setCapability(WebDriverCapabilityType::VERSION, '78.0');
+            $caps->setCapability(WebDriverCapabilityType::VERSION, '80.0');
             // These capabilities are for Selenoid only
             $caps->setCapability('enableVNC', true);
             $caps->setCapability('enableLog', false);
@@ -59,7 +59,7 @@ trait SetUp
         } else {
             $caps = new DesiredCapabilities();
             $caps->setCapability(WebDriverCapabilityType::BROWSER_NAME, WebDriverBrowserType::OPERA);
-            $caps->setCapability(WebDriverCapabilityType::VERSION, '65.0');
+            $caps->setCapability(WebDriverCapabilityType::VERSION, '67.0');
             // These capabilities are for Selenoid only
             $caps->setCapability('enableVNC', true);
             $caps->setCapability('enableLog', false);
@@ -75,7 +75,7 @@ trait SetUp
         } else {
             $caps = new DesiredCapabilities();
             $caps->setCapability(WebDriverCapabilityType::BROWSER_NAME, WebDriverBrowserType::CHROME);
-            $caps->setCapability(WebDriverCapabilityType::VERSION, '75.0');
+            $caps->setCapability(WebDriverCapabilityType::VERSION, '79.0');
             $caps->setCapability('selenoid:options', [
                 WebDriverCapabilityType::BROWSER_NAME => WebDriverBrowserType::ANDROID,
                 'skin' => 'WXGA720',
