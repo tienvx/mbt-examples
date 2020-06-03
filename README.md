@@ -1,4 +1,4 @@
-# MBT Examples [![Build Status][travis_badge]][travis_link]
+# MBT Examples [![Build Status][actions_badge]][actions_link]
 
 This project contains example models to demonstrate how to test using MBT Bundle tool.
 
@@ -154,5 +154,5 @@ $ composer require --dev phpunit friendsofphp/php-cs-fixer # Optional
 
 This package is available under the [MIT license](LICENSE).
 
-[travis_badge]: https://travis-ci.org/tienvx/mbt-examples.svg?branch=master
-[travis_link]: https://travis-ci.org/tienvx/mbt-examples
+[actions_badge]: https://github.com/tienvx/mbt-examples/workflows/test/badge.svg
+[actions_link]: https://github.com/tienvx/mbt-examples/actions

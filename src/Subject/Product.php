@@ -42,9 +42,9 @@ class Product extends AbstractSubject
      * @throws NoSuchElementException
      * @throws TimeOutException
      */
-    public function setUp(bool $testing = false): void
+    public function setUp(bool $trying = false): void
     {
-        $this->firefox($testing);
+        $this->firefox($trying);
         $this->goToProduct($this->productId);
     }
 

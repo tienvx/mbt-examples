@@ -2,7 +2,7 @@ tienvx_mbt:
     predefined_cases:
         checkout_happy_case:
             title: 'One of many checkout flows'
-            model: 'checkout'
+            workflow: 'checkout'
             steps:
                 - transition: null
                   data: []

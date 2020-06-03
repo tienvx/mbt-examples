@@ -4,9 +4,8 @@ framework:
         product:
             type: 'workflow'
             supports:
-                - Tienvx\Bundle\MbtBundle\Subject\SubjectInterface
+                - Tienvx\Bundle\MbtBundle\Model\SubjectInterface
             metadata:
-                model: true
                 label: "Product Page"
                 tags: ["product page", "demo", "workflow", "testing", "model-based-testing"]
             places:

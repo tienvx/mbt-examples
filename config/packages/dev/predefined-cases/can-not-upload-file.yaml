@@ -2,7 +2,7 @@ tienvx_mbt:
     predefined_cases:
         can_not_upload_file:
             title: 'Test upload file'
-            model: 'product'
+            workflow: 'product'
             steps:
                 - transition: null
                   data: []

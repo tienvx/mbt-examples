@@ -10,7 +10,6 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Tienvx\Bundle\MbtBundle\Annotation\Subject;
 use Tienvx\Bundle\MbtBundle\Annotation\Transition;
 use Tienvx\Bundle\MbtBundle\Steps\Data;
-use Tienvx\Bundle\MbtBundle\Steps\DataHelper;
 use Tienvx\Bundle\MbtBundle\Subject\AbstractSubject;
 use Webmozart\Assert\Assert;
 
@@ -103,7 +102,7 @@ class ApiCart extends AbstractSubject
         $this->cart = [];
     }
 
-    public function setUp(bool $testing = false): void
+    public function setUp(bool $trying = false): void
     {
         $this->client = HttpClient::create();
     }
@@ -156,7 +155,7 @@ class ApiCart extends AbstractSubject
      */
     public function edit(Data $data)
     {
-        $product = DataHelper::get($data, 'product', [$this, 'randomProductFromCart'], [$this, 'validateProductFromCart']);
+        $product = $data->getSet('product', [$this, 'randomProductFromCart'], [$this, 'validateProductFromCart']);
         $quantity = rand(1, 9);
         $response = $this->client->request('POST', $this->url.'/index.php?route=api/cart/edit&api_token='.$this->apiToken, [
             'body' => [
@@ -176,7 +175,7 @@ class ApiCart extends AbstractSubject
      */
     public function remove(Data $data)
     {
-        $product = DataHelper::get($data, 'product', [$this, 'randomProductFromCart'], [$this, 'validateProductFromCart']);
+        $product = $data->getSet('product', [$this, 'randomProductFromCart'], [$this, 'validateProductFromCart']);
         $response = $this->client->request('POST', $this->url.'/index.php?route=api/cart/remove&api_token='.$this->apiToken, [
             'body' => [
                 'key' => $product,
@@ -194,7 +193,7 @@ class ApiCart extends AbstractSubject
      */
     public function add(Data $data)
     {
-        $product = DataHelper::get($data, 'product', [$this, 'randomProductNotInCart'], [$this, 'validateProductNotInCart']);
+        $product = $data->getSet('product', [$this, 'randomProductNotInCart'], [$this, 'validateProductNotInCart']);
         $response = $this->client->request('POST', $this->url.'/index.php?route=api/cart/remove&api_token='.$this->apiToken, [
             'body' => [
                 'key' => $product,

@@ -4,7 +4,7 @@
 
 .PHONY: all worker api
 
-TAG?=v1.16.0
+TAG?=v1.17.0
 
 all: worker api api-nginx
 

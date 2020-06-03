@@ -2,7 +2,7 @@ tienvx_mbt:
     predefined_cases:
         api_cart_all_transitions:
             title: 'Api Cart (Add, Edit, Remove)'
-            model: 'api_cart'
+            workflow: 'api_cart'
             steps:
                 - transition: null
                   data: []
