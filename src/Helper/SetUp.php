@@ -15,9 +15,9 @@ trait SetUp
      */
     protected $client;
 
-    public function firefox(bool $testing)
+    public function firefox(bool $trying)
     {
-        if ($testing) {
+        if ($trying) {
             // TODO open local firefox (currently using w3c protocol, not json wire)
             $this->client = Client::createChromeClient();
             $this->client->manage()->window()->maximize();
@@ -33,9 +33,9 @@ trait SetUp
         }
     }
 
-    public function chrome(bool $testing)
+    public function chrome(bool $trying)
     {
-        if ($testing) {
+        if ($trying) {
             $this->client = Client::createChromeClient();
             $this->client->manage()->window()->maximize();
         } else {
@@ -50,9 +50,9 @@ trait SetUp
         }
     }
 
-    public function opera(bool $testing)
+    public function opera(bool $trying)
     {
-        if ($testing) {
+        if ($trying) {
             // TODO open local opera
             $this->client = Client::createChromeClient();
             $this->client->manage()->window()->maximize();
@@ -68,9 +68,9 @@ trait SetUp
         }
     }
 
-    public function android(bool $testing)
+    public function android(bool $trying)
     {
-        if ($testing) {
+        if ($trying) {
             $this->client = new Client(new ChromeMobileManager());
         } else {
             $caps = new DesiredCapabilities();

@@ -65,6 +65,9 @@
     "doctrine/reflection": {
         "version": "v1.0.0"
     },
+    "doctrine/sql-formatter": {
+        "version": "1.1.0"
+    },
     "egulias/email-validator": {
         "version": "2.1.11"
     },
@@ -132,6 +135,9 @@
     "psr/log": {
         "version": "1.1.2"
     },
+    "symfony/amqp-messenger": {
+        "version": "v5.1.0"
+    },
     "symfony/browser-kit": {
         "version": "v5.0.1"
     },
@@ -163,8 +169,14 @@
     "symfony/dependency-injection": {
         "version": "v5.0.1"
     },
+    "symfony/deprecation-contracts": {
+        "version": "v2.1.2"
+    },
     "symfony/doctrine-bridge": {
         "version": "v5.0.1"
+    },
+    "symfony/doctrine-messenger": {
+        "version": "v5.1.0"
     },
     "symfony/dom-crawler": {
         "version": "v5.0.1"
@@ -308,8 +320,14 @@
             "tests/.gitignore"
         ]
     },
+    "symfony/polyfill-intl-grapheme": {
+        "version": "v1.17.0"
+    },
     "symfony/polyfill-intl-idn": {
         "version": "v1.13.1"
+    },
+    "symfony/polyfill-intl-normalizer": {
+        "version": "v1.17.0"
     },
     "symfony/polyfill-mbstring": {
         "version": "v1.13.1"
@@ -317,11 +335,20 @@
     "symfony/polyfill-php73": {
         "version": "v1.13.1"
     },
+    "symfony/polyfill-php80": {
+        "version": "v1.17.0"
+    },
     "symfony/process": {
         "version": "v5.0.1"
     },
+    "symfony/property-access": {
+        "version": "v5.1.0"
+    },
     "symfony/property-info": {
         "version": "v5.0.1"
+    },
+    "symfony/redis-messenger": {
+        "version": "v5.1.0"
     },
     "symfony/routing": {
         "version": "4.2",
@@ -337,14 +364,38 @@
             "config/routes.yaml"
         ]
     },
+    "symfony/security-bundle": {
+        "version": "5.1",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "5.1",
+            "ref": "0a4bae19389d3b9cba1ca0102e3b2bccea724603"
+        },
+        "files": [
+            "config/packages/security.yaml"
+        ]
+    },
     "symfony/security-core": {
         "version": "v5.0.1"
+    },
+    "symfony/security-csrf": {
+        "version": "v5.1.0"
+    },
+    "symfony/security-guard": {
+        "version": "v5.1.0"
+    },
+    "symfony/security-http": {
+        "version": "v5.1.0"
     },
     "symfony/service-contracts": {
         "version": "v2.0.1"
     },
     "symfony/stopwatch": {
         "version": "v5.0.1"
+    },
+    "symfony/string": {
+        "version": "v5.1.0"
     },
     "symfony/test-pack": {
         "version": "v1.0.6"

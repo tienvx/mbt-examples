@@ -14,7 +14,6 @@ use Symfony\Component\Process\Process;
 use Tienvx\Bundle\MbtBundle\Annotation\Subject;
 use Tienvx\Bundle\MbtBundle\Annotation\Transition;
 use Tienvx\Bundle\MbtBundle\Steps\Data;
-use Tienvx\Bundle\MbtBundle\Steps\DataHelper;
 use Tienvx\Bundle\MbtBundle\Subject\AbstractSubject;
 
 /**
@@ -66,9 +65,9 @@ class MobileHome extends AbstractSubject
      * @throws NoSuchElementException
      * @throws TimeOutException
      */
-    public function setUp(bool $testing = false): void
+    public function setUp(bool $trying = false): void
     {
-        $this->android($testing);
+        $this->android($trying);
         $this->goToHome();
     }
 
@@ -124,7 +123,7 @@ class MobileHome extends AbstractSubject
      */
     public function wish(Data $data)
     {
-        $product = DataHelper::get($data, 'product', [$this, 'randomProductFromHome'], [$this, 'validateProductFromHome']);
+        $product = $data->getSet('product', [$this, 'randomProductFromHome'], [$this, 'validateProductFromHome']);
 
         $by = WebDriverBy::cssSelector(HomePage::addWishlist($product));
         $this->client->wait(3)->until(
@@ -142,7 +141,7 @@ class MobileHome extends AbstractSubject
      */
     public function compare(Data $data)
     {
-        $product = DataHelper::get($data, 'product', [$this, 'randomProductFromHome'], [$this, 'validateProductFromHome']);
+        $product = $data->getSet('product', [$this, 'randomProductFromHome'], [$this, 'validateProductFromHome']);
 
         $by = WebDriverBy::cssSelector(HomePage::compare($product));
         $this->client->wait(3)->until(

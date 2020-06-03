@@ -96,7 +96,7 @@ spec:
             configMapKeyRef:
               key: TRUSTED_PROXIES
               name: api-docker--env
-        image: tienvx/mbt-examples-api:v1.16.0
+        image: tienvx/mbt-examples-api:v1.17.0
         name: api
         resources: {}
       restartPolicy: Always

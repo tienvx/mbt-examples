@@ -95,7 +95,7 @@ spec:
             configMapKeyRef:
               key: MESSENGER_TRANSPORT_DSN
               name: worker-docker--env
-        image: tienvx/mbt-examples-worker:v1.16.0
+        image: tienvx/mbt-examples-worker:v1.17.0
         name: worker
         resources: {}
       restartPolicy: Always

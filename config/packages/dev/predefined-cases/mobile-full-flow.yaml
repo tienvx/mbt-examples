@@ -2,7 +2,7 @@ tienvx_mbt:
     predefined_cases:
         mobile_full_flow:
             title: 'Mobile (Full Flow)'
-            model: 'mobile_home'
+            workflow: 'mobile_home'
             steps:
                 - transition: null
                   data: []

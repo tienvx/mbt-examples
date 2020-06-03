@@ -51,9 +51,9 @@ class Checkout extends AbstractSubject
      */
     protected $registerAccount = false;
 
-    public function setUp(bool $testing = false): void
+    public function setUp(bool $trying = false): void
     {
-        $this->opera($testing);
+        $this->opera($trying);
         $this->goToHome();
     }
 
