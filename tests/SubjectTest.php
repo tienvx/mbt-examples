@@ -44,5 +44,10 @@ class SubjectTest extends KernelTestCase
             'api_cart' => ApiCart::class,
             'mobile_home' => MobileHome::class,
         ], $property->getValue($this->subjectManager));
+        $this->assertInstanceOf(Checkout::class, $this->subjectManager->create('checkout'));
+        $this->assertInstanceOf(Product::class, $this->subjectManager->create('product'));
+        $this->assertInstanceOf(ShoppingCart::class, $this->subjectManager->create('shopping_cart'));
+        $this->assertInstanceOf(ApiCart::class, $this->subjectManager->create('api_cart'));
+        $this->assertInstanceOf(MobileHome::class, $this->subjectManager->create('mobile_home'));
     }
 }

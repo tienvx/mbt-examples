@@ -16,6 +16,12 @@ jobs:
       run: |
         make
 
+    - name: Test images
+      run: |
+        docker network create selenoid
+        docker-compose up -d
+        docker run --network container:mbt-examples_admin_1 appropriate/curl -s -o /dev/null --retry 10 --retry-connrefused http://localhost/
+
     - name: Publish images
       run: |
         echo ${DOCKER_PASSWORD} | docker login -u ${DOCKER_USERNAME} --password-stdin
