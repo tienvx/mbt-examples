@@ -34,7 +34,7 @@ class Checkout extends AbstractSubject
     /**
      * @var string
      */
-    protected $url = 'https://opencart.mbtbundle.org';
+    protected $url = 'http://example.com';
 
     /**
      * @var bool

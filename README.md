@@ -1,6 +1,6 @@
 # MBT Examples [![Build Status][actions_badge]][actions_link]
 
-This project contains example models to demonstrate how to test using MBT Bundle tool.
+This project contains example workflows to demonstrate how to test using MBT Bundle tool.
 
 There are 3 ways to run these examples:
 * [With Docker](#with-docker)
@@ -36,7 +36,7 @@ Open web browser, navigate to http://localhost and register new user (the first 
 
 ### Notes
 
-* Put your models to config/packages/dev directory
+* Put your workflows to config/packages/dev directory
 * Number of workers (2) must be less than or equals to hub's limit (5)
 * Need at least 220MB RAM free (2 idle workers), more if tasks are in progress
 * Build your own windows images at https://github.com/aerokube/windows-images
@@ -112,28 +112,28 @@ $ composer install
 
 ### Usage
 
-Run the following command to test a model:
+Run the following command to try a workflow:
 
 ```
-$ env PANTHER_NO_HEADLESS=1 php bin/console mbt:model:test [MODEL_NAME] --generator random --generator-options '{"maxSteps": 20}'
+$ env PANTHER_NO_HEADLESS=1 php bin/console mbt:workflow:try [WORKFLOW_NAME] --generator random --max-steps 20
 ```
 
-**Note** - replace `[MODEL_NAME]` by:
+**Note** - replace `[WORKFLOW_NAME]` by:
 * api_cart
 * checkout
 * mobile_home
 * product
 * shopping_cart
 
-The command will open new Chrome window, and navigate to https://opencart.mbtbundle.org/
+The command will open new Chrome window, and navigate to http://example.com/
 
 ### Generate code
 
 ```
-$ php bin/console make:generator model_name ClassName
-$ php bin/console make:subject model_name ClassName
-$ php bin/console make:reducer model_name ClassName
-$ php bin/console make:reporter model_name ClassName
+$ php bin/console make:generator workflow_name ClassName
+$ php bin/console make:subject workflow_name ClassName
+$ php bin/console make:reducer workflow_name ClassName
+$ php bin/console make:reporter workflow_name ClassName
 ```
 
 ### Clear cache

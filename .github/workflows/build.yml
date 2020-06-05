@@ -21,6 +21,7 @@ jobs:
         docker network create selenoid
         docker-compose up -d
         docker run --network container:mbt-examples_admin_1 appropriate/curl -s -o /dev/null --retry 10 --retry-connrefused http://localhost/
+        docker run --network container:mbt-examples_api-nginx_1 appropriate/curl -s -o /dev/null --retry 10 --retry-connrefused http://localhost:82/
 
     - name: Publish images
       run: |

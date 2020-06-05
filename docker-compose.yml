@@ -1,11 +1,19 @@
 version: '3'
+networks:
+    selenoid:
+        external:
+            name: selenoid
 services:
     db:
         image: jbergstroem/mariadb-alpine
+        networks:
+            selenoid: null
         env_file:
             - docker/.env-db
     minio:
-        image:   'minio/minio'
+        image: 'minio/minio'
+        networks:
+            selenoid: null
         env_file:
             - docker/.env-minio
         entrypoint: sh
@@ -14,12 +22,16 @@ services:
             - 83:9000
     api-nginx:
         image: "tienvx/mbt-examples-api-nginx:v1.17.0"
+        networks:
+            selenoid: null
         depends_on:
             - api
         ports:
             - 82:80
     api:
         image: "tienvx/mbt-examples-api:v1.17.0"
+        networks:
+            selenoid: null
         depends_on:
             - db
             - minio
@@ -27,6 +39,8 @@ services:
             - docker/.env
     worker:
         image: "tienvx/mbt-examples-worker:v1.17.0"
+        networks:
+            selenoid: null
         depends_on:
             - db
             - minio
@@ -35,9 +49,40 @@ services:
         command: ["wait-for", "db:3306", "--timeout=99", "--", "php", "/usr/local/src/app/bin/console", "messenger:consume", "async"]
     admin:
         image: "tienvx/mbt-admin:v1.17.0"
+        networks:
+            selenoid: null
         depends_on:
             - api
         environment:
             API_URL: 'http://localhost:82'
         ports:
             - 80:80
+    app:
+        image: 'tienvx/mbt-example-app'
+        networks:
+            selenoid:
+                aliases:
+                    - example.com
+        ports:
+            - 81:80
+        depends_on:
+            - db
+    hub:
+        image: "selenoid/hub"
+        networks:
+            selenoid: null
+        volumes:
+            - "$PWD/docker/selenoid/config/:/etc/selenoid/:ro"
+            - "/var/run/docker.sock:/var/run/docker.sock"
+            - "$PWD/docker/selenoid/video/:/opt/selenoid/video"
+            - "$PWD/docker/selenoid/logs/:/opt/selenoid/logs"
+        environment:
+            - OVERRIDE_VIDEO_OUTPUT_DIR=$PWD/docker/selenoid/video/
+        command: ["-conf", "/etc/selenoid/browsers.json", "-limit", "5", "-video-output-dir", "/opt/selenoid/video", "-log-output-dir", "/opt/selenoid/logs", "-container-network", "selenoid"]
+    selenoid-ui:
+        image: "aerokube/selenoid-ui"
+        networks:
+            selenoid: null
+        ports:
+            - "84:8080"
+        command: ["--selenoid-uri", "http://hub:4444"]
