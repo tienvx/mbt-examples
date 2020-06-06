@@ -1,5 +1,5 @@
 imports:
-    - { resource: prod/models/*.yaml }
+    - { resource: prod/workflows/*.yaml }
     - { resource: prod/predefined-cases/*.yaml }
 
 tienvx_mbt:
