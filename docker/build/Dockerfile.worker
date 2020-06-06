@@ -7,7 +7,7 @@ RUN apk add -q --no-cache --virtual .build-deps zlib-dev $PHPIZE_DEPS && \
     docker-php-ext-install zip pdo_mysql > /dev/null && \
     apk del -q --no-cache .build-deps
 
-COPY config/packages/dev/models /usr/local/src/app/config/packages/prod/models
+COPY config/packages/dev/workflows /usr/local/src/app/config/packages/prod/workflows
 COPY config/packages/dev/predefined-cases /usr/local/src/app/config/packages/prod/predefined-cases
 COPY src /usr/local/src/app/src
 
